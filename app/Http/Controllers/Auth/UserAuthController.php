@@ -20,14 +20,14 @@ class UserAuthController extends Controller
         ]);
         if ($validator->fails())
         {
-            $response = ['success'=>0, 'errors'=>$validator->errors()->all()];
+            $response = ['success'=>0, 'message'=>$validator->errors()->all()];
             return response($response, 422);
         }
         $request['password']=Hash::make($request['password']);
         $request['remember_token'] = Str::random(10);
         $user = User::create($request->toArray());
         $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-        $response = ['success'=>1, 'token' => $token];
+        $response = ['success'=>1, 'message'=>'Registration Success', 'token' => $token];
         return response($response, 200);
         
     
@@ -63,17 +63,17 @@ class UserAuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6',
         ]);
         if ($validator->fails())
         {
-            return response(['success'=>'0', 'errors'=>$validator->errors()->all()], 422);
+            return response(['success'=>'0', 'message'=>$validator->message()->all()], 422);
         }
         $user = User::where('email', $request->email)->first();
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-                $response = ['success'=>1, 'token' => $token];
+                $response = ['success'=>1, 'message'=> 'Login Success', 'token' => $token];
                 return response($response, 200);
             } else {
                 $response = ['success'=>0, "message" => "Password mismatch"];
