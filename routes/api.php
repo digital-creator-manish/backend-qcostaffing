@@ -7,7 +7,10 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\NursesController;
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\DisciplineController;
+use App\Http\Controllers\SiteContentController;
 use App\Models\Discipline;
+use App\Models\SiteContent;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -48,4 +51,5 @@ Route::middleware('auth:api')->group(function () {
     Route::get('discipline/{id?}', [DisciplineController::class, 'read']);
     Route::put('discipline/{id}', [DisciplineController::class, 'update']);
     Route::delete('discipline/{id}', [DisciplineController::class, 'delete']);
+    Route::apiResource('sitecontent', SiteContentController::class);
 });

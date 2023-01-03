@@ -1,0 +1,76 @@
+http://qcostaffing_backend/api/register
+method : POST
+{
+    "name": "dev",
+    "email": "dev123@dev.com",
+    "password": "Dev123@@",
+    "password_confirmation": "Dev123@@"
+}
+
+
+http://qcostaffing_backend/api/login
+method : POST
+{
+    "email": "dev123@dev.com",
+    "password": "Dev123@@",
+}
+
+
+DISCIPLINE API END POINT - tablename - disciplines
+
+method : POST for creating discipline
+http://qcostaffing_backend/api/discipline/
+{
+    "name":"testname2"
+}
+
+method : GET  - get all discipline
+http://qcostaffing_backend/api/discipline/
+
+method : GET  - get discipline by id
+http://qcostaffing_backend/api/discipline/1
+
+method : PUT - update discipline by id
+http://qcostaffing_backend/api/discipline/1
+{
+    "name":"update_discipline"
+}
+
+method : DELETE - delete discipline by id
+http://qcostaffing_backend/api/discipline/1
+
+
+
+
+
+SITECONTENT API END POINT
+
+method : POST for creating site content tablename - site_contents
+http://qcostaffing_backend/api/sitecontent
+{
+    "name":"test sitecontent name",
+    "title":"title site content",
+    "description":"description content "
+}   
+
+method : GET  - get all site content
+http://qcostaffing_backend/api/sitecontent/
+
+method : GET  - get sitecontent by id
+http://qcostaffing_backend/api/sitecontent/1
+
+method : PUT - update sitecontent by id
+http://qcostaffing_backend/api/sitecontent/1
+{
+    "name":"update content",
+    "title":"update title",
+    "description":" update description "
+}
+
+method : DELETE - delete sitecontent by id
+http://qcostaffing_backend/api/sitecontent/1
+
+
+
+
+
