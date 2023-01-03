@@ -13,16 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('nurse_education', function (Blueprint $table) {
+        Schema::create('disciplines', function (Blueprint $table) {
             $table->id();
-			$table->unsignedBigInteger('nurse_id');
-            $table->string('education_type');
-            $table->string('name_school_address');
-            $table->string('course');
-            $table->string('diploma');
-            $table->string('years_completed');
-            $table->string('other_skills');
-            
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -34,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nurse_education');
+        Schema::dropIfExists('disciplines');
     }
 };

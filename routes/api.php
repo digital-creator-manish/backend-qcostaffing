@@ -6,7 +6,8 @@ use App\Http\Controllers\NurseController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\NursesController;
 use App\Http\Controllers\Auth\UserAuthController;
-
+use App\Http\Controllers\DisciplineController;
+use App\Models\Discipline;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,12 +35,17 @@ Route::post('nurse', [NurseController::class, 'create']);
 // Route::apiResource('/nurses', NursesController::class)->middleware('auth:api');
 
 Route::group(['middleware' => ['cors', 'json.response']], function () {
-    // ...
+    // public routes
     Route::post('register', [UserAuthController::class, 'register'])->name('register.api');
     Route::post('login', [UserAuthController::class, 'login'])->name('login.api');
+    
 });
 
 Route::middleware('auth:api')->group(function () {
-    // our routes to be protected will go in here
+    // protected routes
     Route::post('logout', [UserAuthController::class, 'logout'])->name('logout.api');
+    Route::post('discipline', [DisciplineController::class, 'create']); 
+    Route::get('discipline/{id?}', [DisciplineController::class, 'read']);
+    Route::put('discipline/{id}', [DisciplineController::class, 'update']);
+    Route::delete('discipline/{id}', [DisciplineController::class, 'delete']);
 });

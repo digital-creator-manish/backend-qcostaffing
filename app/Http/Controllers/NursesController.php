@@ -51,7 +51,7 @@ class NursesController extends Controller
        // exit;
 
 
-                // create the user
+        // create the user
         $Nurses = new Nurses;
         $Nurses->fname = $data["fname"];
         $Nurses->lname = $data["lname"];

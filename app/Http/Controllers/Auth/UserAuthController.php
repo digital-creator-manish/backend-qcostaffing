@@ -26,7 +26,7 @@ class UserAuthController extends Controller
         $request['password']=Hash::make($request['password']);
         $request['remember_token'] = Str::random(10);
         $user = User::create($request->toArray());
-        $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+        $token = $user->createToken('qcostaffing')->accessToken;
         $response = ['success'=>1, 'message'=>'Registration Success', 'token' => $token];
         return response($response, 200);
         
@@ -67,22 +67,25 @@ class UserAuthController extends Controller
         ]);
         if ($validator->fails())
         {
-            return response(['success'=>'0', 'message'=>$validator->message()->all()], 422);
+            return response(['success'=>'0', 'message'=>implode($validator->messages()->all())], 422);
         }
         $user = User::where('email', $request->email)->first();
-        if ($user) {
-            if (Hash::check($request->password, $user->password)) {
-                $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-                $response = ['success'=>1, 'message'=> 'Login Success', 'token' => $token];
-                return response($response, 200);
-            } else {
-                $response = ['success'=>0, "message" => "Password mismatch"];
-                return response($response, 422);
-            }
-        } else {
-            $response = ['success'=>0, "message" =>'User does not exist'];
+
+        if(!$user){
+            $response = ['success'=>0, "message" => "Login Incorrect"];
             return response($response, 422);
         }
+
+        if(Hash::check($request->password, $user->password) == false){
+            $response = ['success'=>0, "message" => "Login Incorrect"];
+            return response($response, 422);
+        }
+
+        $token = $user->createToken('qcostaffing')->accessToken;
+        $response = ['success'=>1, 'message'=> 'Login Success', 'token' => $token];
+        return response($response, 200);
+        
+
         // $data = $request->validate([
         //     'email' => 'email|required',
         //     'password' => 'required'
