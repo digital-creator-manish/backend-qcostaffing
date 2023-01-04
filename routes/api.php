@@ -8,6 +8,7 @@ use App\Http\Controllers\NursesController;
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\DisciplineController;
 use App\Http\Controllers\SiteContentController;
+use App\Http\Controllers\StaffController;
 use App\Models\Discipline;
 use App\Models\SiteContent;
 
@@ -53,3 +54,4 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('discipline/{id}', [DisciplineController::class, 'delete']);
     Route::apiResource('sitecontent', SiteContentController::class);
 });
+Route::apiResource('staff', StaffController::class);
