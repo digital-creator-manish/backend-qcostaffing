@@ -39,7 +39,7 @@ class MenusController extends Controller
      * @param  \App\Http\Requests\StoreMenusRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreMenusRequest $request)
+    public function store( $request)
     {
         //
     }
