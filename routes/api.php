@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\DisciplineController;
 use App\Http\Controllers\MenusController;
 use App\Http\Controllers\SiteContentController;
+use App\Http\Controllers\SkillController;
 use App\Http\Controllers\StaffController;
 use App\Models\Discipline;
 use App\Models\SiteContent;
@@ -57,3 +58,5 @@ Route::middleware('auth:api')->group(function () {
 });
 Route::apiResource('staff', StaffController::class);
 Route::apiResource('menus', MenusController::class);
+Route::post('upload', [StaffController::class, 'upload']);
+Route::apiResource('skill', SkillController::class);
