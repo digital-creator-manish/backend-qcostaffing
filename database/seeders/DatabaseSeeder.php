@@ -14,6 +14,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call([
+            MenusSeeder::class,
+            UserSeeder::class,
+        ]);
+        \Illuminate\Support\Facades\Artisan::call('passport:install');
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

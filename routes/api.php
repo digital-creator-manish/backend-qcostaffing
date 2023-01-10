@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\NursesController;
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\DisciplineController;
+use App\Http\Controllers\MenusController;
 use App\Http\Controllers\SiteContentController;
 use App\Http\Controllers\StaffController;
 use App\Models\Discipline;
@@ -55,3 +56,4 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('sitecontent', SiteContentController::class);
 });
 Route::apiResource('staff', StaffController::class);
+Route::apiResource('menus', MenusController::class);
