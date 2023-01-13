@@ -12,6 +12,7 @@ use App\Http\Controllers\SiteContentController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ProfileController;
 use App\Models\Discipline;
 use App\Models\SiteContent;
 
@@ -60,5 +61,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('menus', MenusController::class);
     Route::apiResource('skill', SkillController::class);
     Route::apiResource('news', NewsController::class);
+    Route::get('profile', [ProfileController::class, 'show']);
+    Route::put('profile', [ProfileController::class, 'update']);
 });
 //Route::post('upload', [StaffController::class, 'upload']);

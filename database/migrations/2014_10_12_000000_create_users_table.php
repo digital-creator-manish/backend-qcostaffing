@@ -21,6 +21,12 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->string('company')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('fax')->nullable();
+            $table->string('skill_email')->nullable();
+            $table->string('app_email')->nullable();
         });
     }
 

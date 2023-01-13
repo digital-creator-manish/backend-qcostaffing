@@ -74,6 +74,24 @@ method : GET  - get all menus
 http://qcostaffing_backend/api/menus
 
 
+same for skill 
+same for StaffController
 
 
 
+
+Profile 
+get user data - GET : http://localhost/qcostaffing_backend/public/api/profile
+
+update user data - PUT : http://localhost/qcostaffing_backend/public/api/profile
+
+
+{
+    "name": "Site Super Admin-test",
+    "email": "ahmad@path2quality.com",
+    "company": "qcostaffing-test",
+    "phone": "+12222223333-test",
+    "fax": "+12222233300",
+    "skill_email": "skill-email@qcostaffing-test.com",
+    "app_email": "app-email@qcostaffing-test.com"
+}
