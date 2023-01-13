@@ -11,6 +11,7 @@ use App\Http\Controllers\MenusController;
 use App\Http\Controllers\SiteContentController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\NewsController;
 use App\Models\Discipline;
 use App\Models\SiteContent;
 
@@ -29,9 +30,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('nurse/{id}', [NurseController::class, 'get']);
-Route::get('nursedata', [NurseController::class, 'getAll']);
-Route::post('nurse', [NurseController::class, 'create']);
+// Route::get('nurse/{id}', [NurseController::class, 'get']);
+// Route::get('nursedata', [NurseController::class, 'getAll']);
+// Route::post('nurse', [NurseController::class, 'create']);
 
 //Route::post('register', [UserAuthController::class, 'register']);
 
@@ -55,8 +56,9 @@ Route::middleware('auth:api')->group(function () {
     Route::put('discipline/{id}', [DisciplineController::class, 'update']);
     Route::delete('discipline/{id}', [DisciplineController::class, 'delete']);
     Route::apiResource('sitecontent', SiteContentController::class);
+    Route::apiResource('staff', StaffController::class);
+    Route::apiResource('menus', MenusController::class);
+    Route::apiResource('skill', SkillController::class);
+    Route::apiResource('news', NewsController::class);
 });
-Route::apiResource('staff', StaffController::class);
-Route::apiResource('menus', MenusController::class);
-Route::post('upload', [StaffController::class, 'upload']);
-Route::apiResource('skill', SkillController::class);
+//Route::post('upload', [StaffController::class, 'upload']);
