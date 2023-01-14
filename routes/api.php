@@ -16,6 +16,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\TutorialController;
 use App\Http\Controllers\QuizTutorialController;
+use App\Http\Controllers\DocumentController;
+
 use App\Models\Discipline;
 use App\Models\SiteContent;
 
@@ -69,5 +71,6 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('form', FormController::class);
     Route::apiResource('tutorial', TutorialController::class);
     Route::apiResource('quiz_tutorial', QuizTutorialController::class);
+    Route::apiResource('document', DocumentController::class);
 });
 //Route::post('upload', [StaffController::class, 'upload']);
