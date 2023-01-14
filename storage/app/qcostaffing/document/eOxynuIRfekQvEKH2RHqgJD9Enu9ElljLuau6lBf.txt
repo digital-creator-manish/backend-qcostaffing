@@ -1,0 +1,561 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.7
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: Jan 06, 2023 at 03:36 AM
+-- Server version: 5.7.23-23
+-- PHP Version: 7.4.33
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `abhinav_qrmeds`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_admin_users`
+--
+
+CREATE TABLE `tbl_admin_users` (
+  `adm_id` int(11) NOT NULL,
+  `adm_type` enum('nurses','nursing-educator') NOT NULL,
+  `adm_name` varchar(100) NOT NULL,
+  `adm_userid` varchar(50) NOT NULL,
+  `adm_password` varchar(100) NOT NULL,
+  `adm_email` varchar(255) NOT NULL,
+  `adm_status` tinyint(1) NOT NULL DEFAULT '1',
+  `adm_delete_permission` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'if 1 users can be deleted else no',
+  `adm_createdon` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tbl_admin_users`
+--
+
+INSERT INTO `tbl_admin_users` (`adm_id`, `adm_type`, `adm_name`, `adm_userid`, `adm_password`, `adm_email`, `adm_status`, `adm_delete_permission`, `adm_createdon`) VALUES
+(1, 'nursing-educator', 'Super Admin', 'admin', '5e8ff9bf55ba3508199d22e984129be6', 'superadmin@gmail.com', 1, 0, '2022-08-22 13:29:48'),
+(5, 'nurses', 'Anika', 'Anika', 'd43acb1fccd9f55a214b51b16fcff0c6', 'anikainpa@gmail.com', 1, 1, '2022-08-30 06:49:28'),
+(6, 'nursing-educator', 'Barbara', 'Barb', 'ef70cd56216006062aa051ca0d7b358b', 'barbara.butkiewicz@tuhs.temple.edu', 1, 1, '2022-08-30 06:50:19'),
+(7, 'nursing-educator', 'Pharmacy Student 1', 'pharmstud1', '75e4f327f5f93130b315e92521deb4ac', 'barbara.butkiewicz@tuhs.temple.edu', 1, 1, '2022-09-05 09:05:43'),
+(8, 'nursing-educator', 'Pharmacy Student 2', 'pharmstud2', '75e4f327f5f93130b315e92521deb4ac', 'barbara.butkiewicz@tuhs.temple.edu', 1, 1, '2022-09-05 09:06:59'),
+(9, 'nurses', 'Nurse 1', 'nurse1', '3454e2259d657cd796f98bf045cdc617', 'barbara.butkiewicz@tuhs.temple.edu', 1, 1, '2022-09-20 05:13:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_medication_info`
+--
+
+CREATE TABLE `tbl_medication_info` (
+  `med_id` int(11) NOT NULL,
+  `med_name` varchar(255) NOT NULL,
+  `med_uses` text,
+  `med_side_effects` text,
+  `med_info_url` varchar(500) DEFAULT NULL,
+  `med_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 means pending, 1 approved',
+  `med_createdby` int(11) DEFAULT NULL,
+  `med_createdon` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tbl_medication_info`
+--
+
+INSERT INTO `tbl_medication_info` (`med_id`, `med_name`, `med_uses`, `med_side_effects`, `med_info_url`, `med_status`, `med_createdby`, `med_createdon`) VALUES
+(5, 'Rosuvastatin (Crestor)', 'To lower high fat levels in blood', 'Tiredness, nausea', 'https://preview.meducation.com/V2.0/fdbpem/4284', 1, 1, '2022-08-25 15:12:14'),
+(6, 'Nystatin Topical Powder', 'For yeast infections', 'Skin irritation where medication is applied', 'https://krames.meducation.com/V2.0/fdbpem/609', 1, 1, '2022-08-25 15:13:38'),
+(7, 'Valproate (Depakene)', 'Bipolar Disorder, seizures', 'Decreased appetite, blurry vision, drowsiness, diarrhea', 'https://krames.meducation.com/V2.0/fdbpem/19', 1, NULL, '2022-08-25 15:16:03'),
+(8, 'Propafenone (Rythmol)', 'Irregular heartbeat', 'Headache, tiredness, nausea, vomiting, constipation', 'https://krames.meducation.com/V2.0/fdbpem/4070', 1, 1, '2022-08-25 15:21:02'),
+(9, 'Aspirin (Chewable-Baby Aspirin)', 'Prevent blood clots/stroke/ heart attack', 'Stomach upset, heartburn', 'https://krames.meducation.com/V2.0/fdbpem/3003', 1, NULL, '2022-08-25 15:33:28'),
+(11, 'Doxycycline', 'For treating bacterial infections', 'Diarrhea, nausea, stomach upset, yeast infection', 'https://krames.meducation.com/V2.0/fdbpem/7073', 1, NULL, '2022-08-25 19:44:34'),
+(26, 'Venetoclax (Venclexta)', 'For treating cancer', 'Diarrhea, lack of energy, headaches, nausea', 'https://krames.meducation.com/V2.0/fdbpem/1762', 1, 5, '2022-08-31 15:56:18'),
+(30, 'Amitriptyline (Elavil)', 'Anxiety, depression, eating disorders, prevent migraine headaches, pain, post-traumatic stress disorder', 'Trouble sleeping, dry mouth, drowsiness, stomach upset, sweating', 'https://krames.meducation.com/V2.0/fdbpem/681', 1, 7, '2022-09-06 13:04:15'),
+(31, 'Atenolol (Tenormin)', 'Angina, heart attack, high blood pressure, irregular heart beat, prevent migraine headaches, tremors', 'Dizziness, tiredness, low blood pressure', 'https://krames.meducation.com/V2.0/fdbpem/5353', 1, 7, '2022-09-06 13:06:17'),
+(32, 'Atorvastatin (Lipitor)', 'To lower high fat levels in blood', 'Stomach, nausea, muscle cramps', 'https://krames.meducation.com/V2.0/fdbpem/284', 1, 7, '2022-09-06 13:07:48'),
+(33, 'Acebutolol', 'High blood pressure, abnormal heartbeat', 'Trouble sleeping, dizziness, slow heartbeat, cold hands and feet, lightheadedness', 'https://krames.meducation.com/V2.0/fdbpem/454', 1, 7, '2022-09-06 13:09:52'),
+(34, 'Albuterol (ProAir)', 'Asthma, chronic lung disease', 'Agitated feeling, coughing, dizziness, dry mouth, shakiness', 'https://krames.meducation.com/V2.0/fdbpem/2008', 1, 7, '2022-09-06 13:12:25'),
+(35, 'Aluminum Hydroxide/Magnesium Hydroxide/Simethicone (Maalox Plus)', 'Heartburn, indigestion, reduce gas', 'Constipation, nausea, diarrhea', 'https://krames.meducation.com/V2.0/fdbpem/769', 1, 7, '2022-09-06 13:14:07'),
+(36, 'Ascorbic Acid (Vitamin C)', 'Vitamin C deficiency, scurvy', 'Stomach upset, nausea', 'https://krames.meducation.com/V2.0/fdbpem/106', 1, 7, '2022-09-06 13:15:23'),
+(37, 'Amlodipine (Norvasc)', 'Angina, high blood pressure, Raynaud\'s disease', 'Dizziness, swelling, tiredness, flushing, low blood pressure', 'https://krames.meducation.com/V2.0/fdbpem/9010', 1, 7, '2022-09-06 13:16:57'),
+(38, 'Amoxicillin', 'For treating bacterial infection', 'Diarrhea, nausea, stomach upset', 'https://krames.meducation.com/V2.0/fdbpem/3295', 1, 7, '2022-09-06 13:17:59'),
+(39, 'Acyclovir (Zovirax) Oral', 'Treating viral infections', 'Diarrhea, headaches, nausea, stomach upset or abdominal pain, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/9069', 1, 7, '2022-09-06 13:20:14'),
+(40, 'Apixaban (Eliquis)', 'Prevent blood clots, blood clot', 'Increased risk of bleeding, nosebleeds', 'https://krames.meducation.com/V2.0/fdbpem/1443', 1, 7, '2022-09-06 13:21:58'),
+(41, 'Alprazolam (Xanax)', 'Anxiety', 'Dizziness, drowsiness, drooling', 'https://krames.meducation.com/V2.0/fdbpem/7244', 1, 7, '2022-09-06 13:23:11'),
+(42, 'Atovaquone', 'For infection', 'Diarrhea, dizziness, headaches', 'https://krames.meducation.com/V2.0/fdbpem/6153', 1, 7, '2022-09-06 13:24:08'),
+(43, 'Aripiprazole (Abilify)', 'Bipolar disorder, depression, developmental disorder, obsessive compulsive disorder, schizophrenia, Tourette\'s disorder', 'Agitation, dizziness, drowsiness, weight gain', 'https://krames.meducation.com/V2.0/fdbpem/1979', 1, 7, '2022-09-06 13:25:47'),
+(44, 'Azithromycin (Zithromax)', 'For treating bacterial infection', 'Diarrhea, nausea, upset stomach, yeast infection', 'https://krames.meducation.com/V2.0/fdbpem/3223', 1, 7, '2022-09-06 13:27:10'),
+(45, 'Allopurinol (Zyloprim)', 'Prevents high uric acid levels, prevent gout', 'Diarrhea, nausea, abdominal pain, pain in the joints', 'https://krames.meducation.com/V2.0/fdbpem/1', 1, 7, '2022-09-06 13:29:16'),
+(46, 'Albumin', 'Blood disorder, jaundice, low blood pressure', 'Fever, headache, nausea, vomiting', 'https://www.kramesondemand.com/Healthsheet.aspx?id=10457-0&ContentTypeId=208', 1, 7, '2022-09-06 13:30:15'),
+(48, 'Acetaminophen (Tylenol)', 'Fever, pain', 'N/A', 'https://krames.meducation.com/V2.0/fdbpem/9', 1, 7, '2022-09-06 13:33:03'),
+(49, 'Arformoterol (Brovana)', 'Chronic lung disease, COPD', 'Trouble sleeping, dizziness, dry mouth, nausea, shakiness', 'https://krames.meducation.com/V2.0/fdbpem/928', 1, 7, '2022-09-06 13:34:49'),
+(50, 'Ammonium Lactate Topical Cream (Lac-Hydrin)', 'Dry skin, cracked skin', 'Burning, itching, skin irritation', 'https://krames.meducation.com/V2.0/fdbpem/7164', 1, 7, '2022-09-06 13:35:48'),
+(51, 'Ampicillin/Sulbactam (Unasyn)', 'Treating bacterial infections', 'Diarrhea, vomiting, yeast infection of mouth or vagina', 'https://krames.meducation.com/V2.0/fdbpem/7050', 1, 7, '2022-09-06 13:37:13'),
+(52, 'Anastrozole (Arimidex)', 'Cancer', 'Trouble sleeping, decreased appetite, loss of balance, dizziness, dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/1137', 1, 7, '2022-09-06 13:38:40'),
+(53, 'Amiodarone (Cordarone, Pacerone)', 'For irregular heartbeat', 'Decreased appetite, constipation, lack of energy and tiredness, nausea, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/7070', 1, 7, '2022-09-06 13:41:45'),
+(54, 'Brovana (Arformoterol)', 'For chronic lung disease (COPD)', 'Trouble sleeping, dizziness, dry mouth, shakiness', 'https://krames.meducation.com/V2.0/fdbpem/928', 1, 7, '2022-09-06 13:42:49'),
+(55, 'Bupropion (Wellbutrin)', 'Depression, Attention deficit hyperactivity disorder', 'Trouble sleeping, drowsiness, weight loss', 'https://krames.meducation.com/V2.0/fdbpem/155', 1, 7, '2022-09-06 13:44:05'),
+(56, 'Bumetanide (Bumex)', 'Swelling, high blood pressure', 'Dizziness, headaches, low blood pressure', 'https://krames.meducation.com/V2.0/fdbpem/6043', 1, 7, '2022-09-06 13:45:23'),
+(57, 'Biktarvy (Bictegravir/Emtricitabine/Tenofovir Alafenamide)', 'For HIV', 'Diarrhea, upset stomach, headache', 'https://krames.meducation.com/V2.0/fdbpem/1910', 1, 7, '2022-09-06 13:46:07'),
+(58, 'Budesonide (Pulmicort)', 'Asthma, COPD', 'Hoarseness, Throat irritation, Unpleasant taste', 'https://krames.meducation.com/V2.0/fdbpem/6245', 1, 7, '2022-09-06 13:49:05'),
+(59, 'Benzonatate (Tessalon Perles)', 'For cough', 'Constipation, Dizziness, Headache', 'https://krames.meducation.com/V2.0/fdbpem/6118', 1, 7, '2022-09-06 13:49:46'),
+(60, 'Brimonidine Ophthalmic Solution (Alphagan)', 'Glaucoma', 'Blurry vision, Discomfort in the eyes, Dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/7030', 1, 7, '2022-09-06 13:50:46'),
+(61, 'Bacitracin Topical Ointment', 'Skin infections', 'Skin irritation where medicine applied', 'https://krames.meducation.com/V2.0/fdbpem/9125', 1, 7, '2022-09-06 13:51:31'),
+(62, 'Baclofen (Lioresal)', 'Muscle spasms', 'Constipation, dizziness, increased urinary frequency, drowsiness', 'https://krames.meducation.com/V2.0/fdbpem/7087', 1, 7, '2022-09-06 13:54:25'),
+(63, 'Buspirone (Buspar)', 'Anxiety', 'Agitation, dizziness, blurry vision, tiredness, headaches, nausea', 'https://krames.meducation.com/V2.0/fdbpem/140', 1, 7, '2022-09-06 13:57:01'),
+(64, 'Bisacodyl (Dulcolax)', 'Bowel movement', 'Abdominal cramps, diarrhea, stomach upset', 'https://krames.meducation.com/V2.0/fdbpem/109', 1, 7, '2022-09-06 13:57:39'),
+(65, 'Clonidine (Catapres)', 'High blood pressure', 'Dizziness, dry mouth, drowsiness, low blood pressure', 'https://krames.meducation.com/V2.0/fdbpem/24', 1, 7, '2022-09-06 13:58:25'),
+(66, 'Cholestyramine (Questran)', 'Diarrhea, high blood fat levels', 'Abdominal cramps, bloating, excess gas, nausea', 'https://krames.meducation.com/V2.0/fdbpem/714', 1, 7, '2022-09-06 13:59:28'),
+(67, 'Cyclobenzaprine (Flexeril)', 'Treats muscle spams and inflammation', 'Dizziness, drowsiness, dry mouth and lack of energy', 'https://krames.meducation.com/V2.0/fdbpem/8087', 1, 7, '2022-09-06 14:00:14'),
+(68, 'Cetirizine (Zyrtec)', 'Allergies, skin inflammation', 'Dizziness, drowsiness, dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/5204', 1, 7, '2022-09-06 14:03:25'),
+(69, 'Cefepime (Maxipime)', 'Treat bacterial infections', 'Upset stomach, yeast infection of mouth or vagina', 'https://krames.meducation.com/V2.0/fdbpem/8269', 1, 7, '2022-09-06 14:03:58'),
+(70, 'Cefazolin (Ancef)', 'Treat bacterial infections', 'Diarrhea, nausea, heartburn, headache', 'https://krames.meducation.com/V2.0/fdbpem/798', 1, 7, '2022-09-06 14:04:56'),
+(71, 'Clopidogrel (Plavix)', 'Prevent blood clots/stroke/heart attack', 'Increased risk of bleeding, itchiness', 'https://krames.meducation.com/V2.0/fdbpem/7084', 1, 7, '2022-09-06 14:05:46'),
+(72, 'Calcium Acetate (Phoslo)', 'Low calcium levels, high phosphate levels', 'Stomach upset, abdominal pain', 'https://krames.meducation.com/V2.0/fdbpem/8139', 1, 7, '2022-09-06 14:06:47'),
+(73, 'Clindamycin (Cleocin)', 'Treat bacterial infections', 'Nausea, vomiting, diarrhea, vaginal yeast infection', 'https://krames.meducation.com/V2.0/fdbpem/8016', 1, 7, '2022-09-06 14:08:11'),
+(74, 'Cytarabine', 'Treat cancer', 'Decrease appetite, hair loss, nausea, changes numbers of cells in blood, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/9046', 1, 7, '2022-09-06 14:13:20'),
+(75, 'Citalopram (Celexa)', 'Anxiety, depression', 'Decreased appetite, drowsiness, dry mouth, lack of energy', 'https://krames.meducation.com/V2.0/fdbpem/3047', 1, 7, '2022-09-06 14:14:52'),
+(76, 'Calcium Carbonate/Vitamin D3 (Os Cal with D)', 'Bone strength, Vitamin D deficiency, low calcium levels', 'Constipation, stomach upset, nausea', 'https://krames.meducation.com/V2.0/fdbpem/9139', 1, 7, '2022-09-06 14:16:34'),
+(77, 'Cinacalcet (Sensipar)', 'Endocrine disorder, cancer', 'Lack of energy, nausea, upset stomach', 'https://krames.meducation.com/V2.0/fdbpem/425', 1, 7, '2022-09-06 14:17:11'),
+(78, 'Carvedilol (Coreg)', 'Heart attack, heart failure, high blood pressure', 'Dizziness, diarrhea, drowsiness', 'https://krames.meducation.com/V2.0/fdbpem/5168', 1, 7, '2022-09-06 14:18:21'),
+(79, 'Carboxymethylcellulose (Thera Tears)', 'Dry eyes', 'Blurry vision, Burning or stinging', 'https://krames.meducation.com/V2.0/fdbpem/9213', 1, 7, '2022-09-06 14:19:38'),
+(80, 'Cyanocobalamin (Vitamin B12)', 'Treat vitamin B deficiency', 'Usually has no side effects', 'https://krames.meducation.com/V2.0/fdbpem/1249', 1, 7, '2022-09-06 14:20:54'),
+(81, 'Cholecalciferol (Vitamin D3)', 'Bone disease, vitamin deficiency, endocrine disorder', 'Usually has no side effects', 'https://krames.meducation.com/V2.0/fdbpem/9106', 1, 7, '2022-09-06 14:21:45'),
+(82, 'Collagenase (Santyl)', 'Skin wounds', 'Burning or stinging, skin irritation', 'https://krames.meducation.com/V2.0/fdbpem/7220', 1, 7, '2022-09-06 14:23:34'),
+(83, 'Chlorthalidone (Thalitone)', 'High blood pressure, hormone imbalance, prevent kidney stones, swelling', 'Dizziness, low blood pressure, increased urinary frequency', 'https://krames.meducation.com/V2.0/fdbpem/684', 1, 7, '2022-09-06 14:25:38'),
+(84, 'Clonazepam (Klonopin)', 'Anxiety, bipolar disorder, seizures, tremors', 'Dizziness, Drowsiness', 'https://krames.meducation.com/V2.0/fdbpem/6006', 1, 7, '2022-09-06 14:26:15'),
+(85, 'Cosopt (Dorzolamide and Timolol)', 'Glaucoma, high eye pressure', 'Blurriness, eye burning, stinging, redness', 'https://krames.meducation.com/V2.0/fdbpem/6030', 1, 7, '2022-09-06 14:27:05'),
+(86, 'Diltiazem (Cardizem)', 'Prevent angina, high blood pressure, irregular heartbeat', 'Dizziness, flushing, headache, nausea', 'https://krames.meducation.com/V2.0/fdbpem/276', 1, 7, '2022-09-07 07:12:27'),
+(87, 'Digoxin (Lanoxin, Digitek)', 'Heart failure, irregular heartbeat', 'Dizziness, decreased appetite, diarrhea', 'https://krames.meducation.com/V2.0/fdbpem/8023', 1, 7, '2022-09-07 07:13:34'),
+(88, 'Duloxetine (Cymbalta)', 'Anxiety, Depression, pain', 'Decreased appetite, dry mouth, tiredness', 'https://krames.meducation.com/V2.0/fdbpem/404', 1, 7, '2022-09-07 07:14:38'),
+(90, 'Diclofenac (Voltaren)', 'Arthritis', 'Burning, stinging, itching', 'https://krames.meducation.com/V2.0/fdbpem/1065', 1, 7, '2022-09-07 07:16:07'),
+(91, 'Donepezil (Aricept)', 'Alzheimer\'s disease, dementia', 'Agitation, decreased appetite, dizziness, drowsiness, muscle cramps', 'https://krames.meducation.com/V2.0/fdbpem/9218', 1, 7, '2022-09-07 07:17:03'),
+(92, 'Diphenhydramine Oral (Benadryl)', 'Allergies, sleep, allergic reaction', 'Drowsiness, dizziness, dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/5282', 1, 7, '2022-09-07 07:21:21'),
+(93, 'Dicyclomine (Bentyl)', 'Irritable bowel syndrome, GI spasms', 'Tiredness, upset stomach, dry mouth, thirst', 'https://krames.meducation.com/V2.0/fdbpem/113', 1, 7, '2022-09-07 07:22:24'),
+(94, 'Dexamethasone Injection (Decadron)', 'Inflammatory disease, immune suppression, blood/hormone disorders, breathing problems, bowel disorders, nausea and vomiting in cancer patients', 'Agitated feeling, headache, high blood sugar, stomach upset', 'https://krames.meducation.com/V2.0/fdbpem/7333', 1, 7, '2022-09-07 07:23:15'),
+(95, 'Docusate (Colace)', 'Constipation', 'Abdominal cramps, diarrhea, upset stomach', 'https://krames.meducation.com/V2.0/fdbpem/9109', 1, 7, '2022-09-07 07:23:52'),
+(96, 'Daptomycin', 'Treat bacterial infections.', 'Trouble sleeping, constipation, diarrhea, dizziness, nausea', 'https://krames.meducation.com/V2.0/fdbpem/375', 1, 7, '2022-09-07 07:44:11'),
+(97, 'Doxepin (Silenor)', 'For sleep', 'Drowsiness, sedation, nausea', 'https://krames.meducation.com/V2.0/fdbpem/1351', 1, 7, '2022-09-07 07:45:03'),
+(98, 'Depakote (Divalproex)', 'Seizures, migraines, bipolar disorder', 'Headache, stomach upset, dizziness, drowsiness', 'https://krames.meducation.com/V2.0/fdbpem/8019', 1, 7, '2022-09-07 07:45:38'),
+(99, 'Escitalopram (Lexapro)', 'Anxiety, Depression', 'Trouble sleeping, dizziness, drowsiness, dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/2095', 1, 7, '2022-09-07 07:51:34'),
+(100, 'Enoxaparin (Lovenox)', 'Prevent blood clots', 'Unusual bruising, increase risk of bleeding', 'https://krames.meducation.com/V2.0/fdbpem/7022', 1, 7, '2022-09-07 07:52:14'),
+(101, 'Epoetin Alfa (Epogen, Procrit)', 'Treat anemia', 'Bone pain, increased number of cells in the blood, muscle aches', 'https://krames.meducation.com/V2.0/fdbpem/159', 1, 7, '2022-09-07 07:52:58'),
+(102, 'Folic acid', 'Vitamin deficiency, pregnancy', 'Usually has no side effects.', 'https://krames.meducation.com/V2.0/fdbpem/117', 1, 7, '2022-09-07 07:54:39'),
+(103, 'Fluticasone (Flonase)', 'Allergy symptoms, inflammation', 'Burning, stinging, nose irritation', 'https://krames.meducation.com/V2.0/fdbpem/245', 1, 7, '2022-09-07 07:55:31'),
+(104, 'Fluoxetine (Prozac)', 'Anxiety, depression', 'Decreased appetite, agitation, dizziness, drowsiness', 'https://krames.meducation.com/V2.0/fdbpem/95', 1, 7, '2022-09-07 07:56:12'),
+(105, 'Furosemide Oral (Lasix)', 'To reduce extra fluid in the body caused by conditions such as heart failure, liver disease, and kidney disease', 'Dizziness, lightheadedness, headache, or blurred vision', 'https://krames.meducation.com/V2.0/fdbpem/8043', 1, 7, '2022-09-07 07:56:40'),
+(106, 'Fluconazole (Diflucan)', 'Treat fungal infections', 'Diarrhea, dizziness, nausea, upset stomach', 'https://krames.meducation.com/V2.0/fdbpem/5052', 1, 7, '2022-09-07 07:57:11'),
+(107, 'Famotidine Oral (Pepcid)', 'Heartburn, prevent heartburn or indigestion, ulcers in stomach or intestines', 'Constipation, diarrhea, and headaches', 'https://krames.meducation.com/V2.0/fdbpem/2033', 1, 7, '2022-09-07 07:57:55'),
+(108, 'Fluticasone Furoate (Arnuity)', 'Asthma, COPD, inflammation of esophagus', 'Hoarseness, throat irritation, increased risk for bone fractures and infection', 'https://krames.meducation.com/V2.0/fdbpem/1668', 1, 7, '2022-09-07 08:01:31'),
+(109, 'Ferrous Sulfate (Ferosol)', 'Treat low iron in the body', 'Decreased appetite, constipation, stomach upset, dark tarry stools', 'https://krames.meducation.com/V2.0/fdbpem/38', 1, 7, '2022-09-07 08:02:14'),
+(110, 'Fluticasone (Flovent)', 'Asthma, chronic lung disease', 'Hoarseness, throat irritation, increase risk for bone fractures', 'https://krames.meducation.com/V2.0/fdbpem/4333', 1, 7, '2022-09-07 08:05:07'),
+(111, 'Fludrocortisone (Florinef)', 'Treat Addison\'s disease, endocrine disorder, low blood pressure', 'Stomach upset, stomach pain', 'https://krames.meducation.com/V2.0/fdbpem/158', 1, 7, '2022-09-07 08:06:00'),
+(112, 'Flecainide (Tambocor)', 'Prevent irregular heartbeat', 'Blurry vision, dizziness, tiredness, headache', 'https://krames.meducation.com/V2.0/fdbpem/9070', 1, 7, '2022-09-07 08:06:36'),
+(113, 'Finasteride (Proscar)', 'Treat prostate enlargement, hair loss', 'Impotence', 'https://krames.meducation.com/V2.0/fdbpem/167', 1, 7, '2022-09-07 08:07:20'),
+(114, 'Glipizide (Glucotrol)', 'For diabetes', 'Nausea, stomach upset, increase risk of sunburn', 'https://krames.meducation.com/V2.0/fdbpem/9061', 1, 7, '2022-09-07 08:08:17'),
+(115, 'Guaifenesin (Mucinex)', 'For cough', 'Nausea, upset stomach, abdominal pain', 'https://krames.meducation.com/V2.0/fdbpem/118', 1, 7, '2022-09-07 08:09:20'),
+(116, 'Gabapentin (Neurontin)', 'Pain, restless leg syndrome, and tremors', 'Dizziness, tiredness, lack of energy', 'https://krames.meducation.com/V2.0/fdbpem/8217', 1, 7, '2022-09-07 08:10:03'),
+(117, 'Metformin (Glucophage)', 'Diabetes', 'Diarrhea, nausea, stomach upset', 'https://krames.meducation.com/V2.0/fdbpem/7061', 1, 7, '2022-09-07 08:10:29'),
+(118, 'Glimepiride (Amaryl)', 'Diabetes', 'Nausea, stomach upset, abdominal pain', 'https://krames.meducation.com/V2.0/fdbpem/4061', 1, 7, '2022-09-07 08:10:56'),
+(119, 'Glucagon (GlucaGen)', 'Low blood sugar', 'Nausea, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/234', 1, 7, '2022-09-07 08:15:33'),
+(120, 'Heparin', 'Prevent blood clots', 'Increased risk of bleeding, bruising', 'https://krames.meducation.com/V2.0/fdbpem/8022', 1, 7, '2022-09-07 08:17:27'),
+(121, 'Hydroxychloroquine (Plaquenil)', 'Arthritis, blood disorder, malaria, infections caused by bacteria, autoimmune disorder', 'Decreased appetite, diarrhea, nausea', 'https://krames.meducation.com/V2.0/fdbpem/7128', 1, 7, '2022-09-07 08:18:17'),
+(122, 'Hydralazine', 'Treats high blood pressure and heart failure', 'Dizziness, headaches, rapid heartbeat, and nausea', 'https://krames.meducation.com/V2.0/fdbpem/35', 1, 7, '2022-09-07 08:19:36'),
+(123, 'Hydromorphone (Dilaudid) Oral', 'Pain', 'Dizziness, drowsiness, constipation', 'https://krames.meducation.com/V2.0/fdbpem/850', 1, 7, '2022-09-07 08:20:09'),
+(124, 'Hydrochlorothiazide', 'High blood pressure, swelling', 'Dizziness, drowsiness, dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/9066', 1, 7, '2022-09-07 08:21:11'),
+(125, 'Hydrocortisone (Solu-Cortef) Injection', 'Autoimmune disorder, endocrine disorder, inflammatory disease, immune suppression, cancer', 'Agitated feeling, increased appetite, high blood sugar', 'https://krames.meducation.com/V2.0/fdbpem/8333', 1, 7, '2022-09-07 08:22:25'),
+(126, 'Hydrocodone/Acetaminophen (Vicodin)', 'Pain', 'Constipation, dizziness, drowsiness', 'https://krames.meducation.com/V2.0/fdbpem/4352', 1, 7, '2022-09-07 08:22:57'),
+(127, 'Hyoscyamine (Levsin)', 'Diarrhea, excess saliva, irritable bowel syndrome', 'Trouble sleeping, bloating, constipation, blurry vision, dizziness', 'https://krames.meducation.com/V2.0/fdbpem/8004', 1, 7, '2022-09-07 08:23:41'),
+(128, 'Hydrocortisone Topical Cream 1%', 'Itching, skin inflammation', 'Burning, stinging, dry skin', 'https://krames.meducation.com/V2.0/fdbpem/859', 1, 7, '2022-09-07 08:24:17'),
+(129, 'Hydroxyurea (Siklos)', 'Treat leukemia, sickle cell anemia', 'Decreased appetite, constipation, diarrhea, mouth sores, nausea, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/3046', 1, 7, '2022-09-07 08:25:12'),
+(130, 'Insulin Lispro (Humalog)', 'Diabetes', 'Swelling hands, legs and feet, weight gain', 'https://krames.meducation.com/V2.0/fdbpem/9037', 1, 7, '2022-09-07 08:30:35'),
+(131, 'Insulin Glargine (Lantus, Toujeo)', 'Diabetes', 'Swelling of the legs, hands and feet, weight gain', 'https://krames.meducation.com/V2.0/fdbpem/7037', 1, 7, '2022-09-07 08:31:12'),
+(132, 'Ipratropium (Atrovent) Inhaler', 'Asthma, chronic lung disease', 'Dizziness, dry mouth, throat irritation', 'https://krames.meducation.com/V2.0/fdbpem/8008', 1, 7, '2022-09-07 08:31:44'),
+(133, 'Ibuprofen (Motrin)', 'Arthritis, pain, fever', 'Increased risk of bleeding, stomach upset, dizziness, nausea', 'https://krames.meducation.com/V2.0/fdbpem/9368', 1, 7, '2022-09-07 08:32:23'),
+(134, 'Isosorbide Mononitrate (Imdur, Monoket)', 'Prevent chest pain', 'Headaches, dizziness, nausea', 'https://krames.meducation.com/V2.0/fdbpem/5048', 1, 7, '2022-09-07 08:33:10'),
+(135, 'Ketorolac (Toradol) Injection', 'Pain', 'Dizziness, drowsiness, nausea', 'https://krames.meducation.com/V2.0/fdbpem/2049', 1, 7, '2022-09-07 08:33:41'),
+(136, 'Levofloxacin (Levaquin) IV', 'Treating bacterial infection', 'Diarrhea, dizziness, nausea, stomach upset', 'https://krames.meducation.com/V2.0/fdbpem/8317', 1, 7, '2022-09-07 08:37:58'),
+(137, 'Lidocaine Medicated Patch', 'Pain', 'Burning or stinging, skin irritation to area applied, blurred vision, dizziness', 'https://krames.meducation.com/V2.0/fdbpem/1252', 1, 7, '2022-09-07 08:38:33'),
+(138, 'Levetiracetam (Keppra)', 'Seizures', 'Dizziness, drowsiness, lack of energy', 'https://krames.meducation.com/V2.0/fdbpem/4019', 1, 7, '2022-09-07 08:39:04'),
+(139, 'Lacosamide (Vimpat) Oral', 'Pain, seizures', 'Dizziness, drowsiness, lack of energy, memory loss', 'https://krames.meducation.com/V2.0/fdbpem/1184', 1, 7, '2022-09-07 08:39:36'),
+(140, 'Lidocaine Mucosal Topical Solution', 'Local anesthesia, mouth pain', 'Burning or stinging, numbness where the medicine is applied, skin irritation where medicine is applied', 'https://krames.meducation.com/V2.0/fdbpem/170', 1, 7, '2022-09-07 08:40:52'),
+(141, 'Lisinopril (Zestril)', 'High blood pressure, heart failure, heart attack', 'Dizziness, headache, tiredness', 'https://krames.meducation.com/V2.0/fdbpem/9371', 1, 7, '2022-09-07 08:41:29'),
+(142, 'Losartan (Cozaar)', 'Heart failure, high blood pressure', 'Dizziness, low blood pressure and swelling of the face, mouth, tongue or throat', 'https://krames.meducation.com/V2.0/fdbpem/8372', 1, 7, '2022-09-07 08:41:53'),
+(143, 'Amylase/Lipase/Protease (Creon, Pancreaze)', 'Help breakdown food when the pancreas is not working the right way', 'Diarrhea, bloating, upset stomach, stomach cramps, dizziness', 'https://krames.meducation.com/V2.0/fdbpem/8142', 1, 7, '2022-09-07 08:42:53'),
+(144, 'Loperamide (Imodium)', 'Diarrhea', 'Constipation, dizziness, drowsiness or sedation, lack of energy', 'https://krames.meducation.com/V2.0/fdbpem/4025', 1, 7, '2022-09-07 08:43:29'),
+(145, 'Sodium Zirconium Cyclosilicate (Lokelma)', 'Treats high potassium levels', 'Diarrhea, swelling of the legs, feet or hands', 'https://krames.meducation.com/V2.0/fdbpem/1947', 1, 7, '2022-09-07 08:44:28'),
+(146, 'Lactulose', 'Treats high ammonia levels and helps facilitate a bowel movement', 'Nausea, diarrhea, abdominal pain', 'https://krames.meducation.com/V2.0/fdbpem/8109', 1, 7, '2022-09-07 08:45:53'),
+(147, 'Lenalidomide (Revlimid)', 'Cancer', 'Agitation, decreased appetite, changes in the number of cells in the blood', 'https://krames.meducation.com/V2.0/fdbpem/640', 1, 7, '2022-09-07 08:46:25'),
+(148, 'Labetalol (Trandate)', 'Angina, high blood pressure', 'Dizziness, tiredness, lack of energy', 'https://krames.meducation.com/V2.0/fdbpem/1168', 1, 7, '2022-09-07 08:46:59'),
+(149, 'Latanoprost (Xalatan)', 'Glaucoma', 'Blurry vision, discomfort in the eyes', 'https://krames.meducation.com/V2.0/fdbpem/2032', 1, 7, '2022-09-07 08:47:28'),
+(150, 'Lamotrigine (Lamictal)', 'Bipolar, pain, seizures', 'Trouble sleeping, drowsiness, headaches', 'https://krames.meducation.com/V2.0/fdbpem/7217', 1, 7, '2022-09-07 08:48:24'),
+(151, 'Linezolid (Zyvox)', 'Treat bacterial infections', 'Headache, dizziness, diarrhea, nausea, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/4154', 1, 7, '2022-09-07 08:48:54'),
+(152, 'Lorazepam (Ativan)', 'Anxiety, alcohol withdrawal, bipolar, sleeping', 'Drowsiness, dizziness, blurry vision', 'https://krames.meducation.com/V2.0/fdbpem/5244', 1, 7, '2022-09-07 08:49:24'),
+(153, 'Loratadine (Claritin)', 'Allergies, skin inflammation', 'Skin rash, difficulty breathing, itching, swelling', 'https://krames.meducation.com/V2.0/fdbpem/204', 1, 7, '2022-09-07 08:49:58'),
+(155, 'Magnesium Hydroxide (Milk of Magnesia)', 'Bowel movement, stomach acid reflux', 'Abdominal cramps, dizziness, dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/123', 1, 7, '2022-09-07 08:54:36'),
+(156, 'Metoprolol (Lopressor)', 'Angina, heart disease, heart attack, high blood pressure, irregular heartbeat', 'Dizziness, drowsiness, low heart rate', 'https://krames.meducation.com/V2.0/fdbpem/6353', 1, 7, '2022-09-07 08:55:17'),
+(157, 'Metoclopramide Oral tablet (Reglan)', 'Nausea, Vomiting', 'Feel of heat or flush, tiredness, diarrhea, dizziness, headache', 'https://krames.meducation.com/V2.0/fdbpem/90', 1, 7, '2022-09-07 08:55:49'),
+(158, 'Melatonin', 'For sleep', 'Drowsiness, dizziness', 'https://krames.meducation.com/V2.0/fdbpem/7311', 1, 7, '2022-09-07 08:56:19'),
+(159, 'Micafungin (Mycamine)', 'Treating fungal infections', 'Agitated feeling or trouble sleeping, diarrhea, headache, nausea, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/495', 1, 7, '2022-09-07 08:57:04'),
+(160, 'Midodrine (ProAmatine)', 'Treat low blood pressure', 'Tingling of scalp, itchiness, chills', 'https://krames.meducation.com/V2.0/fdbpem/3080', 1, 7, '2022-09-07 08:57:58'),
+(161, 'Meclizine (Dramamine, Antivert)', 'Dizziness, motion sickness', 'Drowsiness, dry mouth, lack of energy', 'https://krames.meducation.com/V2.0/fdbpem/550', 1, 7, '2022-09-07 09:03:41'),
+(162, 'Magnesium Oxide (Mag-Ox 400)', 'For low magnesium levels', 'Diarrhea, upset stomach, abdominal pain', 'https://krames.meducation.com/V2.0/fdbpem/5106', 1, 7, '2022-09-07 09:04:16'),
+(163, 'Montelukast (Singulair)', 'Asthma, allergies', 'Agitation, mood changes', 'https://krames.meducation.com/V2.0/fdbpem/8277', 1, 7, '2022-09-07 09:04:44'),
+(164, 'Methimazole (Tapazole)', 'Treat an overactive thyroid gland', 'Itching, change in taste, sleepiness, headache, upset stomach', 'https://krames.meducation.com/V2.0/fdbpem/8122', 1, 7, '2022-09-07 09:05:40'),
+(165, 'Methylprednisolone (Solu-Medrol)', 'Arthritis, blood disorders, severe allergic reactions, certain cancers, eye conditions, skin/kidney/intestinal/lung diseases, and immune system disorders', 'Agitation, high blood sugar, increased appetite', 'https://krames.meducation.com/V2.0/fdbpem/4021', 1, 7, '2022-09-07 09:07:19'),
+(166, 'Metronidazole Oral (Flagyl)', 'For infection', 'Diarrhea, dizziness, stomach upset', 'https://krames.meducation.com/V2.0/fdbpem/55', 1, 7, '2022-09-07 09:07:47'),
+(167, 'Mirtazapine (Remeron)', 'Depression, muscle aches, post-traumatic stress disorder', 'Dizziness, dry mouth, weight gain', 'https://krames.meducation.com/V2.0/fdbpem/2047', 1, 7, '2022-09-07 09:08:34'),
+(168, 'Mirabegron (Myrbetriq)', 'Overactive bladder', 'Dizziness, headache, rapid heartbeat, nausea', 'https://krames.meducation.com/V2.0/fdbpem/1495', 1, 7, '2022-09-07 09:11:09'),
+(169, 'Metolazone (Zaroxolyn)', 'High blood pressure, swelling', 'Constipation, diarrhea, dizziness, headache, low blood pressure', 'https://krames.meducation.com/V2.0/fdbpem/8066', 1, 7, '2022-09-07 09:11:41'),
+(170, 'Meropenem (Merrem)', 'Treat bacterial infections', 'Constipation, diarrhea, flushing sensation, headache, nausea', 'https://krames.meducation.com/V2.0/fdbpem/9151', 1, 7, '2022-09-07 09:13:35'),
+(171, 'Morphine Injection', 'For pain', 'Constipation, dizziness, drowsiness', 'https://krames.meducation.com/V2.0/fdbpem/823', 1, 7, '2022-09-07 09:14:04'),
+(172, 'Nitrofurantoin (Macrobid)', 'Treat bacterial infections', 'Diarrhea, change in color of urine, nausea, stomach upset', 'https://krames.meducation.com/V2.0/fdbpem/59', 1, 7, '2022-09-07 09:20:25'),
+(173, 'Nicotine Transdermal (Nicoderm)', 'For quitting smoking', 'Skin irritation where medication applied', 'https://krames.meducation.com/V2.0/fdbpem/9077', 1, 7, '2022-09-07 09:21:04'),
+(174, 'Nitroglycerin Sublingual Tablet (Nitrostat)', 'Chest pain, heart attack', 'Dizziness, feeling of flushing, headache, low blood pressure', 'https://krames.meducation.com/V2.0/fdbpem/48', 1, 7, '2022-09-07 09:22:24'),
+(175, 'Nifedipine (Procardia)', 'Prevent chest pain', 'Headaches, dizziness, low blood pressure, swelling of the (legs - feet or hands)', 'https://krames.meducation.com/V2.0/fdbpem/10', 1, 7, '2022-09-07 09:23:13'),
+(176, 'Nystatin Oral Suspension', 'Treat yeast infections', 'Diarrhea, mouth sores, nausea, stomach upset, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/8206', 1, 7, '2022-09-07 09:23:58'),
+(177, 'Nystatin Topical Cream', 'For yeast infections', 'Skin irritation where medicine applied', 'https://krames.meducation.com/V2.0/fdbpem/612', 1, 7, '2022-09-07 09:25:13'),
+(178, 'Oxycodone', 'Pain', 'Constipation, decreased appetite, dizziness, drowsiness, nausesa', 'https://krames.meducation.com/V2.0/fdbpem/5278', 1, 7, '2022-09-07 09:25:58'),
+(179, 'Ondansetron Oral tablet (Zofran)', 'Nausea, Vomiting', 'Dizziness, drowsiness, lack of energy, constipation', 'https://krames.meducation.com/V2.0/fdbpem/6132', 1, 7, '2022-09-07 09:26:31'),
+(180, 'Oxybutynin (Ditropan)', 'Overactive bladder', 'Constipation, dizziness, drowsiness, dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/152', 1, 7, '2022-09-07 09:27:02'),
+(181, 'Omeprazole (Prilosec)', 'Indigestion, Stomach acid reflux, ulcers in stomach or intestines', 'Headache, upset stomach, abdominal pain', 'https://krames.meducation.com/V2.0/fdbpem/143', 1, 7, '2022-09-07 09:27:49'),
+(182, 'Oxcarbazepine (Trileptal)', 'Nerve pain, pain, seizures', 'Trouble sleeping, dizziness, drowsiness, headache', 'https://krames.meducation.com/V2.0/fdbpem/5005', 1, 7, '2022-09-07 09:28:57'),
+(183, 'Olanzapine (Zyprexa)', 'Bipolar, depression, schizophrenia', 'Increased appetite, constipation, dizziness, dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/9274', 1, 7, '2022-09-07 09:29:33'),
+(184, 'Piperacillin and Tazobactam (Zosyn)', 'Treat bacterial infections', 'Headache, upset stomach, diarrhea, constipation', 'https://krames.meducation.com/V2.0/fdbpem/3050', 1, 7, '2022-09-07 09:30:48'),
+(185, 'Phenytoin (Dilantin)', 'Seizures', 'Trouble sleeping, constipation, drowsiness', 'https://krames.meducation.com/V2.0/fdbpem/57', 1, 7, '2022-09-07 09:31:19'),
+(186, 'Potassium Chloride CR', 'Low potassium levels', 'Diarrhea, nausea, stomach upset', 'https://krames.meducation.com/V2.0/fdbpem/58', 1, 7, '2022-09-07 09:32:26'),
+(187, 'Posaconazole (Noxafil)', 'Prevent fungal and yeast infections', 'Diarrhea, dizziness, trouble sleeping, nausea, vomiting, headache', 'https://krames.meducation.com/V2.0/fdbpem/1598', 1, 7, '2022-09-07 09:32:59'),
+(188, 'Prednisolone Ophthalmic (Pred Forte)', 'Eye inflammation', 'Eye irritation', 'https://krames.meducation.com/V2.0/fdbpem/483', 1, 7, '2022-09-07 09:34:30'),
+(189, 'Pravastatin (Pravachol)', 'To lower high fat levels in your blood', 'Notify doctor if notice dark urine or yellow skin', 'https://krames.meducation.com/V2.0/fdbpem/7092', 1, 7, '2022-09-07 09:35:03'),
+(190, 'Paroxetine (Pexeva)', 'Anxiety, depression', 'Agitation, decreased appetite, dizziness, dry mouth tiredness, sweating', 'https://krames.meducation.com/V2.0/fdbpem/1095', 1, 7, '2022-09-07 09:35:53'),
+(191, 'Pioglitazone (Actos)', 'For diabetes', 'Increased appetite, dizziness, dry mouth, low blood sugar', 'https://krames.meducation.com/V2.0/fdbpem/9309', 1, 7, '2022-09-07 09:36:49'),
+(192, 'Polyethylene Glycol (Miralax)', 'For bowel movement', 'Bloating, Diarrhea, Excessive gas, Nausea', 'https://krames.meducation.com/V2.0/fdbpem/1202', 1, 7, '2022-09-07 09:37:30'),
+(193, 'Prednisone', 'Arthritis, blood disorders, breathing problems, severe allergies, skin diseases, cancer, eye problems, and immune system disorders', 'Trouble sleeping, decreased appetite, increase blood sugar', 'https://krames.meducation.com/V2.0/fdbpem/9383', 1, 7, '2022-09-07 09:38:09'),
+(194, 'Prochlorperazine (Compazine)', 'Nausea and vomiting', 'Dizziness, drowsiness, dry mouth, constipation', 'https://krames.meducation.com/V2.0/fdbpem/6053', 1, 7, '2022-09-07 09:38:48'),
+(195, 'Psyllium (Metamucil, Wal-Mucil, Hydrocil)', 'For bowel movement', 'Bloating, excessive gas, stomach upset', 'https://krames.meducation.com/V2.0/fdbpem/6109', 1, 7, '2022-09-07 09:39:39'),
+(196, 'Prazosin (Minipress)', 'High blood pressure, prostate enlargement', 'Dizziness, drowsiness, tiredness, headache, nausea', 'https://krames.meducation.com/V2.0/fdbpem/60', 1, 7, '2022-09-07 09:40:15'),
+(197, 'Pyridoxine (Vitamin B6)', 'Nausea and vomiting, vitamin deficiency, metabolism disorder', 'Drowsiness, headache, nausea', 'https://krames.meducation.com/V2.0/fdbpem/127', 1, 7, '2022-09-07 09:40:58'),
+(198, 'Pantoprazole (Protonix) Oral', 'Stomach acid reflux, ulcers in stomach', 'Diarrhea, headaches', 'https://krames.meducation.com/V2.0/fdbpem/5143', 1, 7, '2022-09-07 09:41:26'),
+(200, 'Quetiapine (Seroquel)', 'Anxiety, Depression, Bipolar, Schizophrenia', 'Trouble sleeping, dizziness, drowsiness, dry mouth, rapid heart beat', 'https://krames.meducation.com/V2.0/fdbpem/8274', 1, 7, '2022-09-07 09:42:46'),
+(201, 'Rasburicase (Elitek)', 'Treat or prevent high uric acid levels when receiving chemotherapy', 'Headache, mouth sores, nausea, vomiting, constipation', 'https://krames.meducation.com/V2.0/fdbpem/359', 1, 7, '2022-09-07 09:47:26'),
+(202, 'Risperidone (Risperdal)', 'Bipolar, depression, developmental disorder', 'Dizziness, drooling, drowsiness, weight gain', 'https://krames.meducation.com/V2.0/fdbpem/2034', 1, 7, '2022-09-07 09:47:54'),
+(203, 'Rifaximin (Xifaxan)', 'Irritable bowel syndrome, diarrhea caused by bacteria', 'Stomach pain', 'https://krames.meducation.com/V2.0/fdbpem/32', 1, 7, '2022-09-07 09:50:32'),
+(204, 'Rivaroxaban (Xarelto)', 'Prevent blood clots', 'Increased risk of bleeding, itching', 'https://krames.meducation.com/V2.0/fdbpem/1153', 1, 7, '2022-09-07 09:50:57'),
+(205, 'Revefenacin (Yupelri)', 'For chronic lung disease (COPD)', 'Runny nose', 'https://krames.meducation.com/V2.0/fdbpem/1978', 1, 7, '2022-09-07 09:51:40'),
+(206, 'Simethicone (Gas-X)', 'Reduce gas', 'Usually has no side effects', 'https://krames.meducation.com/V2.0/fdbpem/9265', 1, 7, '2022-09-07 09:52:17'),
+(207, 'Tiotropium (Spiriva)', 'Treat chronic lung disease (COPD), asthma', 'Dizziness, dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/1655', 1, 7, '2022-09-07 09:52:48'),
+(208, 'Sitagliptin (Januvia)', 'Diabetes', 'Low blood sugar', 'https://krames.meducation.com/V2.0/fdbpem/838', 1, 7, '2022-09-07 09:54:36'),
+(209, 'Sodium Bicarbonate 3% Mouthwash', 'Prevent oral mucositis', 'Nausea, bloating, stomach distress', NULL, 1, 7, '2022-09-07 09:55:55'),
+(210, 'Spironolactone (Aldactone)', 'Heart failure, high blood pressure, swelling', 'Diarrhea, drowsiness, increased urinary frequency', 'https://krames.meducation.com/V2.0/fdbpem/67', 1, 7, '2022-09-07 09:57:02'),
+(211, 'Sevelamer (Renvela)', 'Removes phosphate from blood', 'Bloating, constipation, nausea, diarrhea', 'https://krames.meducation.com/V2.0/fdbpem/9302', 1, 7, '2022-09-07 09:58:36'),
+(212, 'Simvastatin (Zocor)', 'Lower high fat levels in blood', 'Nausea, stomach upset, abdominal pain', 'https://krames.meducation.com/V2.0/fdbpem/1092', 1, 7, '2022-09-07 09:59:08'),
+(213, 'Sodium Phosphates (Fleets Enema)', 'For constipation', 'Stomach pain, bloating, upset stomach', 'https://krames.meducation.com/V2.0/fdbpem/1596', 1, 7, '2022-09-07 10:00:22'),
+(214, 'Senna', 'For bowel movement', 'Stomach pains, cramps, diarrhea', 'https://krames.meducation.com/V2.0/fdbpem/1305', 1, 7, '2022-09-07 10:00:53'),
+(215, 'Budesonide/Formoterol (Symbicort)', 'Asthma, Chronic lung disease', 'Headaches, hoarseness, throat irritation, high blood pressure, stomach upset or abdominal pain', 'https://krames.meducation.com/V2.0/fdbpem/962', 1, 7, '2022-09-07 10:01:41'),
+(216, 'Sertraline (Zoloft)', 'Anxiety, depression, obsessive compulsion disorder, post traumatic stress disorder', 'Dizziness, diarrhea, drowsiness, dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/8095', 1, 7, '2022-09-07 10:02:34'),
+(217, 'Sodium Chloride Nasal Spray', 'Dry stuffy nose', 'Few people may have an allergic reaction: difficulty breathing, skin rash, itching, swelling, or severe dizziness', 'https://krames.meducation.com/V2.0/fdbpem/331', 1, 7, '2022-09-07 10:03:40'),
+(218, 'Sacubitril/Valsartan (Entresto)', 'Heart failure', 'Coughing, dizziness, low blood pressure', 'https://krames.meducation.com/V2.0/fdbpem/1710', 1, 7, '2022-09-07 10:04:10'),
+(219, 'Levothyroxine (Synthroid)', 'Low thyroid levels, cancer', 'Hair loss, weight loss', 'https://krames.meducation.com/V2.0/fdbpem/7074', 1, 7, '2022-09-07 10:04:32'),
+(220, 'Tramadol (Ultram)', 'For pain', 'Constipation, dizziness, drowsiness, nausea', 'https://krames.meducation.com/V2.0/fdbpem/5239', 1, 7, '2022-09-07 10:05:11'),
+(221, 'Tamsulosin (Flomax)', 'Prostate enlargement, kidney stones', 'Dizziness, drowsiness', 'https://krames.meducation.com/V2.0/fdbpem/4060', 1, 7, '2022-09-07 10:05:38'),
+(222, 'Tizanidine (Zanaflex)', 'Muscle spasms', 'Constipation, dizziness, drowsiness, dry mouth, low blood pressure, muscle weakness', 'https://krames.meducation.com/V2.0/fdbpem/6105', 1, 7, '2022-09-07 10:06:11'),
+(223, 'Thiamine (Vitamin B1)', 'Treat vitamin B1 (thiamine) deficiency', 'Upset stomach, feeling of warmth, restlessness', 'https://krames.meducation.com/V2.0/fdbpem/9131', 1, 7, '2022-09-07 10:06:50'),
+(224, 'Tolterodine (Detrol)', 'Overactive bladder', 'Constipation, dizziness, drowsiness, dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/8152', 1, 7, '2022-09-07 10:07:52'),
+(225, 'Trimethobenzamide (Tigan)', 'Nausea and vomiting', 'Diarrhea, dizziness, drowsiness', 'https://krames.meducation.com/V2.0/fdbpem/132', 1, 7, '2022-09-07 10:12:57'),
+(226, 'Trazodone (Desyrel)', 'Depression', 'Drowsiness, dizziness, dry mouth, nausea, constipation, headaches', 'https://krames.meducation.com/V2.0/fdbpem/89', 1, 7, '2022-09-07 10:14:44'),
+(227, 'Topiramate (Topamax)', 'Prevent migraines, seizures, tremors', 'Decreased appetite, loss of balance, difficulty concentrating, dizziness', 'https://krames.meducation.com/V2.0/fdbpem/6019', 1, 7, '2022-09-07 10:15:18'),
+(228, 'Ticagrelor (Brilinta)', 'Heart disease, prevent blood clots/heart attack', 'Increased risk of bleeding, nosebleeds', 'https://krames.meducation.com/V2.0/fdbpem/1427', 1, 7, '2022-09-07 10:15:57'),
+(230, 'Temazepam (Restoril)', 'For sleep', 'Dizziness, drowsiness, nausea', 'https://krames.meducation.com/V2.0/fdbpem/485', 1, 7, '2022-09-07 10:16:34'),
+(231, 'Tretinoin (Vesanoid)', 'For treating cancer', 'Bone pain, constipation, diarrhea, dizziness, lack of energy and tiredness, mouth sores, nausea', 'https://krames.meducation.com/V2.0/fdbpem/273', 1, 7, '2022-09-07 10:17:17'),
+(232, 'Ursodiol (Actigall)', 'Prevent gallstones', 'Back pain, diarrhea, dizziness, nausea', 'https://krames.meducation.com/V2.0/fdbpem/166', 1, 7, '2022-09-07 10:18:09'),
+(233, 'Vancomycin IV', 'Treating bacterial infections', 'Yeast infection of the mouth or vagina', 'https://krames.meducation.com/V2.0/fdbpem/154', 1, 7, '2022-09-07 10:18:51'),
+(234, 'Valsartan (Diovan)', 'Treats high blood pressure', 'Low blood pressure, increased urinary frequency, dizziness', 'https://krames.meducation.com/V2.0/fdbpem/6372', 1, 7, '2022-09-07 10:19:22'),
+(235, 'Venlafaxine (Effexor)', 'Anxiety, depression', 'Agitation, dizziness, decreased appetite, drowsiness, nervousness, sweating', 'https://krames.meducation.com/V2.0/fdbpem/5047', 1, 7, '2022-09-07 10:20:06'),
+(237, 'Vortioxetine (Trintellix)', 'For depression', 'Constipation, dizziness, nausea, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/1568', 1, 7, '2022-09-07 10:21:43'),
+(238, 'Verapamil (Calan)', 'Prevent angina, high blood pressure, irregular heartbeat', 'Constipation, tiredness, dizziness, nausea', 'https://krames.meducation.com/V2.0/fdbpem/1010', 1, 7, '2022-09-07 10:22:21'),
+(239, 'Voriconazole (Vfend)', 'Treating fungal infections', 'Diarrhea, headache, nausea', 'https://krames.meducation.com/V2.0/fdbpem/5326', 1, 7, '2022-09-07 10:22:52'),
+(240, 'Warfarin (Coumadin)', 'Prevent blood clot, blood clot', 'Increased risk of bruising or bleeding', 'https://krames.meducation.com/V2.0/fdbpem/6022', 1, 7, '2022-09-07 10:24:14'),
+(241, 'Zolpidem (Ambien)', 'Sleeping', 'Dizziness, drowsiness', 'https://krames.meducation.com/V2.0/fdbpem/8110', 1, 7, '2022-09-07 10:24:48'),
+(243, 'Ceftriaxone (Rocephin)', 'For treating bacterial infection', 'Yeast infection of mouth, vaginal itching or yeast infection', 'https://krames.meducation.com/V2.0/fdbpem/809', 1, 7, '2022-09-09 11:22:57'),
+(244, 'Dextran 70/Hypromellose Ophthalmic Solution', 'For dry eyes', 'Blurry vision, burning or stinging, discomfort in the eyes, irritation of the eyes, watering of the eyes', 'https://krames.meducation.com/V2.0/fdbpem/9213', 1, 7, '2022-09-09 11:31:05'),
+(245, 'Oxycodone/Acetaminophen (Percocet)', 'For pain', 'Decreased appetite, constipation, dizziness, drowsiness or sedation, nausea, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/5352', 1, 7, '2022-09-09 11:36:34'),
+(246, 'Cefpodoxime', 'For treating bacterial infection', 'Diarrhea, headaches, nausea, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/5011', 1, 7, '2022-09-09 11:39:23'),
+(247, 'Hydroxyzine (Atarax)', 'Agitation, anxiety, itching', 'Constipation, dizziness, drowsiness or sedation, dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/992', 1, 7, '2022-09-09 11:42:29'),
+(248, 'Valacyclovir (Valtrex)', 'For treating viral infections.', 'Dizziness, headaches, nausea, stomach upset or abdominal pain', 'https://krames.meducation.com/V2.0/fdbpem/3069', 1, 7, '2022-09-09 11:44:26'),
+(250, 'Fenofibrate (Tricor)', 'To lower high fat levels in blood.', 'Swelling in the neck or throat, nausea, stomach upset or abdominal pain', 'https://krames.meducation.com/V2.0/fdbpem/4092', 1, 7, '2022-09-09 11:49:38'),
+(252, 'Acetaminophen/Butalbital/Caffeine Oral Tablet (Fioricet)', 'For headache', 'Constipation, dizziness, drowsiness or sedation, dry mouth, nausea, stomach upset, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/7081', 1, 7, '2022-09-09 11:58:00'),
+(253, 'Sodium Chloride Oral Tablet', 'Low Sodium', 'Swelling of the legs, feet, and hands, stomach pain, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/2085', 1, 7, '2022-09-09 11:59:58'),
+(254, 'Sucralfate (Carafate)', 'Stomach acid reflux, ulcers in stomach or intestines', 'Constipation, dry mouth, excess gas, nausea, stomach upset or abdominal pain', 'https://krames.meducation.com/V2.0/fdbpem/68', 1, 7, '2022-09-09 12:01:44'),
+(255, 'Haloperidol (Haldol)', 'Nausea, vomiting, psychosis, Tourette\'s disorder', 'Agitated feeling, trouble sleeping, dry mouth, headaches, lightheadedness', 'https://krames.meducation.com/V2.0/fdbpem/34', 1, 7, '2022-09-09 12:05:41'),
+(256, 'Oxazepam (Serax)', 'Alcohol withdrawal, anxiety', 'Blurry vision, dizziness, drowsiness or sedation, headaches', 'https://krames.meducation.com/V2.0/fdbpem/5367', 1, 7, '2022-09-09 12:08:06'),
+(257, 'Ranolazine (Ranexa)', 'Chest pain, irregular heartbeat', 'Constipation, dizziness, lack of energy and tiredness, headaches, low blood pressure, nausea', 'https://krames.meducation.com/V2.0/fdbpem/613', 1, 7, '2022-09-09 12:09:38'),
+(258, 'Sulfamethoxazole/Trimethoprim (Bactrim)', 'For infection', 'Decreased appetite, diarrhea, nausea, stomach upset or abdominal pain, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/9071', 1, 7, '2022-09-09 12:11:25'),
+(259, 'Ciprofloxacin (Cipro)', 'For urinary tract infection', 'Agitated feeling or trouble sleeping, diarrhea, dizziness, nausea', 'https://krames.meducation.com/V2.0/fdbpem/93', 1, 7, '2022-09-09 12:13:21'),
+(260, 'Methadone', 'Drug addiction, pain', 'Constipation, dizziness, drowsiness or sedation, dry mouth', 'https://krames.meducation.com/V2.0/fdbpem/2194', 1, 7, '2022-09-09 12:15:55'),
+(261, 'Enalapril (Vasotec)', 'Heart failure, high blood pressure, diabetic complications', 'Dizziness, lack of energy and tiredness, low blood pressure', 'https://krames.meducation.com/V2.0/fdbpem/3281', 1, 7, '2022-09-09 12:17:43'),
+(262, 'Novolin 70/30 Insulin', 'For diabetes.', 'Dizziness, swelling of the legs, feet, and hands, low blood sugar, rapid heartbeat, shakiness, sweating', 'https://krames.meducation.com/V2.0/fdbpem/670', 1, 7, '2022-09-09 12:19:44'),
+(263, 'Calcitriol (Rocaltrol)', 'Endocrine disorder, low calcium levels, low phosphate levels, vitamin D deficiency', 'Decreased appetite, constipation, dry mouth, headaches, muscle pain', 'https://krames.meducation.com/V2.0/fdbpem/7038', 1, 7, '2022-09-09 12:21:34'),
+(264, 'Fidaxomicin', 'For treating bacterial infection', 'Nausea, stomach pain, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/1423', 1, 7, '2022-09-09 12:25:12'),
+(265, 'Primidone', 'Seizures, tremors', 'Decreased appetite, dizziness, drowsiness or sedation, lack of energy and tiredness', 'https://krames.meducation.com/V2.0/fdbpem/82', 1, 7, '2022-09-09 12:26:48'),
+(266, 'Ruxolitinib (Jakafi)', 'Bone marrow disorder, prevent organ transplant rejection', 'Bloating, diarrhea, dizziness, headaches, weight gain', 'https://krames.meducation.com/V2.0/fdbpem/1453', 1, 7, '2022-09-09 12:28:22'),
+(267, 'Benzocaine/Menthol Lozenge (Cepacol)', 'For sore throat.', 'Numbness of mouth or throat', 'https://krames.meducation.com/V2.0/fdbpem/2112', 1, 7, '2022-09-09 12:30:22'),
+(268, 'Promethazine/ Codeine', 'Allergy symptoms, coughing', 'Constipation, dizziness, drowsiness or sedation, dry mouth, headaches', 'https://krames.meducation.com/V2.0/fdbpem/172', 1, 7, '2022-09-09 12:33:02'),
+(269, 'Sodium Bicarbonate', 'Indigestion, metabolism disorder, urine acid levels', 'Bloating, excess gas, nausea, stomach upset or abdominal pain, thirst', 'https://krames.meducation.com/V2.0/fdbpem/4123', 1, 7, '2022-09-09 12:34:45'),
+(270, 'Cilostazol (Pletal)', 'For leg pain due to poor blood circulation', 'Increased risk of bleeding, diarrhea, dizziness, headaches', 'https://krames.meducation.com/V2.0/fdbpem/6084', 1, 7, '2022-09-09 12:36:24'),
+(271, 'Buprenorphine/Naloxone SL Film (Suboxone)', 'Drug addiction, pain', 'Constipation, drowsiness or sedation, headaches, nausea, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/1356', 1, 7, '2022-09-09 12:41:17'),
+(272, 'Buprenorphine Sublingual Tablet', 'Drug addiction, pain', 'Constipation, dizziness, drowsiness or sedation, headaches, nausea', 'https://krames.meducation.com/V2.0/fdbpem/7352', 1, 7, '2022-09-09 12:44:08'),
+(273, 'Celecoxib (Celebrex)', 'Arthritis, gout, menstrual cramps, pain', 'Increased risk of bleeding, excess gas, high blood pressure, liver problems', 'https://krames.meducation.com/V2.0/fdbpem/9289', 1, 7, '2022-09-09 12:46:47'),
+(274, 'Colchicine', 'Gout, heart, prevent gout, genetic disorder', 'Diarrhea, nausea, stomach upset or abdominal pain, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/20', 1, 7, '2022-09-09 12:48:43'),
+(275, 'Ezetimibe (Zetia)', 'To lower high fat levels in blood.', 'Muscle pain, muscle weakness', 'https://krames.meducation.com/V2.0/fdbpem/5284', 1, 7, '2022-09-09 12:50:09'),
+(276, 'Fentanyl Transdermal', 'For pain', 'Decreased appetite, constipation, dizziness, drowsiness or sedation, headaches', 'https://krames.meducation.com/V2.0/fdbpem/5018', 1, 7, '2022-09-09 12:52:01'),
+(277, 'Insulin, Regular', 'Diabetes', 'Blurry vision, dizziness, fainting, fast or irregular heart beats, low blood sugar, muscle cramps', 'https://krames.meducation.com/V2.0/fdbpem/617', 1, 7, '2022-09-09 12:53:57'),
+(278, 'Nortriptyline', 'Depression, nerve pain, pain, stop smoking', 'Agitated feeling or trouble sleeping, increased appetite, breast pain or swelling, constipation, dizziness', 'https://krames.meducation.com/V2.0/fdbpem/679', 1, 7, '2022-09-09 13:02:54'),
+(279, 'Cyclosporine (Gengraf, Neoral)', 'Arthritis, prevent organ transplant rejection, psoriasis', 'Diarrhea, dizziness, feeling of heat or flushing, hair growth, headaches, shaking', 'https://krames.meducation.com/V2.0/fdbpem/4108', 1, 7, '2022-09-09 13:05:07'),
+(280, 'Dapagliflozin (Farxiga)', 'Diabetes, heart failure', 'Dizziness, low blood sugar, increased urinary frequency, waking up at night to urinate', 'https://krames.meducation.com/V2.0/fdbpem/1584', 1, 7, '2022-09-09 13:07:36'),
+(281, 'Diazepam (Valium)', 'Alcohol withdrawal, anxiety, movement disorder', 'Loss of balance, blurry vision, dizziness, drowsiness or sedation', 'https://krames.meducation.com/V2.0/fdbpem/4367', 1, 7, '2022-09-09 13:09:22'),
+(282, 'Isavuconazonium (Cresemba) Oral', 'Fungal infections', 'Agitated feeling or trouble sleeping, constipation, coughing, diarrhea', 'https://krames.meducation.com/V2.0/fdbpem/1691', 1, 7, '2022-09-09 13:11:06'),
+(283, 'Filgrastim (Neupogen)', 'Blood cell disorder, bone marrow transplant, chemotherapy complications', 'Bone pain, nosebleeds, reaction at the area of the injection (pain, redness, swelling)', 'https://krames.meducation.com/V2.0/fdbpem/211', 1, 7, '2022-09-09 13:14:38');
+INSERT INTO `tbl_medication_info` (`med_id`, `med_name`, `med_uses`, `med_side_effects`, `med_info_url`, `med_status`, `med_createdby`, `med_createdon`) VALUES
+(284, 'Torsemide (Demadex)', 'High blood pressure, swelling', 'Constipation, dizziness, headaches', 'https://krames.meducation.com/V2.0/fdbpem/9043', 1, 7, '2022-09-09 13:15:59'),
+(285, 'Vitamin B1 (thiamine)', 'For vitamin replacement', 'Usually has no side effects', 'https://krames.meducation.com/V2.0/fdbpem/131', 1, 7, '2022-09-09 13:18:05'),
+(287, 'Chlorhexidine Mouthwash', 'Gum disease, mouth infection, mouth ulcers', 'Dry mouth, mouth sores or irritation, changes in taste or unpleasant taste', 'https://krames.meducation.com/V2.0/fdbpem/156', 1, 7, '2022-09-09 13:22:15'),
+(288, 'Ferrous Gluconate', 'For anemia', 'Abdominal cramps, constipation, diarrhea', 'https://krames.meducation.com/V2.0/fdbpem/38', 1, 7, '2022-09-09 13:23:27'),
+(289, 'Naloxone', 'For drug overdose', 'Diarrhea, vomiting, fever, high blood pressure, nausea, nervousness', 'https://krames.meducation.com/V2.0/fdbpem/9190', 1, 7, '2022-09-09 13:24:57'),
+(290, 'Pramipexole (Mirapex)', 'Muscle aches, Parkinson\'s disease, restless leg syndrome', 'Loss of balance, constipation, dizziness, drowsiness or sedation, dry mouth, lack of energy and tiredness', 'https://krames.meducation.com/V2.0/fdbpem/5007', 1, 7, '2022-09-09 13:28:31'),
+(291, 'Triamterene/Hydrochlorothiazide (Maxzide)', 'High blood pressure, swelling', 'Dizziness, dry mouth, increased risk of sunburn, increased urinary frequency', 'https://krames.meducation.com/V2.0/fdbpem/9078', 1, 7, '2022-09-09 13:30:04'),
+(293, 'Acetylcysteine (Mucomyst)', 'Thin mucus in lungs, acetaminophen overdose', 'Mouth sores or irritation, nausea, runny nose, stomach upset or abdominal pain', 'https://krames.meducation.com/V2.0/fdbpem/209', 1, 7, '2022-09-09 13:40:17'),
+(294, 'Vitamin A', 'For vitamin replacement', 'Usually has no side effects', 'https://krames.meducation.com/V2.0/fdbpem/1038', 1, 7, '2022-09-09 13:42:22'),
+(295, 'Carbamazepine (Tegretol)', 'Constipation, dizziness, drowsiness or sedation', 'Confusion, increased eye blinking or twitching, fainting, feeling of numbness or tingling in your hands and feet', 'https://krames.meducation.com/V2.0/fdbpem/5', 1, 7, '2022-09-09 13:46:31'),
+(304, 'Aspirin (Ecotrin)', 'Fever, heart attack, prevent blood clots/heart attack/stroke, pain, inflammatory disease', 'Abdominal pain, upset stomach', 'https://krames.meducation.com/V2.0/fdbpem/3', 1, 6, '2022-09-10 23:09:12'),
+(305, 'Dexamethasone Oral (Decadron)', 'Inflammatory disease, immune suppression, blood/hormone disorders, breathing problems, bowel disorders, nausea and vomiting in cancer patients', 'Agitated feeling, headache, high blood sugar, stomach upset, weight gain', 'https://krames.meducation.com/V2.0/fdbpem/5021', 1, 6, '2022-09-11 15:34:01'),
+(306, 'Ipratropium (Atrovent) Nasal Spray', 'For runny nose', 'Dizziness, dry mouth, nosebleeds', 'https://krames.meducation.com/V2.0/fdbpem/3222', 1, 6, '2022-09-13 09:18:30'),
+(307, 'Isavuconazonium (Cresemba) Injection', 'Fungal Infections', 'Agitated feeling or trouble sleeping, constipation, coughing, diarrhea', 'https://krames.meducation.com/V2.0/fdbpem/1692', 1, 6, '2022-09-13 09:24:29'),
+(309, 'Levofloxacin (Levaquin) Oral', 'Bacterial infection', 'Diarrhea, dizziness, headaches, nausea', 'https://krames.meducation.com/V2.0/fdbpem/8235', 1, 6, '2022-09-13 10:04:47'),
+(310, 'Metoclopramide Injection (Reglan)', 'Nausea, vomiting', 'Feel of heat or flush, tiredness, diarrhea, dizziness, headache', 'https://krames.meducation.com/V2.0/fdbpem/5090', 1, 6, '2022-09-16 20:47:00'),
+(311, 'Nitroglycerin Topical Ointment', 'Chest pain, heart attack', 'Dizziness, feeling of flushing, headache, low blood pressure', 'https://krames.meducation.com/V2.0/fdbpem/9048', 1, 6, '2022-09-17 08:46:15'),
+(312, 'Ondansetron Injection (Zofran)', 'Nausea, vomiting', 'Dizziness, drowsiness, lack of energy, constipation', 'https://krames.meducation.com/V2.0/fdbpem/9132', 1, 6, '2022-09-17 08:58:53'),
+(313, 'Promethazine (Phenergan)', 'allergic reaction, inflammation, nausea, vomiting', 'Dizziness, drowsiness, dry mouth, constipation', 'https://krames.meducation.com/V2.0/fdbpem/9053', 1, 6, '2022-09-17 13:47:20'),
+(314, 'Vancomycin Oral Solution', 'Treating bacterial infections', 'Abdominal cramps, nausea, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/7154', 1, 6, '2022-09-17 16:08:19'),
+(322, 'Sotalol (Betapace)', 'For irregular heartbeat', 'Diarrhea, dizziness, tiredness, headache', 'https://krames.meducation.com/V2.0/fdbpem/3013', 1, 9, '2022-09-29 08:32:36'),
+(323, 'aclidinium', 'For chronic lung disease (COPD)', 'Coughing, headache, hoarseness, throat irritation', 'https://krames.meducation.com/V2.0/fdbpem/1496', 1, 9, '2022-09-29 09:01:34'),
+(324, 'Doxazosin (Cardura)', 'High blood pressure, kidney stones, prostate enlargement', 'Dizziness, lightheadedness, drowsiness, weight gain', 'https://krames.meducation.com/V2.0/fdbpem/8060', 1, 9, '2022-09-29 09:55:20'),
+(325, 'Tacrolimus (Prograf) Oral', 'For protection of organ transplant', 'Agitated feeling, decrease appetite, diarrhea, headache, nausea, stomach upset', 'https://api.meducation.com/V2.0/fdbpem/6108', 1, 9, '2022-09-29 10:01:00'),
+(326, 'Lyrica (Pregabalin)', 'Treat pain caused by nerve damage, seizures, anxiety, menopausal symptoms, restless leg syndrome', 'Drowsiness, dizziness, dry mouth, constipation, difficulty concentrating', 'https://krames.meducation.com/V2.0/fdbpem/528', 1, 9, '2022-09-29 10:01:05'),
+(328, 'Amicar (Aminocaproic Acid)', 'For bleeding, to prevent bleeding', 'Decreased appetite, diarrhea, dizziness, headache', 'https://krames.meducation.com/V2.0/fdbpem/199', 1, 9, '2022-09-29 10:08:35'),
+(329, 'Tenofovir', 'Hepatitis, HIV, prevent infection', 'increased risk of bone fractures, diarrhea, dizziness, lack of energy', 'https://krames.meducation.com/V2.0/fdbpem/6330', 1, 9, '2022-09-29 10:10:52'),
+(330, 'Vidaza', 'For treating cancer', 'Nausea, vomiting, diarrhea or constipation, dizziness, tiredness', 'https://krames.meducation.com/V2.0/fdbpem/2285', 1, 9, '2022-09-29 10:22:55'),
+(331, 'Hydromorphone (Dilaudid) Injection', 'Pain', 'Constipation, dizziness, drowsiness, nausea', 'https://krames.meducation.com/V2.0/fdbpem/864', 1, 6, '2022-10-01 16:23:47'),
+(332, 'Pantoprazole (Protonix) Injection', 'Stomach acid reflux, ulcers in stomach or intestines', 'Diarrhea, headache', 'https://krames.meducation.com/V2.0/fdbpem/3143', 1, 6, '2022-10-01 16:28:23'),
+(333, 'Acyclovir (Zovirax)Injection', 'Treating viral infections', 'Decreased appetite, nausea, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/8069', 1, 6, '2022-10-01 16:32:00'),
+(334, 'Famotidine Injection (Pepcid)', 'Heartburn, prevent heartburn or indigestion, ulcers in stomach or intestines', 'Constipation, diarrhea, headaches', 'https://krames.meducation.com/V2.0/fdbpem/3033', 1, 6, '2022-10-01 17:41:44'),
+(335, 'Furosemide Injection (Lasix)', 'To reduce extra fluid in the body caused by conditions such as heart failure, liver disease, and kidney disease', 'Dizziness, lightheadedness, headache, blurred vision', 'https://krames.meducation.com/V2.0/fdbpem/7043', 1, 6, '2022-10-01 18:01:44'),
+(336, 'Metronidazole Injection (Flagyl)', 'For infection', 'Diarrhea, dizziness, stomach upset', 'https://krames.meducation.com/V2.0/fdbpem/9055', 1, 6, '2022-10-01 18:18:51'),
+(337, 'Vancomycin Oral Capsule', 'Treat bacterial infection', 'Abdominal cramps, nausea, vomiting', 'https://krames.meducation.com/V2.0/fdbpem/9154', 1, 6, '2022-10-01 18:27:20'),
+(338, 'Diphenhydramine Injection (Benadryl)', 'Allergies, sleep, allergic reaction', 'Drowsiness, dizziness, headache', 'https://krames.meducation.com/V2.0/fdbpem/4012', 1, 6, '2022-10-01 18:53:15'),
+(339, 'Magnesium Sulfate IV', 'Low magnesium levels, irregular heartbeats, pregnancy problem', 'Diarrhea', NULL, 1, 6, '2022-10-01 19:04:52'),
+(340, 'Oxycodone Extended Release', 'Pain', 'Constipation, dizziness, drowsiness', 'https://krames.meducation.com/V2.0/fdbpem/1764', 1, 6, '2022-10-01 19:41:08'),
+(341, 'Calcium Carbonate (OsCal)', 'Bone strength, low calcium levels, prevent low calcium levels', 'Constipation, stomach upset', 'https://krames.meducation.com/V2.0/fdbpem/139', 1, 6, '2022-10-01 19:46:20'),
+(342, 'Aspirin Suppository', 'Fever, heart attack, prevent blood clots/heart attack/stroke, pain, inflammatory disease', 'Abdominal pain, upset stomach', 'https://krames.meducation.com/V2.0/fdbpem/7003', 1, 6, '2022-10-01 19:49:02'),
+(343, 'Hydrocortisone Tablet', 'Arthritis, blood/hormone/immune system disorders, skin and eye conditions, breathing problems, cancer, and severe allergies', 'Agitated feeling, headache, nausea, stomach upset', 'https://krames.meducation.com/V2.0/fdbpem/581', 1, 6, '2022-10-01 20:01:27'),
+(344, 'Methylprednisolone Oral Tablet (Medrol)', 'Arthritis, blood disorders, severe allergic reactions, certain cancers, eye conditions, skin/kidney/intestinal/lung diseases, and immune system disorders', 'Nausea, vomiting, heartburn, headache, dizziness, trouble sleeping', 'https://krames.meducation.com/V2.0/fdbpem/419', 1, 6, '2022-10-01 20:04:15'),
+(345, 'Acetaminophen/Codeine Oral Tablet (Tylenol with Codeine)', 'Pain', 'Constipation, dizziness, drowsiness', 'https://krames.meducation.com/V2.0/fdbpem/6352', 1, 6, '2022-10-01 20:49:38'),
+(346, 'Amlodipine/Benazepril Oral Capsule', 'High blood pressure', 'Coughing, dizziness, swelling of hands and feet', 'https://krames.meducation.com/V2.0/fdbpem/3075', 1, 6, '2022-10-01 20:59:41'),
+(349, 'Filgrastim (Granix, Neupogen)', 'Blood cell disorder, bone marrow transplant, chemotherapy complications; helps your body make more white blood cells', 'Bone pain, nosebleeds, kidney problems, muscle pain', 'https://api.meducation.com/V2.0/fdbpem/211', 1, 9, '2022-10-10 17:48:50'),
+(350, 'Octreotide (Sandostatin)', 'Abnormal bowel function, diarrhea, endocrine disorder, nutritional malabsorption, cancer', 'Bloating, constipation, dizziness, excess gas, headaches, nausea, vomiting, loose oily stools', 'https://api.meducation.com/V2.0/fdbpem/233', 1, 9, '2022-10-10 18:15:38'),
+(351, 'Penecillin v potassium', 'Treat or prevent bacterial infections', 'Upset stomach, diarrhea, nausea, vomiting, mouth sores', 'https://api.meducation.com/V2.0/fdbpem/2050', 1, 9, '2022-10-10 18:16:14'),
+(352, 'Pneumococcal 23-Valent Polysaccharide Vaccine (Pneumovax 23)', 'Pneumococcal vaccines are the best way to prevent pneumococcal disease. Examples of pneumococcal disease include infection in the lung (pneumonia) and infection in the blood (bacteremia)', 'Lack of energy, tiredness, fever, chills, muscle pain', 'https://api.meducation.com/V2.0/fdbpem/4303', 1, 9, '2022-10-10 18:16:25'),
+(353, 'Varenicline (Chantix)', 'Treatment of smoking cessation in conjunction with nonpharmacologic support (i.e. counseling, educational materials)', 'Agitated feeling, trouble sleeping, drowsiness, excess gas, headache, nausea, vomiting, vivid dreams', 'https://api.meducation.com/V2.0/fdbpem/728', 1, 9, '2022-10-12 23:44:19'),
+(354, 'Canagliflozin (Invokana)', 'Diabetes, diabetic complications', 'Dizziness, low blood sugar, increased risk for bone fractures, increased urinary frequency', 'https://api.meducation.com/V2.0/fdbpem/1529', 1, 9, '2022-10-18 10:14:00'),
+(356, 'Ramipril (Altace)', 'Diabetic complications, heart failure, high blood pressure, prevent stroke', 'Coughing, dizziness, lack of energy, tiredness', 'https://api.meducation.com/V2.0/fdbpem/4075', 1, 9, '2022-10-18 10:14:33'),
+(357, 'Folbic (Folic Acid, Cyanocobalamin, and Pyridoxine)', 'Help with growth and health, treat or prevent low vitamin B6 and B12', 'Usually, no side effects', NULL, 1, 9, '2022-10-18 10:14:45'),
+(358, 'Mycophenolate (Cellcept)', 'Autoimmune disorder, prevent organ transplant, sarcoidosis, skin disease, skin wound', 'Agitated feeling, trouble sleeping, constipation or diarrhea, dizziness, drowsiness, swelling of legs, hands, and feet', 'https://api.meducation.com/V2.0/fdbpem/2108', 1, 9, '2022-10-22 05:46:58'),
+(361, 'Biotin', 'Vitamin deficiency or metabolism disorder; treat or prevent low levels of B7', 'Stomach upset', 'https://api.meducation.com/V2.0/fdbpem/2107', 1, 9, '2022-10-24 16:57:32'),
+(362, 'Semaglutide (Ozempic)', 'Diabetes', 'Decreased appetite, constipation or diarrhea, dizziness, drowsiness, nausea, vomiting', 'https://api.meducation.com/V2.0/fdbpem/2110', 1, 9, '2022-10-24 16:57:47'),
+(366, 'Scopolamine Transdermal', 'Nausea and vomiting', 'Blurry vision, dizziness, drowsiness, dry mouth', 'https://api.meducation.com/V2.0/fdbpem/6004', 1, 9, '2022-11-22 06:24:18'),
+(368, 'Dextromethorphan/Guaifenesin Oral Solution (Robitussin DM)', 'Cough', 'Dizziness, drowsiness, nausea, vomiting, stomach upset', 'https://api.meducation.com/V2.0/fdbpem/704', 1, 9, '2022-11-23 12:03:09'),
+(369, 'Albuterol/Ipratropium Inhalation Solution (DuoNeb)', 'Chronic lung disease, COPD', 'Dizziness, dry mouth, headache, shakiness, high blood pressure', 'https://api.meducation.com/V2.0/fdbpem/4304', 1, 9, '2022-11-23 12:05:42'),
+(370, 'ATGAM (Anti-Thymocyte Globulin Injection)', 'Bone marrow disorder, prevent organ transplant rejection', 'Diarrhea, headaches, nausea, vomiting', NULL, 1, 9, '2022-11-23 13:35:25'),
+(371, 'Carbamide Peroxide (Debrox)', 'Ear wax removal', 'Burning, stinging, dizziness, temporary decrease in hearing', 'https://api.meducation.com/V2.0/fdbpem/1171', 1, 9, '2022-11-23 13:35:40'),
+(372, 'Chlorhexidine gluconate wipes', 'To clean skin to prevent infection', 'Dryness, itching', NULL, 1, 9, '2022-11-23 13:36:27'),
+(373, 'Romiplostim', 'Bleeding disorder, bone marrow disorder; decreases risk of bleeding by increasing the number of platelets', 'Decreased appetite, diarrhea, swelling of the legs, hands and feet, headaches', 'https://api.meducation.com/V2.0/fdbpem/1129', 1, 9, '2022-11-23 13:36:41'),
+(374, 'Colostrum Plus', 'Management of immunodeficiency-related diarrhea, immune system supplement', 'Nause, vomiting, gas', NULL, 1, 9, '2022-11-23 13:49:21'),
+(375, 'Naltrexone Oral', 'Drug addiction, alcohol dependence', 'Agitated feeling, trouble sleeping, decreased appetite, dizziness, drowsiness, headaches', 'https://api.meducation.com/V2.0/fdbpem/190', 1, 9, '2022-11-23 13:49:33'),
+(377, 'Iron Sucrose (Venofer)', 'Treat Anemia caused by low iron levels', 'Constipation or diarrhea, dizziness, swelling of legs/hands/feet, muscle cramps, nausea, vomiting, changes in taste', NULL, 1, 9, '2022-11-23 14:15:48'),
+(378, 'Minoxidil', 'Treat high blood pressure', 'Breast pain or swelling, dizziness, hair growth, lightheadedness, nausea, vomiting', 'https://api.meducation.com/V2.0/fdbpem/124', 1, 9, '2022-11-23 14:15:58'),
+(380, 'Macitentan (Opsumit)', 'Treat high blood pressure in the lungs', 'Chills, coughing, runny nose, sore throat', 'https://api.meducation.com/V2.0/fdbpem/1571', 1, 9, '2022-11-28 10:54:41'),
+(381, 'Riociguat (Adempas)', 'Treat high blood pressure in the lungs', 'Diarrhea, dizziness, lack of energy, headaches, vomiting', 'https://api.meducation.com/V2.0/fdbpem/1569', 1, 9, '2022-11-28 10:55:19'),
+(382, 'Oseltamivir (Tamiflu)', 'Flu, prevent viral infection', 'Nausea', 'https://api.meducation.com/V2.0/fdbpem/5294', 1, 9, '2022-11-28 13:59:59'),
+(383, 'Letermovir (Prevymis) Injection', 'Prevent viral infection', 'Coughing, diarrhea, swelling legs/hands/feet, headaches, nausea, vomiting', 'https://api.meducation.com/V2.0/fdbpem/1897', 1, 9, '2022-11-28 14:02:20'),
+(384, 'Carbidopa/Levodopa (Sinemet)', 'Parkinsons disease', 'Restlessness, decreased appetite, changes in color of urine, sweat, saliva or tears, constipation, dizziness, drowsiness', 'https://api.meducation.com/V2.0/fdbpem/41', 1, 9, '2022-11-28 14:11:02'),
+(385, 'Propranolol Injection', 'Irregular heartbeat', 'Low blood pressure, nausea, stomach upset', NULL, 1, 9, '2022-11-30 11:06:00'),
+(386, 'Ertapenem (Invanz)', 'Treatment of bacterial infections', 'Diarrhea, headache, nausea, vomiting, yeast infection in mouth or vagina', 'https://api.meducation.com/V2.0/fdbpem/8151', 1, 9, '2022-12-02 11:07:13'),
+(387, 'Loxapine', 'Schizophrenia', 'Blurry vision, constipation, dizziness, drowsiness, dry mouth, tiredness', 'https://api.meducation.com/V2.0/fdbpem/8034', 1, 9, '2022-12-02 11:07:38'),
+(388, 'Ethambutol (Myambutol)', 'Treat bacterial infections', 'Decreased appetite, diarrhea, headache, nausea, vomiting, upset stomach', 'https://api.meducation.com/V2.0/fdbpem/28', 1, 9, '2022-12-02 11:20:02'),
+(389, 'Rifabutin (Mycobutin)', 'Treat bacterial infection', 'Changes in color of urine, sweat, saliva or tears, nausea, vomiting, stomach upset, changes in taste', 'https://api.meducation.com/V2.0/fdbpem/8028', 1, 9, '2022-12-02 11:20:28'),
+(391, 'Letermovir (Prevymis) Oral', 'Prevent viral infections', 'Coughing, diarrhea, swelling hands/legs/feet, headaches  nausea, vomiting', 'https://api.meducation.com/V2.0/fdbpem/1896', 1, 6, '2022-12-04 15:30:03'),
+(392, 'Naltrexone Injection', 'Drug addiction, alcohol dependence', 'Agitated feeling, trouble sleeping, decreased appetite, dizziness, drowsiness, headaches', 'https://api.meducation.com/V2.0/fdbpem/897', 1, 6, '2022-12-04 15:51:23'),
+(393, 'Propranolol (Inderal) Oral', 'Angina, heart attack, high blood pressure, irregular heartbeat, migraines, tremors, high thyroid levels', 'Restlessness, dizziness, tiredness, cold hands or feet, low blood pressure', 'https://api.meducation.com/V2.0/fdbpem/9168', 1, 6, '2022-12-04 15:58:48'),
+(394, 'Tacrolimus (Prograf) Injection', 'Prevent rejection of organ transplant', 'Agitated feeling, trouble sleeping, decreased appetite, diarrhea, headaches', 'https://api.meducation.com/V2.0/fdbpem/7108', 1, 6, '2022-12-04 16:06:45'),
+(395, 'Carbidopa/Levodopa Extended Release (Sinemet CR)', 'Parkison\'s disease', 'Restlessness, decreased appetite, changes in color of urine, sweat, saliva or tears, constipation, dizziness, drowsiness', 'https://api.meducation.com/V2.0/fdbpem/5041', 1, 6, '2022-12-04 19:02:14'),
+(396, 'ampyra', 'multiple sclerosis', NULL, NULL, 0, 9, '2022-12-05 11:19:11'),
+(397, 'fingolimod', 'multiple sclerosis', NULL, NULL, 0, 9, '2022-12-05 11:19:43'),
+(398, 'dalfampridine', NULL, NULL, NULL, 0, 9, '2022-12-05 11:20:03'),
+(399, 'naproxen', 'pain, inflammation', NULL, NULL, 0, 9, '2022-12-05 13:26:32'),
+(400, 'labetalol', 'angina, high BP', NULL, NULL, 0, 9, '2022-12-05 13:37:59'),
+(401, 'Go-Lytely', 'Bowel prep', NULL, NULL, 0, 9, '2022-12-05 13:38:23'),
+(402, 'ergocalciferol', 'Vitamin D deficiency, bone disease, endocrine disorder', NULL, NULL, 0, 9, '2022-12-07 08:37:22'),
+(403, 'NPH insulin', 'Diabetes', NULL, NULL, 0, 9, '2022-12-07 13:18:04'),
+(404, 'isosorbide dinitrate', 'angina, heart failure', NULL, NULL, 0, 9, '2022-12-09 09:37:31'),
+(405, 'zinc sulfate', 'mineral deficiency', NULL, NULL, 0, 9, '2022-12-09 09:37:59'),
+(406, 'sirolimus', 'prevent organ transplant rejection, blood vessel disease, lung disease', NULL, NULL, 0, 9, '2022-12-12 11:18:04'),
+(407, 'pyridostigmine', 'autoimmune disorders', NULL, NULL, 0, 9, '2022-12-12 11:18:50'),
+(408, 'MS Contin', 'pain', NULL, NULL, 0, 9, '2022-12-12 11:19:10'),
+(409, 'Phenergan with codeine', 'cough', NULL, NULL, 0, 9, '2022-12-12 11:19:33'),
+(410, 'amantadine', 'Parkinson\'s disease', NULL, NULL, 0, 9, '2022-12-12 13:39:08'),
+(411, 'hytrin', 'blood pressure', NULL, NULL, 0, 9, '2022-12-14 10:38:59'),
+(412, 'NPH insulin novolin N', 'Blood sugar control', NULL, NULL, 0, 9, '2022-12-16 08:24:36'),
+(413, 'Phenol Chlorseptic spray', 'sore throat', NULL, NULL, 0, 9, '2022-12-16 08:25:14'),
+(414, 'Lotrimin cream', 'anti-fungal skin cream', NULL, NULL, 0, 9, '2022-12-16 08:37:12'),
+(415, 'triamcinolone cream', 'skin itching and inflamation', NULL, NULL, 0, 9, '2022-12-16 08:37:55'),
+(416, 'multivitamin', 'vitamin and mineral supplement', NULL, NULL, 0, 9, '2022-12-16 09:21:55'),
+(417, 'Lactobacillus', 'Probiotic', NULL, NULL, 0, 9, '2022-12-16 09:29:16'),
+(418, 'Jardiance', 'Diabetes, heart failure', NULL, NULL, 0, 9, '2022-12-16 09:49:51'),
+(419, 'Remdesivir', 'COVID 19 Infection', NULL, NULL, 0, 9, '2022-12-16 10:08:02'),
+(420, 'Gammagard', 'Autoimmune disorder, Bleeding disorder, inflammatory disease', NULL, NULL, 0, 9, '2022-12-16 10:10:23'),
+(421, 'Calcium Chloride IV', 'Mineral supplement', NULL, NULL, 0, 9, '2022-12-16 10:11:14'),
+(422, 'Robitussin', 'cough', NULL, NULL, 0, 9, '2022-12-16 11:07:00'),
+(423, 'Witch hazel', 'hemorroids, rectal pain and itching', NULL, NULL, 0, 9, '2022-12-16 11:07:41'),
+(424, 'methotrexate', 'cancer', NULL, NULL, 0, 9, '2022-12-16 13:36:29'),
+(425, 'leucovorin', 'in treating cancer', NULL, NULL, 0, 9, '2022-12-16 13:36:55'),
+(426, 'Timolol Opthalmic solution', 'Glaucoma', NULL, NULL, 0, 9, '2022-12-19 09:11:54'),
+(427, 'Sildenafil', 'Erectile dysfunction, blood pressure in the lungs, Raynaud\'s Disease', NULL, NULL, 0, 9, '2022-12-19 09:13:09'),
+(428, 'Multivitamin MVI', 'Vitamin and mineral supplement', NULL, NULL, 0, 9, '2022-12-19 09:13:52'),
+(429, 'Cortisporin Otic solution', 'ear infection', NULL, NULL, 0, 9, '2022-12-19 09:22:41'),
+(430, 'Triamcinolone topical', 'skin inflammation and itching', NULL, NULL, 0, 9, '2022-12-19 09:27:17'),
+(431, 'aggrenox', 'to prevent blood clots', NULL, NULL, 0, 9, '2022-12-21 13:16:01'),
+(432, 'erythromycin', 'antibiotic', NULL, NULL, 0, 9, '2022-12-21 14:22:08'),
+(433, 'Decitabine', 'to treat cancer', NULL, NULL, 0, 9, '2022-12-23 11:02:26'),
+(434, 'Dutasteride', 'Prostate', NULL, NULL, 0, 9, '2022-12-23 11:06:53'),
+(435, 'anoro ellipta', 'COPD', NULL, NULL, 0, 9, '2022-12-26 09:28:13'),
+(436, 'sodium ferric gluconate', 'anemia', NULL, NULL, 0, 9, '2022-12-26 09:38:39'),
+(437, 'Nephrocaps', 'multivitamin for use with renal disease', NULL, NULL, 0, 9, '2022-12-26 10:41:55'),
+(438, 'lotrel', 'high blood pressure', NULL, NULL, 0, 9, '2022-12-26 10:54:30'),
+(439, 'Irbesartan', 'blood pressure', NULL, NULL, 0, 9, '2022-12-28 11:03:18'),
+(440, 'Letrozole', 'treat breast cancer', NULL, NULL, 0, 9, '2022-12-28 11:03:43'),
+(441, 'Meloxicam', 'arthritis, pain', NULL, NULL, 0, 9, '2022-12-28 11:04:02'),
+(442, 'Narcan', 'Prevent drug overdose', NULL, NULL, 0, 9, '2022-12-28 11:04:18'),
+(443, 'Palbociclib', 'treat breast cancer', NULL, NULL, 0, 9, '2022-12-28 11:04:44'),
+(444, 'Tapentadol', 'Pain', NULL, NULL, 0, 9, '2022-12-28 11:05:08'),
+(445, 'Sodium ferric gluconate IV', 'Anemia', NULL, NULL, 0, 9, '2022-12-28 11:05:49'),
+(446, 'insulin lispro', NULL, NULL, NULL, 0, 9, '2022-12-29 05:45:02'),
+(447, 'lovenox', NULL, NULL, NULL, 0, 9, '2022-12-29 05:45:09'),
+(448, 'Augmentin', 'Antibiotic', NULL, NULL, 0, 9, '2022-12-30 10:55:10'),
+(449, 'Eplerenone', 'CHF, High Blood Pressure', NULL, NULL, 0, 9, '2022-12-30 10:55:45'),
+(450, 'Olmesartan', 'CHF, high blood pressure', NULL, NULL, 0, 9, '2022-12-30 10:56:24'),
+(451, 'Advair', 'Asthma, chronic lung disease', NULL, NULL, 0, 9, '2023-01-02 10:07:16'),
+(452, 'Diprolene cream', 'itching and skin inflammation', NULL, NULL, 0, 9, '2023-01-02 10:08:04'),
+(453, 'Azelastine nasal spray', 'allergy symptoms, inflammation', NULL, NULL, 0, 9, '2023-01-02 10:08:54'),
+(454, 'Liraglutide', 'diabetes', NULL, NULL, 0, 9, '2023-01-02 10:09:17'),
+(455, 'Eplerenone oral', 'CHF, high blood pressure', NULL, NULL, 0, 9, '2023-01-02 11:32:56'),
+(456, 'sirolimus oral', 'prevent organ rejection', NULL, NULL, 0, 9, '2023-01-02 13:13:45'),
+(457, 'Trusopt', 'Glaucoma', NULL, NULL, 0, 9, '2023-01-02 13:24:48'),
+(458, 'Ofloxacin', 'Eye infection', NULL, NULL, 0, 9, '2023-01-02 13:25:22'),
+(459, 'Timolol', 'Glaucoma', NULL, NULL, 0, 9, '2023-01-02 13:25:44'),
+(460, 'Anoro Ellipta Inhaler', 'Chronic lung disease', NULL, NULL, 0, 9, '2023-01-04 08:42:43'),
+(461, 'Vimpat IV', NULL, NULL, NULL, 0, 9, '2023-01-04 09:07:36'),
+(462, 'Timoptic', 'glaucoma', NULL, NULL, 0, 9, '2023-01-04 09:14:12'),
+(463, 'Neosporin', 'to treat skin infection', NULL, NULL, 0, 9, '2023-01-04 10:32:50');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_tooltips`
+--
+
+CREATE TABLE `tbl_tooltips` (
+  `ttp_id` int(11) NOT NULL,
+  `ttp_section` enum('med-landing-page','med-listing-page') NOT NULL,
+  `ttp_data` text NOT NULL,
+  `ttp_createdon` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tbl_tooltips`
+--
+
+INSERT INTO `tbl_tooltips` (`ttp_id`, `ttp_section`, `ttp_data`, `ttp_createdon`) VALUES
+(1, 'med-landing-page', '<p><strong>More Info:</strong></p><ul><li>Click the &quot;All Medications&quot; button if you would like to view the list of all the medications in the system. You can also edit and delete medications from here.</li><li>Click the &ldquo;Add New Medication&rdquo; button if you want to add a medication into the system that does not already exist.</li><li>Click &ldquo;Create Patient Medication List&rdquo; if you want to start a new medication list for a patient. This will allow you to add medication to a list and easily print out a page for the patient to take home with a list of their medications along with the side effects and uses. The patient will also be able to scan a QR Code which will give them more information about the medication.</li><li>Click the &quot;Pending Medication List&quot; button if you would like to view the list of medications that have been submitted by nurses and are waiting to be approved. In this section, you can accept or decline medications to be added into the system.&nbsp;</li></ul>', '2022-08-22 18:39:35'),
+(2, 'med-listing-page', '<p><strong>INSTRUCTIONS:</strong></p><ul><li>Start typing the name of the medication that you want to select.</li><li>Click the checkbox to select the medication.</li><li>Once selected, it should appear in the selected column.</li><li>Delete the entry in the search box once the medication appears in medication list and start typing the next medication. Repeat instructions until all medications needed are added.</li></ul>', '2022-08-22 19:00:01');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `tbl_admin_users`
+--
+ALTER TABLE `tbl_admin_users`
+  ADD PRIMARY KEY (`adm_id`),
+  ADD UNIQUE KEY `adm_userid` (`adm_userid`);
+
+--
+-- Indexes for table `tbl_medication_info`
+--
+ALTER TABLE `tbl_medication_info`
+  ADD PRIMARY KEY (`med_id`),
+  ADD KEY `med_createdby` (`med_createdby`);
+
+--
+-- Indexes for table `tbl_tooltips`
+--
+ALTER TABLE `tbl_tooltips`
+  ADD PRIMARY KEY (`ttp_id`),
+  ADD UNIQUE KEY `ttp_section` (`ttp_section`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `tbl_admin_users`
+--
+ALTER TABLE `tbl_admin_users`
+  MODIFY `adm_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `tbl_medication_info`
+--
+ALTER TABLE `tbl_medication_info`
+  MODIFY `med_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=464;
+
+--
+-- AUTO_INCREMENT for table `tbl_tooltips`
+--
+ALTER TABLE `tbl_tooltips`
+  MODIFY `ttp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `tbl_medication_info`
+--
+ALTER TABLE `tbl_medication_info`
+  ADD CONSTRAINT `tbl_medication_info_ibfk_1` FOREIGN KEY (`med_createdby`) REFERENCES `tbl_admin_users` (`adm_id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

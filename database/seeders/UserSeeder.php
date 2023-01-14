@@ -18,9 +18,14 @@ class UserSeeder extends Seeder
     {
         $pass = Hash::make("make@lara");
         User::create([
-            'name'=> "Site Super Admin",
-            'email'=> "ahmad@path2quality.com",
-            'password'=>$pass,
+            'name' => "Site Super Admin",
+            'email' => "ahmad@path2quality.com",
+            'password' => $pass,
+            'company' => "qcostaffing",
+            'phone' => "+12222223333",
+            'fax' => "+12222233333",
+            'skill_email' => "skill-email@qcostaffing.com",
+            'app_email' => "app-email@qcostaffing.com"
         ]);
     }
 }

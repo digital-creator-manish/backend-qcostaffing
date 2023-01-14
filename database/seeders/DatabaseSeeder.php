@@ -17,6 +17,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MenusSeeder::class,
             UserSeeder::class,
+            FormTypeSeeder::class,
+            FormSeeder::class,
+            TutorialSeeder::class,
+            DisciplineSeeder::class,
+            DocumentTypeSeeder::class,
         ]);
         \Illuminate\Support\Facades\Artisan::call('passport:install');
         // \App\Models\User::factory(10)->create();

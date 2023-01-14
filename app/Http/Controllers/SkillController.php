@@ -6,95 +6,81 @@ use App\Models\Discipline;
 use App\Models\Skill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Helper\Helper;
+use Illuminate\Support\Facades\Storage;
+
 
 class SkillController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
-        $result = Skill::all();
-        return $result;
+        return Skill::with('discipline')->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), ["title" => "required", 'document' => 'required']);
-        if ($validator->fails()) {
-            return response(['success' => 0, 'message' => implode($validator->messages()->all())], 422);
+        $validation_arr = [
+            "title" => "required",
+            "document" => "required",
+            "discipline_id" => ["array"],
+            "discipline_id.*" => "exists:disciplines,id"
+        ];
+
+        if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
+
+        $document = "";
+        if ($request->file('document')) {
+            $document = $request->file('document')->store('qcostaffing/skill');
         }
 
-        if ($request->file('document')) {
-            $document = $request->file('document')->store('skills');
+        $skill = new Skill();
+        $skill->title = $request->title;
+        if ($document) $skill->document = $document;
+
+        $skill->save();
+
+        if ($request->discipline_id && count($request->discipline_id)) {
+            $skill->discipline()->attach($request->discipline_id);
+            return Skill::with('discipline')->whereRelation('discipline', 'skills.id', '=', $skill->id)->get()->first();
         }
-        $skill_arr = ["title"=>$request->title, "document"=>$document];
-        // exit(var_dump($skill_arr)); 
-        $Skill = Skill::create(["title"=>$request->title, "document"=>$document]);
-        return response(['success' => 1, 'message' => 'skill create success', 'skill' => $Skill], 422);
+        return $skill;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Skill  $skill
-     * @return \Illuminate\Http\Response
-     */
     public function show(Skill $skill)
     {
-        //
+        return Skill::with('discipline')->whereRelation('discipline', 'skills.id', '=', $skill->id)->get()->first();
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Skill  $skill
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Skill $skill)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Skill  $skill
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, Skill $skill)
     {
-        //
+        $validation_arr = [
+            "discipline_id" => ["array"],
+            "discipline_id.*" => "exists:disciplines,id"
+        ];
+
+        if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
+
+        $document = "";
+        if ($request->file("document")) {
+            Storage::delete($skill->document);
+            $document = $request->file('document')->store('qcostaffing/skill');
+        }
+
+        if ($request->title) $skill->title = $request->title;
+        if ($document) $skill->document = $document;
+
+        $skill->update();
+        if ($request->discipline_id && count($request->discipline_id)) {
+            $skill->discipline()->detach();
+            $skill->discipline()->attach($request->discipline_id);
+            return Skill::with('discipline')->whereRelation('discipline', 'skills.id', '=', $skill->id)->get()->first();
+        }
+        return $skill;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Skill  $skill
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Skill $skill)
     {
-        //
+        $skill->discipline()->detach(); //leave the detach function empty
+        $skill->delete();
     }
 }
