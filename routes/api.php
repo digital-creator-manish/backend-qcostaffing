@@ -13,6 +13,9 @@ use App\Http\Controllers\SkillController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FormController;
+use App\Http\Controllers\TutorialController;
+use App\Http\Controllers\QuizTutorialController;
 use App\Models\Discipline;
 use App\Models\SiteContent;
 
@@ -63,5 +66,8 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('news', NewsController::class);
     Route::get('profile', [ProfileController::class, 'show']);
     Route::put('profile', [ProfileController::class, 'update']);
+    Route::apiResource('form', FormController::class);
+    Route::apiResource('tutorial', TutorialController::class);
+    Route::apiResource('quiz_tutorial', QuizTutorialController::class);
 });
 //Route::post('upload', [StaffController::class, 'upload']);

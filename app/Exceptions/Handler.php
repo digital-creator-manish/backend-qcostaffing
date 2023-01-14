@@ -7,6 +7,7 @@ use Throwable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -60,6 +61,10 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (AccessDeniedHttpException $e, $request) {
             return response()->json(['success' => 0, 'message' => 'Not Authorize'], 404);
+        });
+
+        $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
+            return response()->json(['success' => 0, 'message' => 'Method Not Allowed'], 404);
         });
         
     }
