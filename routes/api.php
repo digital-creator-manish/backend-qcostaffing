@@ -55,8 +55,8 @@ Route::middleware('auth:api')->group(function () {
     Route::put('discipline/{id}', [DisciplineController::class, 'update']);
     Route::delete('discipline/{id}', [DisciplineController::class, 'delete']);
     Route::apiResource('sitecontent', SiteContentController::class);
+    Route::apiResource('menus', MenusController::class);
 });
 Route::apiResource('staff', StaffController::class);
-Route::apiResource('menus', MenusController::class);
 Route::post('upload', [StaffController::class, 'upload']);
 Route::apiResource('skill', SkillController::class);

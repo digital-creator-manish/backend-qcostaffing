@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger("parent_id")->default(0);
             $table->string("name");
+            $table->string("name_key");
             $table->string("priority");
             $table->unsignedInteger("status")->default(1);
             $table->unsignedInteger("menu_type")->default(1);
