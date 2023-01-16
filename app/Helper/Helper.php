@@ -20,11 +20,12 @@ class Helper
         return $response;
     }
 
-    static public function success_response($data, $message="success", $http_response_status_code = 200, $format = false)
+    static public function success_response($data, $message = "success", $http_response_status_code = 200, $format = false)
     {
-        $resp_success_arr = ["success" => 1, "message" => $message, "record" => ["data" => $data]];
-        if($format){
+        if ($format) {
             $resp_success_arr = ["success" => 1, "message" => $message, "record" => $data];
+        }else{
+            $resp_success_arr = ["success" => 1, "message" => $message, "record" => ["data" => $data]];
         }
 
         return response($resp_success_arr, $http_response_status_code);
@@ -41,7 +42,12 @@ class Helper
         $searchval = $request->searchval ? $request->searchval : false;
         $searchexp = $request->searchexp ? $request->searchexp : "=";
 
+        $model_name = class_basename($model);
+
         $query = $model::query();
+        if ($model_name == "Form") {
+            $query->with('form_type_id', 'created_by', 'updated_by', 'discipline');
+        }
         if ($searchcol && $searchval) {
             if ($searchexp = "LIKE") {
                 $searchval = '%' . $searchval . '%';
@@ -52,9 +58,11 @@ class Helper
         if ($paging) {
             $discipline = $query->paginate($per_page);
             $discipline->appends($_GET)->links();
+            return Helper::success_response($discipline, 'success', 200, true);
         } else {
             $discipline = $query->get();
+            return Helper::success_response($discipline);
+
         }
-        return $discipline;
     }
 }

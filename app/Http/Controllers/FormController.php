@@ -9,10 +9,13 @@ use Illuminate\Support\Facades\Storage;
 
 class FormController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $forms = Form::with('form_type_id', 'created_by', 'updated_by', 'discipline')->get();
-        return Helper::success_response($forms);
+        // $forms = Form::with('form_type_id', 'created_by', 'updated_by', 'discipline')->get();
+        // return Helper::success_response($forms);
+
+        $form = Helper::getRecords(Form::class, $request);
+        return Helper::success_response($form);
     }
 
     public function store(Request $request)

@@ -11,8 +11,8 @@ class DisciplineController extends Controller
 {
     public function index(Request $request)
     {
-        $discipline = Helper::getRecords(Discipline::class, $request);
-        return Helper::success_response($discipline);
+        return Helper::getRecords(Discipline::class, $request);
+        
     }
 
     public function store(Request $request)
