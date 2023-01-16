@@ -48,3 +48,6 @@ ALTER TABLE `menus`
 ALTER TABLE `menus`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
+
+
+INSERT INTO `disciplines` (`id`, `name`, `created_at`, `updated_at`) VALUES (NULL, 'Behavioral Health Worker', NULL, NULL), (NULL, 'CNA', NULL, NULL), (NULL, 'Direct Care Worker', NULL, NULL), (NULL, 'Direct Support Staff', NULL, NULL), (NULL, 'LPN', NULL, NULL), (NULL, 'Mental Health Technician ', NULL, NULL), (NULL, 'RN', NULL, NULL), (NULL, 'Social Worker', NULL, NULL); 

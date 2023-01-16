@@ -16,7 +16,7 @@ class DisciplineController extends Controller
             return response(['success' => 0, 'message' => implode($validator->messages()->all())], 422);
         }
         $discipline = Discipline::create(["name" => $request->name]);
-        return response(['success' => 1, 'message' => 'discipline created successfully', 'discipline' => $discipline], 200);
+        return response(['success' => 1, 'message' => 'discipline created successfully', 'data' => $discipline], 200);
     }
 
     public function index(Request $request)
@@ -38,7 +38,7 @@ class DisciplineController extends Controller
             return response(['success' => 0, 'message' => 'record update fail, record not found']);
         }
         $discipline->update($request->all());
-        return response(['success' => 1, 'message' => 'record update success', 'discipline' => $discipline], 200);
+        return response(['success' => 1, 'message' => 'record update success', 'data' => $discipline], 200);
     }
 
     public function delete($id)

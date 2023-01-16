@@ -73,7 +73,7 @@ class MenusController extends Controller
      * @param  \App\Models\Menus  $menus
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMenusRequest $request, Menus $menus)
+    public function update( $request, Menus $menus)
     {
         //
     }
