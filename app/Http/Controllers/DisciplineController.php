@@ -9,45 +9,39 @@ use App\Helper\Helper;
 
 class DisciplineController extends Controller
 {
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), ["name" => "required"]);
-        if ($validator->fails()) {
-            return response(['success' => 0, 'message' => implode($validator->messages()->all())], 422);
-        }
-        $discipline = Discipline::create(["name" => $request->name]);
-        return response(['success' => 1, 'message' => 'discipline created successfully', 'data' => $discipline], 200);
-    }
-
     public function index(Request $request)
     {
         $discipline = Helper::getRecords(Discipline::class, $request);
         return Helper::success_response($discipline);
     }
 
-    public function show(Discipline $discipline)
+    public function store(Request $request)
     {
-        // exit($discipline);
+        $validation_arr = ["name" => "required"];
+        if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
+
+        $discipline = new Discipline();
+        if ($request->name) $discipline->name = $request->name;
+        $discipline->save();
         return Helper::success_response($discipline);
     }
 
-    public function update(Request $request, $id)
+
+    public function show(Discipline $discipline)
     {
-        $discipline = Discipline::find(["id" => $id])->first();
-        if ($discipline == NULL) {
-            return response(['success' => 0, 'message' => 'record update fail, record not found']);
-        }
-        $discipline->update($request->all());
-        return response(['success' => 1, 'message' => 'record update success', 'data' => $discipline], 200);
+        return Helper::success_response($discipline);
     }
 
-    public function delete($id)
+    public function update(Request $request, Discipline $discipline)
     {
-        $discipline = Discipline::find(["id" => $id])->first();
-        if ($discipline == NULL) {
-            return response(['success' => 0, 'message' => 'delete fail, record not found']);
-        }
-        Discipline::destroy($id);
-        return response(['success' => 1, 'message' => 'delete success']);
+        if ($request->name) $discipline->name = $request->name;
+        $discipline->update();
+        return Helper::success_response($discipline);
+    }
+
+    public function destroy(Discipline $discipline)
+    {
+        $discipline->delete();
+        return Helper::success_response([], 'delete-success');
     }
 }
