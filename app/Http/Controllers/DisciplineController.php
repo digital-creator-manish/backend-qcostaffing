@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Discipline;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Helper\Helper;
 
 class DisciplineController extends Controller
 {
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), ["name" => "required"]);
         if ($validator->fails()) {
@@ -18,14 +19,16 @@ class DisciplineController extends Controller
         return response(['success' => 1, 'message' => 'discipline created successfully', 'discipline' => $discipline], 200);
     }
 
-    public function read($id = null)
+    public function index(Request $request)
     {
-        if ($id) {
-            $discipline = Discipline::find(["id" => $id]);
-        } else {
-            $discipline = Discipline::all();
-        }
-        return response(['success' => 1, 'message' => 'discipline read success', 'discipline' => $discipline], 200);
+        $discipline = Helper::getRecords(Discipline::class, $request);
+        return Helper::success_response($discipline);
+    }
+
+    public function show(Discipline $discipline)
+    {
+        // exit($discipline);
+        return Helper::success_response($discipline);
     }
 
     public function update(Request $request, $id)

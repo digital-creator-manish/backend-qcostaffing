@@ -57,10 +57,12 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 Route::middleware('auth:api')->group(function () {
     // protected routes
     Route::post('logout', [UserAuthController::class, 'logout'])->name('logout.api');
-    Route::post('discipline', [DisciplineController::class, 'create']); 
-    Route::get('discipline/{id?}', [DisciplineController::class, 'read']);
-    Route::put('discipline/{id}', [DisciplineController::class, 'update']);
-    Route::delete('discipline/{id}', [DisciplineController::class, 'delete']);
+    // Route::post('discipline', [DisciplineController::class, 'create']); 
+    // Route::get('discipline', [DisciplineController::class, 'index']);
+    // Route::get('discipline/{id}', [DisciplineController::class, 'show']);
+    // Route::put('discipline/{id}', [DisciplineController::class, 'update']);
+    // Route::delete('discipline/{id}', [DisciplineController::class, 'delete']);
+    Route::apiResource('discipline', DisciplineController::class);
     Route::apiResource('sitecontent', SiteContentController::class);
     Route::apiResource('staff', StaffController::class);
     Route::apiResource('menus', MenusController::class);
