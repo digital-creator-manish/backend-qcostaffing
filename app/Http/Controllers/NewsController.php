@@ -70,11 +70,10 @@ class NewsController extends Controller
      * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(News $news)
     {
-        if (($news_with_user = News::with('User')->find(["id" => $id])->first()) == NULL) throw new ModelNotFoundException();
-
-        return Helper::success_response($news_with_user);
+        $data = News::with('created_by', 'updated_by')->where('news.id', '=', $news->id)->get()->first();
+        return Helper::success_response($data);
     }
 
     /**

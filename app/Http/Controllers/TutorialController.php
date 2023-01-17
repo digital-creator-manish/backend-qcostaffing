@@ -9,10 +9,9 @@ use Illuminate\Support\Facades\Storage;
 
 class TutorialController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tutorial = Tutorial::with('created_by', 'updated_by', 'discipline', 'quiz_tutorial')->get();
-        return Helper::success_response($tutorial);
+        return Helper::getRecords(Tutorial::class, $request);
     }
 
     /**

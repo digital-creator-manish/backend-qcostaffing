@@ -53,6 +53,11 @@ class Helper
             $query->with('created_by', 'updated_by');
         }
 
+        if ($model_name == "Tutorial") {
+            //exit("hello-world1");
+            $query->with('created_by', 'updated_by', 'discipline', 'quiz_tutorial');
+        }
+
         if ($searchcol && $searchval) {
             if ($searchexp = "LIKE") {
                 $searchval = '%' . $searchval . '%';

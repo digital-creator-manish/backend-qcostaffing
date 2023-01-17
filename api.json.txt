@@ -143,6 +143,37 @@ http://qcostaffing_backend/api/news/1
 method : DELETE - delete by id
 http://qcostaffing_backend/api/news/1
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+tutorial API END POINT
+
+method : POST for create
+http://qcostaffing_backend/api/news
+{
+    "title":"test-title",
+    "description":"test-description",
+    "show":"Y",
+    "uploaded_by":"test-uploaded-by",
+    "uploaded_date":"2023-01-17"
+    "filename": - this is file 
+} 
+
+method : GET  - get all
+http://qcostaffing_backend/api/news
+
+method : GET  - get by id
+http://qcostaffing_backend/api/news/1
+
+method : PUT - update by id
+http://qcostaffing_backend/api/news/1
+{
+    "title":"update title",
+    "description":" update description "
+}
+
+method : DELETE - delete by id
+http://qcostaffing_backend/api/news/1
 
 
 
@@ -195,3 +226,8 @@ update user data - PUT : http://localhost/qcostaffing_backend/public/api/profile
     "skill_email": "skill-email@qcostaffing-test.com",
     "app_email": "app-email@qcostaffing-test.com"
 }
+
+
+C:\xampp\htdocs\qcostaffing_backend\database\migrations\2023_01_03_130440_create_site_contents_table.php
+
+php artisan migrate:refresh --path=/database/migrations/2023_01_03_130440_create_site_contents_table.php
