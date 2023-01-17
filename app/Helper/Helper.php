@@ -3,6 +3,8 @@
 namespace App\Helper;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class Helper
 {
@@ -54,7 +56,6 @@ class Helper
         }
 
         if ($model_name == "Tutorial") {
-            //exit("hello-world1");
             $query->with('created_by', 'updated_by', 'discipline', 'quiz_tutorial');
         }
 
@@ -65,14 +66,27 @@ class Helper
             $query->where($searchcol, $searchexp, $searchval);
         }
         $query->orderBy($sortby, $sortorder);
-        if ($paging) {
-            $discipline = $query->paginate($per_page);
-            $discipline->appends($_GET)->links();
-            return Helper::success_response($discipline, 'success', 200, true);
-        } else {
-            $discipline = $query->get();
-            return Helper::success_response($discipline);
 
+        $msg = 'success';
+        $code = 200;
+        $bool = false;
+        if ($paging) {
+            $result = $query->paginate($per_page);
+            $result->appends($_GET)->links();
+            $bool = true;
+        } else {
+            $result = $query->get();
+            // return Helper::success_response($result);
         }
+        // exit(var_dump($result->toArray()));
+        // $res_array = array();
+        // foreach($result->toArray() as $res){
+        //     if(array_key_exists("filename", $res)){
+        //         $res["filename"] = Storage::url($res["filename"]);
+        //         $res_array[] = $res;
+        //     }
+        // }
+
+        return Helper::success_response($result, $msg, $code, $bool);
     }
 }

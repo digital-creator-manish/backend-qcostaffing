@@ -240,11 +240,44 @@ update user data - PUT : http://localhost/qcostaffing_backend/public/api/profile
 
 
 
-GET form Type
+GET document Type
+http://localhost/qcostaffing_backend/public/api/document_type
+
+
+
+document API END POINT
+
+method : POST for create
+http://qcostaffing_backend/api/document
+{
+    "document_type_id": 1,
+    "filename": this is file
+}
+
+method : GET  - get all
+http://qcostaffing_backend/api/document
+
+method : GET  - get by id
+http://qcostaffing_backend/api/document/1
+
+method : PUT - update by id
+http://qcostaffing_backend/api/document/1
+{
+    "document_type_id": 1,
+    "filename": this is file
+}
+
+method : DELETE - delete by id
+http://qcostaffing_backend/api/document/1
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+GET form_data Type
 http://localhost/qcostaffing_backend/public/api/form_type
-
-
-
 
 form API END POINT
 
@@ -281,17 +314,6 @@ http://qcostaffing_backend/api/form/1
 method : DELETE - delete by id
 http://qcostaffing_backend/api/form/1
 
-
-
-
-{
-    "id": 1,
-    "title": "test-title",
-    "form_type_id": 3,
-    "discipline_id": [
-        1
-    ]
-}
 
 
 same for skill 

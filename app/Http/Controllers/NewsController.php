@@ -40,7 +40,7 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $check_validation = Helper::check_validation($request, ["title" => "required", "show" => "in:Y,N", "uploaded_date"=>"date"]);
+        $check_validation = Helper::check_validation($request, ["title" => "required", "show" => "in:Y,N", "uploaded_date"=>"nullable"]);
         if ($check_validation != 'pass') return $check_validation;
 
         $filename = "";
@@ -96,7 +96,7 @@ class NewsController extends Controller
      */
     public function update(Request $request, News $news)
     {
-        $check_validation = Helper::check_validation($request, ["show" => "in:Y,N", "uploaded_date"=>"date"]);
+        $check_validation = Helper::check_validation($request, ["show" => "in:Y,N", "uploaded_date"=>"date|nullable"]);
         if ($check_validation != 'pass') return $check_validation;
         
         $filename = "";
@@ -109,7 +109,7 @@ class NewsController extends Controller
         if ($request->description) $news->description = $request->description;
         if ($request->show) $news->show = $request->show;
         if ($request->uploaded_by) $news->uploaded_by = $request->uploaded_by;
-        if ($request->uploaded_date) $news->uploaded_date = $request->uploaded_date;
+        $news->uploaded_date = $request->uploaded_date;
         if ($filename) $news->filename = $filename;
         $news->updated_by = auth()->user()->id;
         $news->update();
