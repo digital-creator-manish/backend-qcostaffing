@@ -19,6 +19,8 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->string('filename')->nullable();
             $table->char('show', 1)->default('N');
+            $table->string('uploaded_by')->nullable();
+            $table->date('uploaded_date')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

@@ -8,10 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class News extends Model
 {
     use HasFactory;
-    protected $fillable = ["title", "description", "file", "show", "created_by"];
+    protected $fillable = ["title", "description", "file", "show", "created_by", "updated_by"];
 
-    public function user()
+    public function created_by()
     {
         return $this->hasOne(User::class, 'id', 'created_by');
     }
+
+    public function updated_by()
+    {
+        return $this->hasOne(User::class, 'id', 'updated_by');
+    }
+
+
 }

@@ -17,10 +17,9 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::with('User')->get();
-        return $news;
+        return Helper::getRecords(News::class, $request);
     }
 
     /**
@@ -41,7 +40,7 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $check_validation = Helper::check_validation($request, ["title" => "required", "show" => "in:Y,N"]);
+        $check_validation = Helper::check_validation($request, ["title" => "required", "show" => "in:Y,N", "uploaded_date"=>"date"]);
         if ($check_validation != 'pass') return $check_validation;
 
         $filename = "";
@@ -49,20 +48,20 @@ class NewsController extends Controller
             $filename = $request->file('filename')->store('qcostaffing/news');
         }
 
-        // exit(var_dump($filename));
         $news = new News();
-        $news->title = $request->title;
-        $news->description = $request->description;
-        if ($request->show) {
-            $news->show = $request->show;
-        }
-        if ($filename) {
-            $news->filename = $filename;
-        }
-        $news->created_by = auth()->user()->id;
-        $news->save();
+        if ($request->title) $news->title = $request->title;
+        if ($request->description) $news->description = $request->description;
+        if ($request->show) $news->show = $request->show;
+        if ($request->uploaded_by) $news->uploaded_by = $request->uploaded_by;
+        if ($request->uploaded_date) $news->uploaded_date = $request->uploaded_date;
+        if ($filename) $news->filename = $filename;
+        $news->created_by = $news->updated_by = auth()->user()->id;
 
-        return Helper::success_response($news);
+        $news->save();
+        $data = News::with('created_by', 'updated_by')->where('news.id', '=', $news->id)->get()->first();
+        return Helper::success_response($data);
+
+
     }
 
     /**
@@ -96,37 +95,28 @@ class NewsController extends Controller
      * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, News $news)
     {
-        if (($news = News::find(["id" => $id])->first()) == NULL) throw new ModelNotFoundException();
-
-        $check_validation = Helper::check_validation($request, ["title" => "required", "show" => "in:Y,N"]);
+        $check_validation = Helper::check_validation($request, ["show" => "in:Y,N", "uploaded_date"=>"date"]);
         if ($check_validation != 'pass') return $check_validation;
-
+        
         $filename = "";
         if ($request->file('filename')) {
             Storage::delete($news->filename);
             $filename = $request->file('filename')->store('qcostaffing/news');
         }
 
-        if ($request->title) {
-            $news->title = $request->title;
-        }
-
-        if ($request->description) {
-            $news->description = $request->description;
-        }
-
-        if ($request->show) {
-            $news->show = $request->show;
-        }
-        if ($filename) {
-            $news->filename = $filename;
-        }
+        if ($request->title) $news->title = $request->title;
+        if ($request->description) $news->description = $request->description;
+        if ($request->show) $news->show = $request->show;
+        if ($request->uploaded_by) $news->uploaded_by = $request->uploaded_by;
+        if ($request->uploaded_date) $news->uploaded_date = $request->uploaded_date;
+        if ($filename) $news->filename = $filename;
         $news->updated_by = auth()->user()->id;
-        $news->save();
+        $news->update();
 
-        return Helper::success_response($news);
+        $data = News::with('created_by', 'updated_by')->where('news.id', '=', $news->id)->get()->first();
+        return Helper::success_response($data);
     }
 
     /**

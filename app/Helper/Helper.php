@@ -48,6 +48,11 @@ class Helper
         if ($model_name == "Form") {
             $query->with('form_type_id', 'created_by', 'updated_by', 'discipline');
         }
+
+        if ($model_name == "News") {
+            $query->with('created_by', 'updated_by');
+        }
+
         if ($searchcol && $searchval) {
             if ($searchexp = "LIKE") {
                 $searchval = '%' . $searchval . '%';

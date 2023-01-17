@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StaffRequest;
 use App\Models\Staff;
 use Illuminate\Http\Request;
+use App\Helper\Helper;
 
 class StaffController extends Controller
 {
@@ -13,10 +14,9 @@ class StaffController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $staff = Staff::all();
-        return response(['success' => 1, 'message' => 'read all success', 'data' => $staff], 200);
+        return Helper::getRecords(Staff::class, $request);
     }
 
     /**
@@ -37,9 +37,14 @@ class StaffController extends Controller
      */
     public function store(StaffRequest $request)
     {
-        $validated = $request->validated();
-        $Staff = Staff::create($validated);
-        return response(['success' => 1, 'message' => 'Staff create success', 'site_content' => $Staff], 422);
+        $validation_arr = ["title" => "required", "description"=>"required"];
+        if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
+
+        $staff = new Staff();
+        if ($request->title) $staff->title = $request->title;
+        if ($request->description) $staff->description = $request->description;
+        $staff->save();
+        return Helper::success_response($staff);
     }
 
     /**
@@ -50,7 +55,7 @@ class StaffController extends Controller
      */
     public function show(Staff $staff)
     {
-        return response()->json(['success' => 1, 'message' => 'read success', 'data' => $staff], 200);
+        return Helper::success_response($staff);
     }
 
     /**
@@ -73,8 +78,10 @@ class StaffController extends Controller
      */
     public function update(Request $request, Staff $staff)
     {
-        $staff->update($request->all());
-        return response(['success' => 1, 'message' => 'update success', 'data' => $staff], 200);
+        if ($request->title) $staff->title = $request->title;
+        if ($request->description) $staff->description = $request->description;
+        $staff->update();
+        return Helper::success_response($staff);
     }
 
     /**
@@ -86,6 +93,6 @@ class StaffController extends Controller
     public function destroy(Staff $staff)
     {
         $staff->delete();
-        return response(['success' => 1, 'message' => 'delete success']);
+        return Helper::success_response([], 'delete-success');
     }
 }
