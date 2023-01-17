@@ -75,6 +75,7 @@ class TutorialController extends Controller
 
         if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
 
+        $filename = "";
         if ($request->file('filename')) {
             Storage::delete($tutorial->filename);
             $filename = $request->file('filename')->store('qcostaffing/tutorial');

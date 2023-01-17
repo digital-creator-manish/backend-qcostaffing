@@ -149,33 +149,68 @@ http://qcostaffing_backend/api/news/1
 tutorial API END POINT
 
 method : POST for create
-http://qcostaffing_backend/api/news
+http://qcostaffing_backend/api/tutorial
 {
     "title":"test-title",
     "description":"test-description",
-    "show":"Y",
-    "uploaded_by":"test-uploaded-by",
-    "uploaded_date":"2023-01-17"
-    "filename": - this is file 
-} 
+    "discipline_id":[1, 2, 8]
+}
 
 method : GET  - get all
-http://qcostaffing_backend/api/news
+http://qcostaffing_backend/api/tutorial
 
 method : GET  - get by id
-http://qcostaffing_backend/api/news/1
+http://qcostaffing_backend/api/tutorial/1
 
 method : PUT - update by id
-http://qcostaffing_backend/api/news/1
+http://qcostaffing_backend/api/tutorial/1
 {
-    "title":"update title",
-    "description":" update description "
+    "title":"test-title",
+    "description":"test-description",
+    "discipline_id":[]
 }
 
 method : DELETE - delete by id
-http://qcostaffing_backend/api/news/1
+http://qcostaffing_backend/api/tutorial/1
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+tutorial API END POINT
+
+method : POST for create
+http://qcostaffing_backend/api/quiz_tutorial
+{
+    "tutorial_id": 3,
+    "q": "test-q",
+    "q1": "test-q1",
+    "q2": "test-q2",
+    "q3": "test-q3",
+    "q4": "test-q4",
+    "ans": "test-ans"
+}
+
+method : GET  - get all
+http://qcostaffing_backend/api/quiz_tutorial
+
+method : GET  - get by id
+http://qcostaffing_backend/api/quiz_tutorial/1
+
+method : PUT - update by id
+http://qcostaffing_backend/api/quiz_tutorial/1
+{
+    "tutorial_id": 3,
+    "q": "test-q",
+    "q1": "test-q1",
+    "q2": "test-q2",
+    "q3": "test-q3",
+    "q4": "test-q4",
+    "ans": "test-ans"
+}
+
+method : DELETE - delete by id
+http://qcostaffing_backend/api/quiz_tutorial/1
 
 
 
@@ -231,3 +266,10 @@ update user data - PUT : http://localhost/qcostaffing_backend/public/api/profile
 C:\xampp\htdocs\qcostaffing_backend\database\migrations\2023_01_03_130440_create_site_contents_table.php
 
 php artisan migrate:refresh --path=/database/migrations/2023_01_03_130440_create_site_contents_table.php
+
+
+{
+    "title":"test-title",
+    "description":"test-description",
+    "discipline_id":[1, 2, 8]
+}
