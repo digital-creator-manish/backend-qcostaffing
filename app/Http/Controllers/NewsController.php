@@ -126,9 +126,8 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        Storage::delete($news->filename);
+        if($news->filename) Storage::delete($news->filename);
         $news->delete();
-
         return Helper::success_response($news, 'delete-success');
     }
 }

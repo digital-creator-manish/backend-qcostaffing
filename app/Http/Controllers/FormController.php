@@ -11,18 +11,13 @@ class FormController extends Controller
 {
     public function index(Request $request)
     {
-        // $forms = Form::with('form_type_id', 'created_by', 'updated_by', 'discipline')->get();
-        // return Helper::success_response($forms);
-
-        $form = Helper::getRecords(Form::class, $request);
-        return Helper::success_response($form);
+        return Helper::getRecords(Form::class, $request);
     }
 
     public function store(Request $request)
     {
         $validation_arr = [
             "title" => "required",
-            "filename" => "required",
             "form_type_id" => ["required", "exists:form_types,id"],
             "discipline_id" => ["array"],
             "discipline_id.*" => "exists:disciplines,id"
@@ -87,8 +82,9 @@ class FormController extends Controller
 
     public function destroy(Form $form)
     {
+        if($form->filename) Storage::delete($form->filename);
         $form->discipline()->detach(); //leave the detach function empty
         $form->delete();
-        return Helper::success_response([], 'delete-success');
+        return Helper::success_response($form, 'delete-success');
     }
 }

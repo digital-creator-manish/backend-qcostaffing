@@ -177,7 +177,7 @@ http://qcostaffing_backend/api/tutorial/1
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-tutorial API END POINT
+quiz_tutorial API END POINT
 
 method : POST for create
 http://qcostaffing_backend/api/quiz_tutorial
@@ -212,38 +212,8 @@ http://qcostaffing_backend/api/quiz_tutorial/1
 method : DELETE - delete by id
 http://qcostaffing_backend/api/quiz_tutorial/1
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-same for skill 
-
-
-
-
-
-
-
-
-
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 Profile 
@@ -261,6 +231,83 @@ update user data - PUT : http://localhost/qcostaffing_backend/public/api/profile
     "skill_email": "skill-email@qcostaffing-test.com",
     "app_email": "app-email@qcostaffing-test.com"
 }
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+GET form Type
+http://localhost/qcostaffing_backend/public/api/form_type
+
+
+
+
+form API END POINT
+
+method : POST for create
+http://qcostaffing_backend/api/form
+{
+    
+    "title": "test-title",
+    "form_type_id": 3,
+    "discipline_id": [
+        1
+    ],
+    "filename" - this is filename
+}
+
+method : GET  - get all
+http://qcostaffing_backend/api/form
+
+method : GET  - get by id
+http://qcostaffing_backend/api/form/1
+
+method : PUT - update by id
+http://qcostaffing_backend/api/form/1
+{
+    
+    "title": "test-title",
+    "form_type_id": 3,
+    "discipline_id": [
+        1
+    ],
+    "filename" - this is filename
+}
+
+method : DELETE - delete by id
+http://qcostaffing_backend/api/form/1
+
+
+
+
+{
+    "id": 1,
+    "title": "test-title",
+    "form_type_id": 3,
+    "discipline_id": [
+        1
+    ]
+}
+
+
+same for skill 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 C:\xampp\htdocs\qcostaffing_backend\database\migrations\2023_01_03_130440_create_site_contents_table.php
