@@ -59,14 +59,10 @@ class SiteContentController extends Controller
      * @param  \App\Models\SiteContent  $siteContent
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(SiteContent $sitecontent)
     {
-        //
-        $SiteContent = SiteContent::find(["id" => $id])->first();
-        if ($SiteContent == NULL) {
-            return response(['success' => 0, 'message' => 'record not found'], 422);
-        }
-        return response(['success' => 1, 'message' => 'read success', 'data' => $SiteContent], 200);
+        $data = SiteContent::with('created_by', 'updated_by')->where('site_contents.id', '=', $sitecontent->id)->get()->first();
+        return Helper::success_response($data);
     }
 
     /**
@@ -107,8 +103,7 @@ class SiteContentController extends Controller
      */
     public function destroy(SiteContent $sitecontent)
     {
-        $news->delete();
-
-        return Helper::success_response($news, 'delete-success');
+        $sitecontent->delete();
+        return Helper::success_response($sitecontent, 'delete-success');
     }
 }
