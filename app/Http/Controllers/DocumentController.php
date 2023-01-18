@@ -37,8 +37,9 @@ class DocumentController extends Controller
     public function store(Request $request)
     {
         $validation_arr = [
-            "document_type_id" => ["required", "exists:document_types,id"],
             "filename" => "required",
+            "discipline_id" => ["array"],
+            "discipline_id.*" => "exists:disciplines,id"
         ];
 
         if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
@@ -52,12 +53,19 @@ class DocumentController extends Controller
 
         if ($request->document_type_id) $document->document_type_id = $request->document_type_id;
         if ($filename) $document->filename = $filename;
-        
+
         $document->created_by = auth()->user()->id;
         $document->save();
 
-        $data = Document::with('document_type_id', 'created_by')->where('documents.id', '=', $document->id)->get()->first();
-        return Helper::success_response($data);
+        if ($request->discipline_id && count($request->discipline_id)) {
+            $document->discipline()->attach($request->discipline_id);
+            return Document::with('discipline')->whereRelation('discipline', 'documents.id', '=', $document->id)->get()->first();
+        }
+        return $document;
+
+
+        // $data = Document::with('discipline', 'created_by')->where('documents.id', '=', $document->id)->get()->first();
+        // return Helper::success_response($data);
     }
 
     /**

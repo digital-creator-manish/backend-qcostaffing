@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Storage;
 
 class SkillController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Skill::with('discipline')->get();
+        return Helper::getRecords(Skill::class, $request);
     }
 
     public function store(Request $request)
@@ -28,14 +28,15 @@ class SkillController extends Controller
 
         if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
 
-        $document = "";
-        if ($request->file('document')) {
-            $document = $request->file('document')->store('qcostaffing/skill');
+        $filename = "";
+        if ($request->file('filename')) {
+            $filename = $request->file('filename')->store('qcostaffing/skill');
         }
 
         $skill = new Skill();
         $skill->title = $request->title;
-        if ($document) $skill->document = $document;
+        if ($filename) $skill->filename = $filename;
+        $skill->created_by = $skill->updated_by = auth()->user()->id;
 
         $skill->save();
 
@@ -50,7 +51,7 @@ class SkillController extends Controller
     {
         return Skill::with('discipline')->whereRelation('discipline', 'skills.id', '=', $skill->id)->get()->first();
     }
-    
+
     public function update(Request $request, Skill $skill)
     {
         $validation_arr = [
@@ -60,14 +61,15 @@ class SkillController extends Controller
 
         if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
 
-        $document = "";
-        if ($request->file("document")) {
-            Storage::delete($skill->document);
-            $document = $request->file('document')->store('qcostaffing/skill');
+        $filename = "";
+        if ($request->has('filename')) {
+            Storage::delete($skill->filename);
         }
-
+        if ($request->file('filename')) {
+            $filename = $request->file('filename')->store('qcostaffing/skill');
+        }
         if ($request->title) $skill->title = $request->title;
-        if ($document) $skill->document = $document;
+        if ($filename) $skill->filename = $filename;
 
         $skill->update();
         if ($request->discipline_id && count($request->discipline_id)) {
@@ -80,6 +82,9 @@ class SkillController extends Controller
 
     public function destroy(Skill $skill)
     {
+        if ($skill->filename) {
+            Storage::delete($skill->filename);
+        }
         $skill->discipline()->detach(); //leave the detach function empty
         $skill->delete();
     }

@@ -22,10 +22,10 @@ return new class extends Migration
             $table->string('uploaded_by')->nullable();
             $table->date('uploaded_date')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
-            $table->unsignedBigInteger('updated_by')->nullable();
-            $table->timestamps();
             $table->foreign('created_by')->references('id')->on('users');
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->foreign('updated_by')->references('id')->on('users');
+            $table->timestamps();
         });
     }
 

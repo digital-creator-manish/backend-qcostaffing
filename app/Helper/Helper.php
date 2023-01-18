@@ -58,9 +58,13 @@ class Helper
         if ($model_name == "Tutorial") {
             $query->with('created_by', 'updated_by', 'discipline', 'quiz_tutorial');
         }
+        
+        if ($model_name == "Skill") {
+            $query->with('created_by', 'updated_by', 'discipline');
+        }
 
         if ($searchcol && $searchval) {
-            if ($searchexp = "LIKE") {
+            if ($searchexp == "LIKE") {
                 $searchval = '%' . $searchval . '%';
             }
             $query->where($searchcol, $searchexp, $searchval);
