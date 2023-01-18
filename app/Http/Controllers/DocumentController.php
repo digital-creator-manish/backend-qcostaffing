@@ -6,15 +6,14 @@ use App\Models\Document;
 use Illuminate\Http\Request;
 use App\Helper\Helper;
 
-class DocumentController extends Controller
-{
+class DocumentController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         return Helper::getRecords(Document::class, $request);
     }
 
@@ -23,8 +22,7 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -34,15 +32,16 @@ class DocumentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validation_arr = [
             "filename" => "required",
             "discipline_id" => ["array"],
             "discipline_id.*" => "exists:disciplines,id"
         ];
 
-        if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
+        if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') {
+            return $check_validation;
+        }
 
         $filename = "";
         if ($request->file('filename')) {
@@ -51,18 +50,21 @@ class DocumentController extends Controller
 
         $document = new Document();
 
-        if ($request->document_type_id) $document->document_type_id = $request->document_type_id;
-        if ($filename) $document->filename = $filename;
+        if ($request->document_type_id){
+            $document->document_type_id = $request->document_type_id;
+        }
+        if ($filename){
+            $document->filename = $filename;
+        }
 
         $document->created_by = auth()->user()->id;
         $document->save();
 
         if ($request->discipline_id && count($request->discipline_id)) {
             $document->discipline()->attach($request->discipline_id);
-            return Document::with('discipline')->whereRelation('discipline', 'documents.id', '=', $document->id)->get()->first();
+            return Document::with('created_by', 'discipline')->whereRelation('discipline', 'documents.id', '=', $document->id)->get()->first();
         }
         return $document;
-
 
         // $data = Document::with('discipline', 'created_by')->where('documents.id', '=', $document->id)->get()->first();
         // return Helper::success_response($data);
@@ -74,8 +76,7 @@ class DocumentController extends Controller
      * @param  \App\Models\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function show(Document $document)
-    {
+    public function show(Document $document) {
         $data = $document::with('document_type_id', 'created_by')->where('documents.id', '=', $document->id)->get()->first();
         return Helper::success_response($data);
     }
@@ -86,8 +87,7 @@ class DocumentController extends Controller
      * @param  \App\Models\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function edit(Document $document)
-    {
+    public function edit(Document $document) {
         //
     }
 
@@ -98,8 +98,7 @@ class DocumentController extends Controller
      * @param  \App\Models\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Document $document)
-    {
+    public function update(Request $request, Document $document) {
         //
     }
 
@@ -109,9 +108,9 @@ class DocumentController extends Controller
      * @param  \App\Models\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Document $document)
-    {
+    public function destroy(Document $document) {
         $document->delete();
         return Helper::success_response([], 'delete-success');
     }
+
 }

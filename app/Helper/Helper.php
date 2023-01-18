@@ -63,6 +63,10 @@ class Helper
             $query->with('created_by', 'updated_by', 'discipline');
         }
 
+        if ($model_name == "Document") {
+            $query->with('created_by', 'discipline');
+        }
+
         if ($searchcol && $searchval) {
             if ($searchexp == "LIKE") {
                 $searchval = '%' . $searchval . '%';
