@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Document;
 use Illuminate\Http\Request;
 use App\Helper\Helper;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller {
 
@@ -50,10 +51,10 @@ class DocumentController extends Controller {
 
         $document = new Document();
 
-        if ($request->document_type_id){
+        if ($request->document_type_id) {
             $document->document_type_id = $request->document_type_id;
         }
-        if ($filename){
+        if ($filename) {
             $document->filename = $filename;
         }
 
@@ -77,7 +78,7 @@ class DocumentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show(Document $document) {
-        $data = $document::with('document_type_id', 'created_by')->where('documents.id', '=', $document->id)->get()->first();
+        $data = $document::with('created_by', 'discipline')->where('documents.id', '=', $document->id)->get()->first();
         return Helper::success_response($data);
     }
 
@@ -99,7 +100,34 @@ class DocumentController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Document $document) {
-        //
+//                $check_validation = Helper::check_validation($request, ["show" => "in:Y,N", "uploaded_date" => "date|nullable"]);
+//
+//        if ($check_validation != 'pass') {
+//            return $check_validation;
+//        }
+//           exit("1");
+//        return $request;
+        $filename = "";
+        if ($request->has('filename')) {
+//            exit("1");
+            Storage::delete($document->filename);
+        }
+        if ($request->file('filename')) {
+            $filename = $request->file('filename')->store('qcostaffing/document');
+        }
+        
+        
+//        $document->updated_by = auth()->user()->id;
+        $document->filename = $filename;
+        $document->update();
+        if($request->has('discipline_id')){
+            $document->discipline()->detach();
+        }
+        if ($request->discipline_id && count($request->discipline_id)) {
+            $document->discipline()->attach($request->discipline_id);
+            return Document::with('created_by', 'discipline')->whereRelation('discipline', 'documents.id', '=', $document->id)->get()->first();
+        }
+        return $document::with('created_by')->get()->first();
     }
 
     /**
