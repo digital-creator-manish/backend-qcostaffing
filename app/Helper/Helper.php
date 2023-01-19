@@ -128,7 +128,9 @@ class Helper
 
     public static function process_data($data)
     {
-        $data->filename = Self::getFileUrl($data->filename);
+        if($data->filename){
+            $data->filename = Self::getFileUrl($data->filename);
+        }
         return $data;
     }
 

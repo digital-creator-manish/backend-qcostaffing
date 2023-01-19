@@ -58,7 +58,7 @@ class DocumentController extends Controller
         // if ($request->document_type_id) {
         //     $document->document_type_id = $request->document_type_id;
         // }
-        $filename = Helper::addRemoveFile($request);
+        // $filename = Helper::addRemoveFile($request);
         // exit(var_dump($filename));
         if ($request->has('filename')) {
             $document->filename = Helper::addRemoveFile($request);
@@ -86,7 +86,7 @@ class DocumentController extends Controller
     public function show(Document $document)
     {
         $data = $document::with('created_by', 'discipline')->where('documents.id', '=', $document->id)->get()->first();
-        return Helper::success_response($data);
+        return Helper::success_response(Helper::process_data($data));
     }
 
     /**
@@ -144,7 +144,7 @@ class DocumentController extends Controller
         //     $document->discipline()->attach($request->discipline_id);
         //     return Document::with('created_by', 'discipline')->whereRelation('discipline', 'documents.id', '=', $document->id)->get()->first();
         // }
-        return Helper::success_response($document);
+        return Helper::success_response(Helper::process_data($document));
     }
 
     /**

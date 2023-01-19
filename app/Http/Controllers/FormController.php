@@ -25,15 +25,18 @@ class FormController extends Controller
 
         if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
 
-        $filename = "";
-        if ($request->file('filename')) {
-            $filename = $request->file('filename')->store('qcostaffing/form');
-        }
+        // $filename = "";
+        // if ($request->file('filename')) {
+        //     $filename = $request->file('filename')->store('qcostaffing/form');
+        // }
 
         $form = new Form();
         if ($request->title) $form->title = $request->title;
         if ($request->form_type_id) $form->form_type_id = $request->form_type_id;
-        if ($filename) $form->filename = $filename;
+        if ($request->has('filename')) {
+            $form->filename = Helper::addRemoveFile($request);
+        }
+
         $form->created_by = $form->updated_by = auth()->user()->id;
         $form->save();
 
@@ -59,24 +62,27 @@ class FormController extends Controller
 
         if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
 
-        if ($request->file('filename')) {
-            Storage::delete($form->filename);
-            $filename = $request->file('filename')->store('qcostaffing/form');
-        }
+        // if ($request->file('filename')) {
+        //     Storage::delete($form->filename);
+        //     $filename = $request->file('filename')->store('qcostaffing/form');
+        // }
 
         if ($request->title) $form->title = $request->title;
         if ($request->form_type_id) $form->form_type_id = $request->form_type_id;
-        if (isset($filename) && $filename) $form->filename = $filename;
+        if ($request->has('filename')) {
+            // exit("hi");
+            $form->filename = Helper::addRemoveFile($request);
+        }
         $form->updated_by = auth()->user()->id;
         $form->update();
 
         if ($request->exists('discipline_id')) {
             $form->discipline()->detach(); //detach discipline if array present blank or filled
-            if (count($request->discipline_id)) {
+            if (count($request->discipline_id) && $request->discipline_id[0]) {
                 $form->discipline()->attach($request->discipline_id);
             }
         } 
-        return Helper::success_response();
+        return Helper::success_response(Helper::process_data($form));
     }
 
     public function destroy(Form $form)

@@ -46,7 +46,7 @@ class NewsController extends Controller
             return $check_validation;
 
         $filename = $request->hasFile('filename') ? Helper::uploadFile($request->file('filename')) : "";
-        
+
         // if ($request->hasFile('filename')) {
         // } else {
         //     $filename = "";
@@ -63,8 +63,9 @@ class NewsController extends Controller
             $news->uploaded_by = $request->uploaded_by;
         if ($request->uploaded_date)
             $news->uploaded_date = $request->uploaded_date;
-        if ($filename)
-            $news->filename = $filename;
+        if ($request->has('filename')) {
+            $news->filename = Helper::addRemoveFile($request);
+        }
         $news->created_by = $news->updated_by = auth()->user()->id;
 
         $news->save();
@@ -109,14 +110,11 @@ class NewsController extends Controller
             return $check_validation;
         }
 
-        $filename = "";
-        if ($request->has('filename')) {
-            Storage::delete($news->filename);
-        }
-        if ($request->file('filename')) {
-            $filename = $request->hasFile('filename') ? Helper::uploadFile($request->file('filename')) : "";
-        }
-
+        // $filename = "";
+        // if ($request->has('filename')) {
+        //     Storage::delete($news->filename);
+        // }
+    
         if ($request->has('title')) {
             $news->title = $request->title;
         }
@@ -133,7 +131,7 @@ class NewsController extends Controller
             $news->uploaded_date = $request->uploaded_date;
         }
         if ($request->has('filename')) {
-            $news->filename = $filename;
+            $news->filename = Helper::addRemoveFile($request);
         }
         $news->updated_by = auth()->user()->id;
         $news->update();
