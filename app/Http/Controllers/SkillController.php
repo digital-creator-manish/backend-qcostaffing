@@ -21,7 +21,7 @@ class SkillController extends Controller
     {
         $validation_arr = [
             "title" => "required",
-            "document" => "required",
+            "filename" => "required",
             "discipline_id" => ["array"],
             "discipline_id.*" => "exists:disciplines,id"
         ];
@@ -31,22 +31,21 @@ class SkillController extends Controller
 
         $skill = new Skill();
         $skill->title = $request->title;
-        if($request->has('filename')){
+        if ($request->has('filename')) {
             $skill->filename = Helper::addRemoveFile($request);
-        }        
+        }
         $skill->created_by = $skill->updated_by = auth()->user()->id;
         $skill->save();
 
-        if ($request->discipline_id && count($request->discipline_id)) {
+        if ($request->has('discipline_id') && count($request->discipline_id)) {
             $skill->discipline()->attach($request->discipline_id);
         }
         return Helper::success_response();
     }
 
-    public function show(Skill $skill)
+    public function show(Skill $skill, Request $request)
     {
-        $data = Skill::with('discipline')->whereRelation('discipline', 'skills.id', '=', $skill->id)->get()->first();
-        return Helper::success_response(Helper::process_data($data));
+        return Helper::getRecords(Skill::class, $request, false);
     }
 
     public function update(Request $request, Skill $skill)
@@ -60,18 +59,18 @@ class SkillController extends Controller
 
         //assign update value
         $skill->title = $request->title;
-        if($request->has('filename')){
+        if ($request->has('filename')) {
             $skill->filename = Helper::addRemoveFile($request, $skill->filename);
         }
         $skill->update();
 
         if ($request->has('discipline_id')) {
             $skill->discipline()->detach(); //detach discipline if array present blank or filled
+            if (count($request->discipline_id)) {
+                $skill->discipline()->attach($request->discipline_id);
+            }
         }
 
-        if (count($request->discipline_id)) {
-            $skill->discipline()->attach($request->discipline_id);
-        }
         return Helper::success_response();
     }
 
