@@ -10,14 +10,16 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
 
-class NewsController extends Controller {
+class NewsController extends Controller
+{
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         return Helper::getRecords(News::class, $request);
     }
 
@@ -26,7 +28,8 @@ class NewsController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         //
     }
 
@@ -36,15 +39,18 @@ class NewsController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $check_validation = Helper::check_validation($request, ["title" => "required", "show" => "in:Y,N", "uploaded_date" => "nullable"]);
         if ($check_validation != 'pass')
             return $check_validation;
 
-        $filename = "";
-        if ($request->file('filename')) {
-            $filename = $request->file('filename')->store('qcostaffing/news');
-        }
+        $filename = $request->hasFile('filename') ? Helper::uploadFile($request->file('filename')) : "";
+        
+        // if ($request->hasFile('filename')) {
+        // } else {
+        //     $filename = "";
+        // }
 
         $news = new News();
         if ($request->title)
@@ -62,8 +68,7 @@ class NewsController extends Controller {
         $news->created_by = $news->updated_by = auth()->user()->id;
 
         $news->save();
-        $data = News::with('created_by', 'updated_by')->where('news.id', '=', $news->id)->get()->first();
-        return Helper::success_response($data);
+        return Helper::success_response();
     }
 
     /**
@@ -72,8 +77,10 @@ class NewsController extends Controller {
      * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
-    public function show(News $news) {
+    public function show(News $news)
+    {
         $data = News::with('created_by', 'updated_by')->where('news.id', '=', $news->id)->get()->first();
+        $data = Helper::process_data($data);
         return Helper::success_response($data);
     }
 
@@ -83,7 +90,8 @@ class NewsController extends Controller {
      * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
-    public function edit(News $news) {
+    public function edit(News $news)
+    {
         //
     }
 
@@ -94,7 +102,8 @@ class NewsController extends Controller {
      * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news) {
+    public function update(Request $request, News $news)
+    {
         $check_validation = Helper::check_validation($request, ["show" => "in:Y,N", "uploaded_date" => "date|nullable"]);
 
         if ($check_validation != 'pass') {
@@ -106,7 +115,7 @@ class NewsController extends Controller {
             Storage::delete($news->filename);
         }
         if ($request->file('filename')) {
-            $filename = $request->file('filename')->store('qcostaffing/news');
+            $filename = $request->hasFile('filename') ? Helper::uploadFile($request->file('filename')) : "";
         }
 
         if ($request->has('title')) {
@@ -129,9 +138,7 @@ class NewsController extends Controller {
         }
         $news->updated_by = auth()->user()->id;
         $news->update();
-
-        $data = News::with('created_by', 'updated_by')->where('news.id', '=', $news->id)->get()->first();
-        return Helper::success_response($data);
+        return Helper::success_response();
     }
 
     /**
@@ -140,12 +147,12 @@ class NewsController extends Controller {
      * @param  \App\Models\News  $news
      * @return \Illuminate\Http\Response
      */
-    public function destroy(News $news) {
+    public function destroy(News $news)
+    {
         if ($news->filename) {
             Storage::delete($news->filename);
         }
         $news->delete();
-        return Helper::success_response($news, 'delete-success');
+        return Helper::success_response([], 'delete-success');
     }
-
 }

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 // use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\Mime\Part\File;
+use App\Helper\Helper;
 
 class DownloadController extends Controller
 {
@@ -16,22 +18,14 @@ class DownloadController extends Controller
      */
     public function index(Request $request)
     {
-        //exit("1");
-          ///$path = storage_path('app/qcostaffing/news/dWjU0PS2soIYauNnhre1fj6oT9v2MhJWCdxFTxQx.pdf');
-        
-          echo $pathToFile = storage_path('app/qcostaffing/news/dWjU0PS2soIYauNnhre1fj6oT9v2MhJWCdxFTxQx.pdf');
-        //   exit(var_dump(file_exists($pathToFile)));
+        $file_path = storage_path('app/public/' . $request->filename);
+        if(file_exists($file_path)){
+            $content = file_get_contents($file_path);
+            return response($content)->withHeaders(['Content-Type' => mime_content_type($file_path)]);
+        }else{
+            return Helper::error_response();
+        }
 
-          //PDF file is stored under project/public/download/info.pdf
-    // $file= public_path(). "/download/info.pdf";
-
-    $headers = array(
-        'Content-Type' => 'application/pdf',
-      );
-
-    return Response::download($pathToFile, 'filename.pdf', $headers);
-        //   return response()->download($pathToFile);
-            //   return Storage::download($path);
     }
 
     /**

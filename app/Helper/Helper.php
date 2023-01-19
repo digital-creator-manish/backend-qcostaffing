@@ -22,14 +22,20 @@ class Helper
         return $response;
     }
 
-    static public function success_response($data, $message = "success", $http_response_status_code = 200, $format = false)
+    static public function success_response($data=[], $message = "success", $http_response_status_code = 200, $format = false)
     {
         if ($format) {
             $resp_success_arr = ["success" => 1, "message" => $message, "record" => $data];
-        }else{
+        } else {
             $resp_success_arr = ["success" => 1, "message" => $message, "record" => ["data" => $data]];
         }
 
+        return response($resp_success_arr, $http_response_status_code);
+    }
+
+    static public function error_response($data =[], $message = "error", $http_response_status_code = 400)
+    {
+        $resp_success_arr = ["success" => 0, "message" => $message];
         return response($resp_success_arr, $http_response_status_code);
     }
 
@@ -58,7 +64,7 @@ class Helper
         if ($model_name == "Tutorial") {
             $query->with('created_by', 'updated_by', 'discipline', 'quiz_tutorial');
         }
-        
+
         if ($model_name == "Skill") {
             $query->with('created_by', 'updated_by', 'discipline');
         }
@@ -88,13 +94,38 @@ class Helper
         }
         // exit(var_dump($result->toArray()));
         // $res_array = array();
-        // foreach($result->toArray() as $res){
-        //     if(array_key_exists("filename", $res)){
-        //         $res["filename"] = Storage::url($res["filename"]);
-        //         $res_array[] = $res;
-        //     }
-        // }
+        foreach($result->toArray() as $res){
+            if(array_key_exists("filename", $res)){
+                $res["filename"] = Self::getFileUrl($res["filename"]);
+                $res_array[] = $res;
+            }
+        }
 
-        return Helper::success_response($result, $msg, $code, $bool);
+        return Helper::success_response($res_array, $msg, $code, $bool);
     }
+
+
+    public static function uploadFile($fileObj)
+    {
+        $filename = time() . '-' . $fileObj->getClientOriginalName();
+        if (Storage::disk('public')->put($filename, file_get_contents($fileObj))) {
+            return $filename;
+        } else {
+            return "";
+        }
+    }
+
+
+    public static function getFileUrl($filename)
+    {
+        return $file_url =  url('api/download?filename=' . $filename); //. '/download?filename=' . ;
+    }
+
+    public static function process_data($data)
+    {
+        $data->filename = Self::getFileUrl($data->filename);
+        return $data;
+    }
+
+    
 }
