@@ -22,7 +22,7 @@ class Helper
         return $response;
     }
 
-    static public function success_response($data=[], $message = "success", $http_response_status_code = 200, $format = false)
+    static public function success_response($data = [], $message = "success", $http_response_status_code = 200, $format = false)
     {
         if ($format) {
             $resp_success_arr = ["success" => 1, "message" => $message, "record" => $data];
@@ -33,7 +33,7 @@ class Helper
         return response($resp_success_arr, $http_response_status_code);
     }
 
-    static public function error_response($data =[], $message = "error", $http_response_status_code = 400)
+    static public function error_response($data = [], $message = "error", $http_response_status_code = 400)
     {
         $resp_success_arr = ["success" => 0, "message" => $message];
         return response($resp_success_arr, $http_response_status_code);
@@ -94,8 +94,8 @@ class Helper
         }
         // exit(var_dump($result->toArray()));
         // $res_array = array();
-        foreach($result as $resultObj){
-            if($resultObj->filename){
+        foreach ($result as $resultObj) {
+            if ($resultObj->filename) {
                 $resultObj = Self::process_data($resultObj);
             }
         }
@@ -132,5 +132,16 @@ class Helper
         return $data;
     }
 
-    
+    public static function addRemoveFile($request, $existing_file = "")
+    {
+        $filename = "";
+        if ($existing_file) {
+            Storage::delete($existing_file);
+        }
+        
+        if ($request->file('filename')) {
+            $filename = Self::uploadFile($request->file('filename'));
+        }
+        return $filename;
+    }
 }

@@ -28,28 +28,25 @@ class SkillController extends Controller
 
         if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
 
-        $filename = "";
-        if ($request->file('filename')) {
-            $filename = $request->file('filename')->store('qcostaffing/skill');
-        }
 
         $skill = new Skill();
         $skill->title = $request->title;
-        if ($filename) $skill->filename = $filename;
+        if($request->has('filename')){
+            $skill->filename = Helper::addRemoveFile($request);
+        }        
         $skill->created_by = $skill->updated_by = auth()->user()->id;
-
         $skill->save();
 
         if ($request->discipline_id && count($request->discipline_id)) {
             $skill->discipline()->attach($request->discipline_id);
-            return Skill::with('discipline')->whereRelation('discipline', 'skills.id', '=', $skill->id)->get()->first();
         }
-        return $skill;
+        return Helper::success_response();
     }
 
     public function show(Skill $skill)
     {
-        return Skill::with('discipline')->whereRelation('discipline', 'skills.id', '=', $skill->id)->get()->first();
+        $data = Skill::with('discipline')->whereRelation('discipline', 'skills.id', '=', $skill->id)->get()->first();
+        return Helper::success_response(Helper::process_data($data));
     }
 
     public function update(Request $request, Skill $skill)
@@ -61,23 +58,21 @@ class SkillController extends Controller
 
         if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
 
-        $filename = "";
-        if ($request->has('filename')) {
-            Storage::delete($skill->filename);
+        //assign update value
+        $skill->title = $request->title;
+        if($request->has('filename')){
+            $skill->filename = Helper::addRemoveFile($request, $skill->filename);
         }
-        if ($request->file('filename')) {
-            $filename = $request->file('filename')->store('qcostaffing/skill');
-        }
-        if ($request->title) $skill->title = $request->title;
-        if ($filename) $skill->filename = $filename;
-
         $skill->update();
-        if ($request->discipline_id && count($request->discipline_id)) {
-            $skill->discipline()->detach();
-            $skill->discipline()->attach($request->discipline_id);
-            return Skill::with('discipline')->whereRelation('discipline', 'skills.id', '=', $skill->id)->get()->first();
+
+        if ($request->has('discipline_id')) {
+            $skill->discipline()->detach(); //detach discipline if array present blank or filled
         }
-        return $skill;
+
+        if (count($request->discipline_id)) {
+            $skill->discipline()->attach($request->discipline_id);
+        }
+        return Helper::success_response();
     }
 
     public function destroy(Skill $skill)
@@ -87,5 +82,6 @@ class SkillController extends Controller
         }
         $skill->discipline()->detach(); //leave the detach function empty
         $skill->delete();
+        return Helper::success_response();
     }
 }

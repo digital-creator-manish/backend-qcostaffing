@@ -76,8 +76,7 @@ class FormController extends Controller
                 $form->discipline()->attach($request->discipline_id);
             }
         } 
-        $data = Form::with('form_type_id', 'created_by', 'updated_by', 'discipline')->where('forms.id', '=', $form->id)->get()->first();
-        return Helper::success_response($data);
+        return Helper::success_response();
     }
 
     public function destroy(Form $form)
