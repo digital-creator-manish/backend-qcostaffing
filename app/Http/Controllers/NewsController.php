@@ -80,8 +80,7 @@ class NewsController extends Controller
     public function show(News $news)
     {
         $data = News::with('created_by', 'updated_by')->where('news.id', '=', $news->id)->get()->first();
-        $data = Helper::process_data($data);
-        return Helper::success_response($data);
+        return Helper::success_response(Helper::process_data($data));
     }
 
     /**

@@ -94,14 +94,19 @@ class Helper
         }
         // exit(var_dump($result->toArray()));
         // $res_array = array();
-        foreach($result->toArray() as $res){
-            if(array_key_exists("filename", $res)){
-                $res["filename"] = Self::getFileUrl($res["filename"]);
-                $res_array[] = $res;
+        foreach($result as $resultObj){
+            if($resultObj->filename){
+                $resultObj = Self::process_data($resultObj);
             }
         }
+        // foreach($result->toArray() as $res){
+        //     if(array_key_exists("filename", $res)){
+        //         $res["filename"] = Self::getFileUrl($res["filename"]);
+        //         $res_array[] = $res;
+        //     }
+        // }
 
-        return Helper::success_response($res_array, $msg, $code, $bool);
+        return Helper::success_response($result, $msg, $code, $bool);
     }
 
 
