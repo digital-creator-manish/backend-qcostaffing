@@ -7,14 +7,16 @@ use Illuminate\Http\Request;
 use App\Helper\Helper;
 use Illuminate\Support\Facades\Storage;
 
-class DocumentController extends Controller {
+class DocumentController extends Controller
+{
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         return Helper::getRecords(Document::class, $request);
     }
 
@@ -23,7 +25,8 @@ class DocumentController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         //
     }
 
@@ -33,7 +36,8 @@ class DocumentController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $validation_arr = [
             "filename" => "required",
             "discipline_id" => ["array"],
@@ -44,28 +48,30 @@ class DocumentController extends Controller {
             return $check_validation;
         }
 
-        $filename = "";
-        if ($request->file('filename')) {
-            $filename = $request->file('filename')->store('qcostaffing/document');
-        }
+        // $filename = "";
+        // if ($request->file('filename')) {
+        //     $filename = $request->file('filename')->store('qcostaffing/document');
+        // }
 
         $document = new Document();
 
-        if ($request->document_type_id) {
-            $document->document_type_id = $request->document_type_id;
-        }
-        if ($filename) {
-            $document->filename = $filename;
+        // if ($request->document_type_id) {
+        //     $document->document_type_id = $request->document_type_id;
+        // }
+        $filename = Helper::addRemoveFile($request);
+        // exit(var_dump($filename));
+        if ($request->has('filename')) {
+            $document->filename = Helper::addRemoveFile($request);
         }
 
         $document->created_by = auth()->user()->id;
         $document->save();
 
-        if ($request->discipline_id && count($request->discipline_id)) {
+        if ($request->has('discipline_id') && count($request->discipline_id)) {
             $document->discipline()->attach($request->discipline_id);
-            return Document::with('created_by', 'discipline')->whereRelation('discipline', 'documents.id', '=', $document->id)->get()->first();
+            // return Document::with('created_by', 'discipline')->whereRelation('discipline', 'documents.id', '=', $document->id)->get()->first();
         }
-        return $document;
+        return Helper::success_response($document);
 
         // $data = Document::with('discipline', 'created_by')->where('documents.id', '=', $document->id)->get()->first();
         // return Helper::success_response($data);
@@ -77,7 +83,8 @@ class DocumentController extends Controller {
      * @param  \App\Models\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function show(Document $document) {
+    public function show(Document $document)
+    {
         $data = $document::with('created_by', 'discipline')->where('documents.id', '=', $document->id)->get()->first();
         return Helper::success_response($data);
     }
@@ -88,7 +95,8 @@ class DocumentController extends Controller {
      * @param  \App\Models\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function edit(Document $document) {
+    public function edit(Document $document)
+    {
         //
     }
 
@@ -99,35 +107,44 @@ class DocumentController extends Controller {
      * @param  \App\Models\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Document $document) {
-//                $check_validation = Helper::check_validation($request, ["show" => "in:Y,N", "uploaded_date" => "date|nullable"]);
-//
-//        if ($check_validation != 'pass') {
-//            return $check_validation;
-//        }
-//           exit("1");
-//        return $request;
-        $filename = "";
+    public function update(Request $request, Document $document)
+    {
+        //                $check_validation = Helper::check_validation($request, ["show" => "in:Y,N", "uploaded_date" => "date|nullable"]);
+        //
+        //        if ($check_validation != 'pass') {
+        //            return $check_validation;
+        //        }
+        //           exit("1");
+        //        return $request;
+        //         $filename = "";
+        //         if ($request->has('filename')) {
+        // //            exit("1");
+        //             Storage::delete($document->filename);
+        //         }
+        //         if ($request->file('filename')) {
+        //             $filename = $request->file('filename')->store('qcostaffing/document');
+        //         }
+
+
+        //        $document->updated_by = auth()->user()->id;
         if ($request->has('filename')) {
-//            exit("1");
-            Storage::delete($document->filename);
+            $document->filename = Helper::addRemoveFile($request, $document->filename);
         }
-        if ($request->file('filename')) {
-            $filename = $request->file('filename')->store('qcostaffing/document');
-        }
-        
-        
-//        $document->updated_by = auth()->user()->id;
-        $document->filename = $filename;
         $document->update();
-        if($request->has('discipline_id')){
+        // exit(var_dump(count($request->discipline_id), $request->discipline_id[0]));
+        if ($request->has('discipline_id')) {
             $document->discipline()->detach();
+
+            if (count($request->discipline_id) && $request->discipline_id[0]) {
+                $document->discipline()->attach($request->discipline_id);
+                return Document::with('created_by', 'discipline')->whereRelation('discipline', 'documents.id', '=', $document->id)->get()->first();
+            }
         }
-        if ($request->discipline_id && count($request->discipline_id)) {
-            $document->discipline()->attach($request->discipline_id);
-            return Document::with('created_by', 'discipline')->whereRelation('discipline', 'documents.id', '=', $document->id)->get()->first();
-        }
-        return $document::with('created_by')->get()->first();
+        // if ($request->discipline_id && count($request->discipline_id)) {
+        //     $document->discipline()->attach($request->discipline_id);
+        //     return Document::with('created_by', 'discipline')->whereRelation('discipline', 'documents.id', '=', $document->id)->get()->first();
+        // }
+        return Helper::success_response($document);
     }
 
     /**
@@ -136,9 +153,13 @@ class DocumentController extends Controller {
      * @param  \App\Models\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Document $document) {
+    public function destroy(Document $document)
+    {
+        if ($document->filename) {
+            Storage::delete($document->filename);
+        }
+        $document->discipline()->detach(); //leave the detach function empty
         $document->delete();
-        return Helper::success_response([], 'delete-success');
+        return Helper::success_response();
     }
-
 }

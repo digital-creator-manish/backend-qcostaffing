@@ -43,9 +43,11 @@ class SkillController extends Controller
         return Helper::success_response();
     }
 
-    public function show(Skill $skill, Request $request)
+    public function show(Skill $skill)
     {
-        return Helper::getRecords(Skill::class, $request, false);
+        $data = Skill::with('discipline')->whereRelation('discipline', 'skills.id', '=', $skill->id)->get()->first();
+        
+        return Helper::success_response(Helper::process_data($data));
     }
 
     public function update(Request $request, Skill $skill)

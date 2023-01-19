@@ -40,7 +40,7 @@ class Helper
     }
 
 
-    static function getRecords($model, $request, $data_arr = true)
+    static function getRecords($model, $request)
     {
         $paging = $request->paging ? $request->paging : false;
         $per_page = $request->per_page ? $request->per_page : 0;
@@ -97,9 +97,6 @@ class Helper
         foreach ($result as $resultObj) {
             if ($resultObj->filename) {
                 $resultObj = Self::process_data($resultObj);
-                if ($data_arr == false) {
-                    return Helper::success_response($resultObj, $msg, $code, $bool);
-                }
             }
         }
         // foreach($result->toArray() as $res){
@@ -141,7 +138,7 @@ class Helper
         if ($existing_file) {
             Storage::delete($existing_file);
         }
-
+        
         if ($request->file('filename')) {
             $filename = Self::uploadFile($request->file('filename'));
         }
