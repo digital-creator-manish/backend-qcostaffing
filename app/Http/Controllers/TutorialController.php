@@ -40,15 +40,17 @@ class TutorialController extends Controller
 
         if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
 
-        $filename = "";
-        if ($request->file('filename')) {
-            $filename = $request->file('filename')->store('qcostaffing/tutorial');
-        }
+        // $filename = "";
+        // if ($request->file('filename')) {
+        //     $filename = $request->file('filename')->store('qcostaffing/tutorial');
+        // }
 
         $tutorial = new Tutorial();
         if ($request->title) $tutorial->title = $request->title;
         if ($request->description) $tutorial->description = $request->description;
-        if ($filename) $tutorial->filename = $filename;
+        if ($request->has('filename')) {
+            $tutorial->filename = Helper::addRemoveFile($request);
+        }
         $tutorial->created_by = $tutorial->updated_by = auth()->user()->id;
         $tutorial->save();
 
@@ -63,7 +65,7 @@ class TutorialController extends Controller
     public function show(Tutorial $tutorial)
     {
         $data = $tutorial::with('created_by', 'updated_by', 'discipline')->where('tutorials.id', '=', $tutorial->id)->get()->first();
-        return Helper::success_response($data);
+        return Helper::success_response(Helper::process_data($data));
     }
 
     public function update(Request $request, Tutorial $tutorial)
@@ -75,15 +77,17 @@ class TutorialController extends Controller
 
         if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') return $check_validation;
 
-        $filename = "";
-        if ($request->file('filename')) {
-            Storage::delete($tutorial->filename);
-            $filename = $request->file('filename')->store('qcostaffing/tutorial');
-        }
+        // $filename = "";
+        // if ($request->file('filename')) {
+        //     Storage::delete($tutorial->filename);
+        //     $filename = $request->file('filename')->store('qcostaffing/tutorial');
+        // }
 
         if ($request->title) $tutorial->title = $request->title;
         if ($request->description) $tutorial->description = $request->description;
-        if ($filename) $tutorial->filename = $filename;
+        if ($request->has('filename')) {
+            $tutorial->filename = Helper::addRemoveFile($request);
+        }
         $tutorial->created_by = $tutorial->updated_by = auth()->user()->id;
         $tutorial->update();
 
