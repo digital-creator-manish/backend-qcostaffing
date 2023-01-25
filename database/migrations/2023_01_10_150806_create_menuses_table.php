@@ -11,6 +11,8 @@ return new class extends Migration
      *
      * @return void
      */
+    //php artisan migrate:refresh --path=/database/migrations/2023_01_10_150806_create_menuses_table.php --seed
+    //C:\xampp\htdocs\qcostaffing_backend\database\migrations\2023_01_10_150806_create_menuses_table.php
     public function up()
     {
         Schema::create('menuses', function (Blueprint $table) {

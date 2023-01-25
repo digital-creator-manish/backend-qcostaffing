@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
             $table->string('filename')->nullable();
-            $table->unsignedBigInteger('document_type_id')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');
             $table->timestamps();

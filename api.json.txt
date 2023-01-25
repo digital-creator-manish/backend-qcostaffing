@@ -250,8 +250,9 @@ document API END POINT
 method : POST for create
 http://qcostaffing_backend/api/document
 {
-    "document_type_id": 1,
-    "filename": this is file
+    "title": "test-title",
+    "discipline": [1, 2],
+    "filename": - this-is-file
 }
 
 method : GET  - get all
@@ -263,9 +264,11 @@ http://qcostaffing_backend/api/document/1
 method : PUT - update by id
 http://qcostaffing_backend/api/document/1
 {
-    "document_type_id": 1,
-    "filename": this is file
+    "title": "test-title",
+    "discipline": [1, 2],
+    "filename": - this-is-file
 }
+
 
 method : DELETE - delete by id
 http://qcostaffing_backend/api/document/1

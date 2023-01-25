@@ -53,23 +53,23 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (ModelNotFoundException $e, $request) {
-            return response()->json(['success' => 0, 'message' => $e], 404);
+            return response()->json(['success' => 0, 'message' => 'ModelNotFoundException'], 404);
         });
         
         $this->renderable(function (NotFoundHttpException $e, $request) {
-            return response()->json(['success' => 0, 'message' => $e], 404);
+            return response()->json(['success' => 0, 'message' => 'NotFoundHttpException'], 404);
         });
 
         $this->renderable(function (AccessDeniedHttpException $e, $request) {
-            return response()->json(['success' => 0, 'message' => $e], 404);
+            return response()->json(['success' => 0, 'message' => 'AccessDeniedHttpException'], 404);
         });
 
         $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
-            return response()->json(['success' => 0, 'message' => $e], 404);
+            return response()->json(['success' => 0, 'message' => 'MethodNotAllowedHttpException'], 404);
         });
 
-        $this->renderable(function (QueryException $e, $request) {
-            return response()->json(['success' => 0, 'message' => $e], 404);
-        });
+/*         $this->renderable(function (QueryException $e, $request) {
+            return response()->json(['success' => 0, 'message' => 'QueryException'], 404);
+        }); */
     }
 }

@@ -38,15 +38,15 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        $validation_arr = [
-            "filename" => "required",
-            "discipline_id" => ["array"],
-            "discipline_id.*" => "exists:disciplines,id"
-        ];
+        // $validation_arr = [
+        //     "filename" => "required",
+        //     "discipline_id" => ["array"],
+        //     "discipline_id.*" => "exists:disciplines,id"
+        // ];
 
-        if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') {
-            return $check_validation;
-        }
+        // if (($check_validation = Helper::check_validation($request, $validation_arr)) != 'pass') {
+        //     return $check_validation;
+        // }
 
         // $filename = "";
         // if ($request->file('filename')) {
@@ -60,6 +60,10 @@ class DocumentController extends Controller
         // }
         // $filename = Helper::addRemoveFile($request);
         // exit(var_dump($filename));
+        if ($request->has('title')) {
+            $document->title = $request->title;
+        }
+
         if ($request->has('filename')) {
             $document->filename = Helper::addRemoveFile($request);
         }
@@ -130,6 +134,7 @@ class DocumentController extends Controller
         if ($request->has('filename')) {
             $document->filename = Helper::addRemoveFile($request, $document->filename);
         }
+        $document->title = $request->title;
         $document->update();
         // exit(var_dump(count($request->discipline_id), $request->discipline_id[0]));
         if ($request->has('discipline_id')) {
