@@ -1,1 +1,20 @@
-configure hostgator
+staff		*
+Nurses		
+Nurse Archive
+Facility
+news		*
+tutorial	*
+ - quiz
+forms		*
+skill		*
+documents	*
+sitecontents	*
+profile		*
+discipline	*
+Client User	
+  - Client User Exam
+Client Facility
+  - Client Tutorial
+Client Skills
+  - Groups
+  - Questions

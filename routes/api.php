@@ -81,3 +81,7 @@ Route::middleware('auth:api')->group(function () {
 });
 Route::apiResource('download', DownloadController::class);
 //Route::post('upload', [StaffController::class, 'upload']);
+
+Route::get('skill', function(){
+    exit("this-skill");
+});
