@@ -15,7 +15,32 @@ class QuizTutorialController extends Controller
      */
     public function index()
     {
-        $quiztutorial = QuizTutorial::with('tutorial_id', 'created_by', 'updated_by')->get();
+    // //     $raw_query = " CONCAT(CASE WHEN description = 'title' THEN title WHEN description = 'id' THEN id END) ";
+
+    // //     "CASE
+    // //     WHEN ans = 'q1' THEN q1
+    // WHEN ans = 'q2' THEN q2
+    // WHEN ans = 'q3' THEN q3
+    // WHEN ans = 'q4' THEN q4
+    // WHEN ans = 'q1' THEN q1
+    // ELSE ans 
+    // //     WHEN Quantity = 30 THEN "The quantity is 30"
+    // //     ELSE "The quantity is under 30"
+    // // END"
+    // IF(ans = 'q1', q1, ans) as ans
+        $quiztutorial = QuizTutorial::selectRaw("*, 
+        CASE
+        WHEN ans = 'q1' THEN q1
+        WHEN ans = 'q2' THEN q2
+        WHEN ans = 'q3' THEN q3
+        WHEN ans = 'q4' THEN q4
+        END as ans
+        " )
+    // ->where('status', '<>', 1)
+    // ->groupBy('status')
+        ->get();
+        // return $quiztutorial;
+        // $quiztutorial = QuizTutorial::with('tutorial_id', 'created_by', 'updated_by')->get();
         return Helper::success_response($quiztutorial);
     }
 
@@ -51,8 +76,23 @@ class QuizTutorialController extends Controller
 
     public function show(QuizTutorial $quizTutorial)
     {
-        $data = QuizTutorial::with('tutorial_id', 'created_by', 'updated_by')->where('quiz_tutorials.id', '=', $quizTutorial->id)->get()->first();
-        return Helper::success_response($data);
+        // $data = QuizTutorial::with('tutorial_id', 'created_by', 'updated_by')->where('quiz_tutorials.id', '=', $quizTutorial->id)->get()->first();
+        // return Helper::success_response($data);
+
+        $quiztutorial = QuizTutorial::selectRaw("*, 
+        CASE
+        WHEN ans = 'q1' THEN q1
+        WHEN ans = 'q2' THEN q2
+        WHEN ans = 'q3' THEN q3
+        WHEN ans = 'q4' THEN q4
+        END as ans
+        " )
+     ->where('id', '=', $quizTutorial->id)
+    // ->groupBy('status')
+        ->get();
+        // return $quiztutorial;
+        // $quiztutorial = QuizTutorial::with('tutorial_id', 'created_by', 'updated_by')->get();
+        return Helper::success_response($quiztutorial);
     }
 
     public function update(Request $request, QuizTutorial $quizTutorial)
