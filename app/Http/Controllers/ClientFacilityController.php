@@ -50,13 +50,18 @@ class ClientFacilityController extends Controller
         $clientFacility->contact_person = $request->contact_person;
         $clientFacility->contact_phone = $request->contact_phone;
         $clientFacility->email = $request->email;
-        $clientFacility->filename = $request->filename;
+
+        if ($request->has('filename')) {
+            // $clientFacility->filename = $request->filename;
+            $clientFacility->filename = Helper::addRemoveFile($request);
+        }
+        
         $clientFacility->facility_departments_id = $request->facility_departments_id;
         $clientFacility->facility_locations_id = $request->facility_locations_id;
         $clientFacility->facility_types_id = $request->facility_types_id;
         $clientFacility->facility_job_classes_id = $request->facility_job_classes_id;
         $clientFacility->save();
-        return Helper::success_response($clientFacility);
+        return Helper::success_response(Helper::process_data($clientFacility));
     }
 
     /**
@@ -105,13 +110,18 @@ class ClientFacilityController extends Controller
         $clientFacility->contact_person = $request->contact_person;
         $clientFacility->contact_phone = $request->contact_phone;
         $clientFacility->email = $request->email;
-        $clientFacility->filename = $request->filename;
+
+        if ($request->has('filename')) {
+            $clientFacility->filename = Helper::addRemoveFile($request, $clientFacility->filename);
+        }
+
+        // $clientFacility->filename = $request->filename;
         $clientFacility->facility_departments_id = $request->facility_departments_id;
         $clientFacility->facility_locations_id = $request->facility_locations_id;
         $clientFacility->facility_types_id = $request->facility_types_id;
         $clientFacility->facility_job_classes_id = $request->facility_job_classes_id;
         $clientFacility->update();
-        return Helper::success_response($clientFacility);
+        return Helper::success_response(Helper::process_data($clientFacility));
     }
 
     /**
