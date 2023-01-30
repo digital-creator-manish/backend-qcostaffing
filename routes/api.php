@@ -19,6 +19,7 @@ use App\Http\Controllers\QuizTutorialController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\FormTypeController;
 use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\ClientFacilityController;
 
 use App\Models\Discipline;
 use App\Models\SiteContent;
@@ -79,6 +80,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('form_type', FormTypeController::class);
     Route::apiResource('document_type', FormTypeController::class);
 });
+Route::apiResource('facility', ClientFacilityController::class);
 Route::apiResource('download', DownloadController::class);
 //Route::post('upload', [StaffController::class, 'upload']);
 

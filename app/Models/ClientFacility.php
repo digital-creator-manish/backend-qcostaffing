@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class ClientFacility extends Model
 {
     use HasFactory;
+    
 }
