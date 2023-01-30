@@ -372,14 +372,34 @@ http://qcostaffing_backend/api/facility/1
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+method : POST for create
+http://qcostaffing_backend/api/client_tutorial
+{
+  "title": "test-title",
+  "description": "test-description",
+  "facility":2
+}
 
+method : GET  - get all
+http://qcostaffing_backend/api/client_tutorial
 
+method : GET  - get by id
+http://qcostaffing_backend/api/client_tutorial/1
 
+method : PUT - update by id
+http://qcostaffing_backend/api/client_tutorial/1
+{
+  "title": "test-title",
+  "description": "test-description",
+  "facility":2
+}
 
-
-
+method : DELETE - delete by id
+http://qcostaffing_backend/api/client_tutorial/1
 
 
 
@@ -408,7 +428,7 @@ database\migrations\2023_01_26_090905_create_client_facilities_table.php
 
 
 
-
++
 
 
 

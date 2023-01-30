@@ -20,6 +20,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\FormTypeController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\ClientFacilityController;
+use App\Http\Controllers\ClienttutorialController;
 
 use App\Models\Discipline;
 use App\Models\SiteContent;
@@ -79,11 +80,12 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('document', DocumentController::class);
     Route::apiResource('form_type', FormTypeController::class);
     Route::apiResource('document_type', FormTypeController::class);
+    Route::apiResource('facility', ClientFacilityController::class);
+    Route::apiResource('client_tutorial', ClienttutorialController::class);
 });
-Route::apiResource('facility', ClientFacilityController::class);
 Route::apiResource('download', DownloadController::class);
 //Route::post('upload', [StaffController::class, 'upload']);
 
-Route::get('skill', function(){
-    exit("this-skill");
-});
+// Route::get('skill', function(){
+//     exit("this-skill");
+// });
