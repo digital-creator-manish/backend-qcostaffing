@@ -402,40 +402,97 @@ method : DELETE - delete by id
 http://qcostaffing_backend/api/client_tutorial/1
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-
-C:\xampp\htdocs\qcostaffing_backend\database\migrations\2023_01_03_130440_create_site_contents_table.php
-
-php artisan migrate:refresh --path=/database/migrations/2023_01_26_090905_create_client_facilities_table.php
-
-
-database\migrations\2023_01_26_090905_create_client_facilities_table.php
-
+Facility Department
+method : POST for create
+http://qcostaffing_backend/api/facility_departments
 {
-    "title":"test-title",
-    "description":"test-description",
-    "discipline_id":[1, 2, 8]
+  "title": "test-title"
 }
 
+method : GET  - get all
+http://qcostaffing_backend/api/facility_departments
 
-// "facility_departments_id":"test",
-  // "facility_locations_id":"test",
-  // "facility_types_id":"test",
-  // "facility_job_classes_id":"test"
+method : GET  - get by id
+http://qcostaffing_backend/api/facility_departments/1
+
+method : PUT - update by id
+http://qcostaffing_backend/api/facility_departments/1
+{
+  "title": "test-title"
+}
+
+method : DELETE - delete by id
+http://qcostaffing_backend/api/facility_departments/1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Facility Location
+method : POST for create
+http://qcostaffing_backend/api/facility_locations
+{
+  "title": "test-title"
+}
+
+method : GET  - get all
+http://qcostaffing_backend/api/facility_locations
+
+method : GET  - get by id
+http://qcostaffing_backend/api/facility_locations/1
+
+method : PUT - update by id
+http://qcostaffing_backend/api/facility_locations/1
 
 
+method : DELETE - delete by id
+http://qcostaffing_backend/api/facility_locations/1
 
 
-+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Facility Type
+method : POST for create
+http://qcostaffing_backend/api/facility_types
+{
+  "title": "test-title"
+}
+
+method : GET  - get all
+http://qcostaffing_backend/api/facility_types
+
+method : GET  - get by id
+http://qcostaffing_backend/api/facility_types/1
+
+method : PUT - update by id
+http://qcostaffing_backend/api/facility_types/1
 
 
+method : DELETE - delete by id
+http://qcostaffing_backend/api/facility_types/1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Facility Job Class
+method : POST for create
+http://qcostaffing_backend/api/facility_job_classes
+{
+  "title": "test-title"
+}
+
+method : GET  - get all
+http://qcostaffing_backend/api/facility_job_classes
+
+method : GET  - get by id
+http://qcostaffing_backend/api/facility_job_classes/1
+
+method : PUT - update by id
+http://qcostaffing_backend/api/facility_job_classes/1
 
 
-
-
-
-
-
-
+method : DELETE - delete by id
+http://qcostaffing_backend/api/facility_job_classes/1
