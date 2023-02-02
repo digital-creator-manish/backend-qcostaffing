@@ -25,6 +25,7 @@ use App\Http\Controllers\FacilityDepartmentController;
 use App\Http\Controllers\FacilityLocationController;
 use App\Http\Controllers\FacilityTypeController;
 use App\Http\Controllers\FacilityJobClassController;
+use App\Http\Controllers\ClientUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,12 +82,13 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('document', DocumentController::class);
     Route::apiResource('form_type', FormTypeController::class);
     Route::apiResource('document_type', FormTypeController::class);
-    Route::apiResource('facility', ClientFacilityController::class);
+    Route::apiResource('client_facility', ClientFacilityController::class);
     Route::apiResource('client_tutorial', ClienttutorialController::class);
     Route::apiResource('facility_departments', FacilityDepartmentController::class);
     Route::apiResource('facility_locations', FacilityLocationController::class);
     Route::apiResource('facility_types', FacilityTypeController::class);
     Route::apiResource('facility_job_classes', FacilityJobClassController::class);
+    Route::apiResource('client_users', ClientUserController::class);
 });
 Route::apiResource('download', DownloadController::class);
 //Route::post('upload', [StaffController::class, 'upload']);

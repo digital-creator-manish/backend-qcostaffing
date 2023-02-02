@@ -35,3 +35,556 @@ Client Skills
   Site content 
   discipline
   
+
+
+  https://www.youtube.com/watch?v=yQBw8skBdZU&list=PL0Zuz27SZ-6PFkIxaJ6Xx_X46avTM1aYw&index=2
+
+composer create-project laravel/laravel laravel-test
+composer require laravel/passport
+php artisan migrate
+php artisan passport:install
+
+
+
+create new table
+nurse duty
+nurse education
+nurse liability
+nurse_disciplinary
+nurse_reference
+nurse_work
+
+define one to many relationship
+
+nurse resume upload in folder not like current functionality
+
+route laravel - admin
+
+login table for registration
+
+login
+
+
+
+
+table name : 
+nurses
+
+table columns:
+id
+lname
+fname
+m_initial
+maiden_name
+social_security_number
+home_phone
+cell_phone 
+work_number
+us_citizen
+driver_license
+birth_date
+emergency
+relationship applicant
+phone
+emergency_address
+street
+email
+city
+state
+zipcode
+p_street
+p_city
+p_state
+p_zipcode
+license_certification
+number
+issuing_organization
+expiration_date
+present_employer
+present_organization
+present_supervisor
+present_address
+verify_employment_phone
+employment_date
+employment_salary
+reason_leaving
+created_date
+userid
+password1
+app_house
+hear_about
+comment
+active
+full_additional_array
+initial
+last_login
+archive
+disciplines
+gender
+myresume
+
+
+
+
+----------------------------------------------------------------------------
+
+table_name : nurse_duty
+id,
+nurse_id,
+available_duty
+available_dutytime
+available_day
+
+--------------------------------------------------------------------------
+
+table_name : nurse_education
+id,
+nurse_id
+education_type
+name_school_address
+course
+diploma
+years_completed
+other_skills
+
+-------------------------------------------------------------------
+
+table_name : nurse_liability
+id
+nurse_id
+liability_carrier
+liability_contact
+liability_amount
+liability_expiration_date
+liability_phone
+liability_malpractise
+liability_pending
+
+-----------------------------------------------------------------
+
+table_name : nurse_disciplinary
+
+id
+nurse_id
+discplinary_accommodation
+discplinary_dependency
+discplinary_authorization
+discplinary_arrested
+discplinary_reprimanded
+discplinary_discplined
+
+
+----------------------------------------------------------
+
+table_name : nurse_references
+
+id
+nurse_id
+references_name
+references_address
+ref_body
+references_phone
+
+
+-------------------------------------------------------
+
+table_name : nurse_work
+
+id
+nurse_id
+work_experience
+work_body
+education_body
+license_body
+
+
+
+
+
+
+
+$Nurses = Nurses::with('NurseDuty')->get();
+
+
+
+
+tight underwear on thigh no
+
+php artisan make:middleware ForceJsonResponse
+php artisan make:middleware Cors
+
+
+Registration request has been generated successfully. Please note down the Service Request ID 222300508267 for future reference. Please download the Registration form, sign and upload the form along with an identity proof to process your request.
+
+
+
+
+
+manage staff
+
+company member
+
+client user
+skill
+facility
+news
+tutorial
+form
+discipline
+
+
+
+
+api.json.txt
+paste json request
+
+add, edit , delete
+
+
+
+qcostaff
+qco!1234
+
+
+
+php artisan make:model SiteContent -mcr     => this will create a model, migration controller with resource code already written
+
+go to routes in api.php and Route::apiResource('sitecontent', SiteContentController::class); this will auto map request to appropriate controller and method
+
+
+go to model in app\model and provide  protected $fillable = ['name', 'title', 'description'];
+
+
+write following code in store method
+
+$validator = Validator::make($request->all(), ["name"=>"required", 'title'=>'required', "description"=>"required"]);
+        if ($validator->fails()) {
+            return response(['success' => 0, 'message' => implode($validator->messages()->all())], 422);
+        }
+
+        $SiteContent = SiteContent::create($request->all());
+        return response(['success' => 1, 'message' => 'SiteContent create success', 'site_content'=>$SiteContent], 422);
+
+added by
+
+
+decorator
+
+
+
+translation 
+
+
+work add translation in project
+
+
+ALTER TABLE `tbl_medication_info` ADD `med_name_spanish` VARCHAR(255) NOT NULL AFTER `med_createdon`;
+
+ALTER TABLE `tbl_medication_info` ADD `med_uses_spanish` TEXT NOT NULL AFTER `med_name_spanish`;
+
+ALTER TABLE `tbl_medication_info` ADD `med_side_effects_spanish` TEXT NOT NULL ;
+
+Create Patient Medication List add checkbox for 
+
+one for eng 
+one for spanish
+
+generate report
+default english
+
+
+
+
+make new project 
+
+use same db
+
+
+
+
+
+need to make atleast 3 api
+
+one skill has many discipline
+
+
+
+
+create a skill 
+
+
+
+
+
+
+
+
+
+
+SQLSTATE[HY000]: General error: 1005 Can't create table `qcostaffingdemo`.`skills` (errno: 150 "Foreign key constraint is incorrectly formed") (SQL: alter table `skills` add constraint `skills_discipline_id_foreign` foreign key (`discipline_id`) references `disciplines` (`id`) on delete cascade)
+
+
+collection 
+
+
+model
+
+language in medicine
+
+
+
+
+remove med name
+
+
+
+scanpill
+https://path2quality.com/scanpill/ new project
+
+Host: path2quality.com
+Username: scanpill@path2quality.com 
+Pass: 975Ouv0G0plr
+
+ALTER TABLE `tbl_medication_info`
+  DROP `med_name_spanish`;
+
+
+
+
+
+skill - model
+
+discipline - model
+
+skill_discipline - model
+
+
+
+passport multi token
+
+        DB::enableQueryLog();
+        // dd(DB::getQueryLog());
+
+
+
+
+One to One Relationship
+
+https://medium.com/@kamerk22/the-smart-way-to-handle-request-validation-in-laravel-5e8886279271
+
+
+
+qcostaffing/news/P8iaAWzOmSfmpYNbKO37xWuqq3fpmGEEISGnUk5Q.pdf
+
+http://localhost/qcostaffing_backend/public/api/news/3?_method=PUT
+
+
+
+
+
+create form type migration
+php artisan migrate:rollback
+
+need to send blank array for delete
+php artisan db:seed --class=ProductTableSeeder
+
+
+
+
+
+
+
+
+sort default desc sort by
+
+search expresiion
+
+
+http://qcostaffing_backend/api/discipline/?paging=1&sortby=id&sortorder=asc&search=keyboard&exp=like
+
+
+
+discipline status - add to discipline
+
+
+
+
+
+title:"test-title",
+description test-description",
+show":"Y",
+uploaded_by":"test-uploaded-by",
+uploaded_date":"2023-01-17"
+
+
+
+php artisan migrate:refresh --path=/database/migrations/2023_01_14_130754_create_documents_table.php
+
+
+
+C:\xampp\htdocs\backend-qcostaffing\database\migrations\2023_01_14_130754_create_documents_table.php
+
+
+
+
+file save only name
+
+
+public $timestamps = false;
+
+key file pair
+
+Need to work on file path
+
+http://qco_backend.com/qcostaffing/news/4FhAyc725iGFWpaYLutppbNBTEKz7zQmqRZBHFjd.png
+
+http://qco_backend.com/api/file/folder(md5)/filename
+
+
+
+qcostaff/ qcostaff1234
+
+
+
+git remote show origin
+
+
+
+ create database models and design for the required application
+
+mvc 
+
+
+
+
+
+
+
+aws s3
+
+
+BCMath -n
+Ctype 
+cURL -n
+DOM 
+Fileinfo -n 
+json
+Mbstring -n
+openssl
+pcre
+pdo -n
+tokenizer 
+xml
+
+
+
+ahmad@path2quality.com / make@lara
+
+	'username' => 'abhinav_qrmeds',
+	'password' => 'WJZZ6tdZECPt',
+	'database' => 'abhinav_scanpill',
+
+BPf8wF9bmLxp
+
+User: backendqco_ahmad
+
+Database: backendqco_qcolara
+Database: backendqco_qcolara
+
+
+https://backend.qcostaffing.org:2083/
+
+
+umar ask to test
+
+ng build --baseHref=https://frontend.qcostaffing.org/	
+
+
+ng build --base-href https://frontend.qcostaffing.org/	
+
+ng build --base-href http://localhost/frontend-qcostaffing/dist/frontend_angular/
+
+
+1) Provident Fund (PF)
+2) Insurance - Atleast Health & Term!
+3) Tax saving - 80C, 80D, 80EE atleast!
+4) House Rent Allowance (HRA)
+5) Old tax regime vs New tax regime
+6) Leave Travel Allowance (LTA)
+7) National Pension Scheme (NPS)
+
+
+test-med-name-qr
+
+
+
+
+
+
+php artisan migrate:rollback --path=/database/migrations/2023_01_18_160258_create_disciplines_documents_table.php
+
+
+
+
+php artisan migrate:refresh --path=/database/migrations/2023_01_14_130754_create_documents_table.php
+
+php artisan migrate:refresh --path=/database/migrations/2023_01_31_121104_create_client_users_table.php
+
+C:\xampp\htdocs\backend-qcostaffing\database\migrations\2023_02_01_105926_create_facility_type_maps_table.php
+
+case query
+
+
+
+
+git status
+git init
+git remote add origin git@github.com:digital-creator-manish/backend-qcostaffing.git
+
+
+git remote add git@github.com:digital-creator-manish/backend-qcostaffing.git
+
+
+
+buffer
+pipe
+file module
+http module
+commonjs
+stream
+event
+module.exports
+thread 
+cluster module
+child_process module
+ECMA script
+callback hell - nesting of callback functions
+promise
+async 
+await
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

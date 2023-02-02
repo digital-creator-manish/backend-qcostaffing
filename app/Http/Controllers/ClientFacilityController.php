@@ -17,7 +17,9 @@ class ClientFacilityController extends Controller
     public function index(Request $request)
     {
         // $clientFacility = ClientFacility::all();
-        return Helper::getRecords(ClientFacility::class, $request);
+        // return Helper::getRecords(ClientFacility::class, $request);
+        $clientFacility = ClientFacility::with('department', 'job', 'location', 'ftype')->get();
+        return Helper::success_response($clientFacility);
     }
 
     /**
@@ -56,12 +58,32 @@ class ClientFacilityController extends Controller
             $clientFacility->filename = Helper::addRemoveFile($request);
         }
         
-        $clientFacility->facility_departments_id = $request->facility_departments_id;
-        $clientFacility->facility_locations_id = $request->facility_locations_id;
-        $clientFacility->facility_types_id = $request->facility_types_id;
-        $clientFacility->facility_job_classes_id = $request->facility_job_classes_id;
+        // $clientFacility->facility_departments_id = $request->facility_departments_id;
+        // $clientFacility->facility_locations_id = $request->facility_locations_id;
+        // $clientFacility->facility_types_id = $request->facility_types_id;
+        // $clientFacility->facility_job_classes_id = $request->facility_job_classes_id;
+        // exit("hi-world");
         $clientFacility->save();
-        return Helper::success_response(Helper::process_data($clientFacility));
+        // exit(var_dump($clientFacility->id));
+        if ($request->has('department_id') && count($request->department_id)) {
+            $clientFacility->department()->attach($request->department_id);
+        }
+
+        if ($request->has('job_id') && count($request->job_id)) {
+            $clientFacility->job()->attach($request->job_id);
+        }
+
+        if ($request->has('location_id') && count($request->location_id)) {
+            $clientFacility->location()->attach($request->location_id);
+        }
+
+        if ($request->has('ftype_id') && count($request->ftype_id)) {
+            $clientFacility->ftype()->attach($request->ftype_id);
+        }
+
+        
+        $clientFacility = ClientFacility::with('department', 'job', 'location', 'ftype')->where(["client_facilities.id"=>$clientFacility->id])->get()->first();
+        return Helper::success_response($clientFacility);
     }
 
     /**
@@ -72,7 +94,7 @@ class ClientFacilityController extends Controller
      */
     public function show($id)
     {
-        $clientFacility = ClientFacility::where(["id"=>$id])->get()->first();
+        $clientFacility = ClientFacility::with('department', 'job', 'location', 'ftype')->where(["id"=>$id])->get()->first();
         // exit($id);
         // return $clientFacility;
         return Helper::success_response($clientFacility);
@@ -116,12 +138,42 @@ class ClientFacilityController extends Controller
         }
 
         // $clientFacility->filename = $request->filename;
-        $clientFacility->facility_departments_id = $request->facility_departments_id;
-        $clientFacility->facility_locations_id = $request->facility_locations_id;
-        $clientFacility->facility_types_id = $request->facility_types_id;
-        $clientFacility->facility_job_classes_id = $request->facility_job_classes_id;
+//        $clientFacility->facility_departments_id = $request->facility_departments_id;
+//        $clientFacility->facility_locations_id = $request->facility_locations_id;
+//        $clientFacility->facility_types_id = $request->facility_types_id;
+//        $clientFacility->facility_job_classes_id = $request->facility_job_classes_id;
         $clientFacility->update();
-        return Helper::success_response(Helper::process_data($clientFacility));
+        
+        if ($request->has('department_id')) {
+            $clientFacility->department()->detach(); //detach discipline if array present blank or filled
+            if (count($request->department_id)) {
+                $clientFacility->department()->attach($request->department_id);
+            }
+        }
+
+        if ($request->has('job_id')) {
+            $clientFacility->job()->detach(); //detach discipline if array present blank or filled
+            if (count($request->job_id)) {
+                $clientFacility->department()->attach($request->job_id);
+            }
+        }
+
+        if ($request->has('location_id')) {
+            $clientFacility->location()->detach(); //detach discipline if array present blank or filled
+            if (count($request->location_id)) {
+                $clientFacility->department()->attach($request->location_id);
+            }
+        }
+
+        if ($request->has('ftype_id')) {
+            $clientFacility->ftype()->detach(); //detach discipline if array present blank or filled
+            if (count($request->ftype_id)) {
+                $clientFacility->department()->attach($request->ftype_id);
+            }
+        }
+
+        $clientFacility = ClientFacility::with('department', 'job', 'location', 'ftype')->where(["client_facilities.id"=>$clientFacility->id])->get()->first();
+        return Helper::success_response($clientFacility);
     }
 
     /**
