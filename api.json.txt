@@ -578,3 +578,49 @@ method : GET  - get by id http://qcostaffing_backend/api/skill_quiz/1
 method : PUT - update by id http://qcostaffing_backend/api/skill_quiz/1
 
 method : DELETE - delete by id http://qcostaffing_backend/api/skill_quiz/1
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+facility_tutorial_quiz 
+method : POST for create http://qcostaffing_backend/api/facility_tutorial_quiz
+{
+  "facility_tutorial_id": 1,
+  "question": "test-question-1",
+  "opt1": "test-opt1-2",
+  "opt2": "test-opt2-2",
+  "opt3": "test-opt3",
+  "opt4": "test-opt4",
+  "answer":"opt2"
+}
+method : GET  - get all http://qcostaffing_backend/api/facility_tutorial_quiz
+
+method : GET  - get by id http://qcostaffing_backend/api/skilfacility_tutorial_quizl_quiz/1
+
+method : PUT - update by id http://qcostaffing_backend/api/facility_tutorial_quiz/1
+
+method : DELETE - delete by id http://qcostaffing_backend/api/facility_tutorial_quiz/1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+facility_tutorial 
+method : POST for create http://qcostaffing_backend/api/facility_tutorial
+{
+  "cfacility_id": 4,
+  "title": "test-question-33",
+  "description": "description-update"
+}
+method : GET  - get all http://qcostaffing_backend/api/facility_tutorial
+
+method : GET  - get by id http://qcostaffing_backend/api/facility_tutorial/1
+
+method : PUT - update by id http://qcostaffing_backend/api/facility_tutorial/1
+
+method : DELETE - delete by id http://qcostaffing_backend/api/facility_tutorial/1
+
+
+
+

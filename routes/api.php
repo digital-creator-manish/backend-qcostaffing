@@ -29,6 +29,8 @@ use App\Http\Controllers\ClientUserController;
 use App\Http\Controllers\CskillController;
 use App\Http\Controllers\GroupCskillController;
 use App\Http\Controllers\SkillGroupQuizController;
+use App\Http\Controllers\FacilityTutorialController;
+use App\Http\Controllers\FacilityTutorialQuizController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,6 +97,8 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('cskills', CskillController::class);
     Route::apiResource('group_cskills', GroupCskillController::class);
     Route::apiResource('skill_quiz', SkillGroupQuizController::class);
+    Route::apiResource('facility_tutorial', FacilityTutorialController::class);
+    Route::apiResource('facility_tutorial_quiz', FacilityTutorialQuizController::class);
 });
 Route::apiResource('download', DownloadController::class);
 //Route::post('upload', [StaffController::class, 'upload']);
