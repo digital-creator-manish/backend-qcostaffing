@@ -521,12 +521,16 @@ test-med-name-qr
 
 
 
-php artisan migrate:rollback --path=/database/migrations/2023_01_18_160258_create_disciplines_documents_table.php
+php artisan migrate:refresh --path=/database/migrations/2023_02_02_120524_create_cskills_table.php
 
 
+database\migrations\2023_02_02_120524_create_cskills_table.php
 
 
-php artisan migrate:refresh --path=/database/migrations/2023_01_14_130754_create_documents_table.php
+php artisan migrate:refresh --path=/database/migrations/2023_02_02_125536_create_skill_group_quizzes_table.php
+
+database\migrations\2023_02_02_125536_create_skill_group_quizzes_table.php
+
 
 php artisan migrate:refresh --path=/database/migrations/2023_01_31_121104_create_client_users_table.php
 

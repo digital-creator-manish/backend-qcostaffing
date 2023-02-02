@@ -26,6 +26,9 @@ use App\Http\Controllers\FacilityLocationController;
 use App\Http\Controllers\FacilityTypeController;
 use App\Http\Controllers\FacilityJobClassController;
 use App\Http\Controllers\ClientUserController;
+use App\Http\Controllers\CskillController;
+use App\Http\Controllers\GroupCskillController;
+use App\Http\Controllers\SkillGroupQuizController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +92,9 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('facility_types', FacilityTypeController::class);
     Route::apiResource('facility_job_classes', FacilityJobClassController::class);
     Route::apiResource('client_users', ClientUserController::class);
+    Route::apiResource('cskills', CskillController::class);
+    Route::apiResource('group_cskills', GroupCskillController::class);
+    Route::apiResource('skill_quiz', SkillGroupQuizController::class);
 });
 Route::apiResource('download', DownloadController::class);
 //Route::post('upload', [StaffController::class, 'upload']);

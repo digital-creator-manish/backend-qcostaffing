@@ -532,4 +532,49 @@ method : PUT - update by id http://qcostaffing_backend/api/client_users/1
 
 method : DELETE - delete by id http://qcostaffing_backend/api/client_users/1
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+CSkill 
+method : POST for create http://qcostaffing_backend/api/cskills
+{ "title":"test-title", "description":"test-description" }
+
+method : GET  - get all http://qcostaffing_backend/api/cskills
+
+method : GET  - get by id http://qcostaffing_backend/api/cskills/1
+
+method : PUT - update by id http://qcostaffing_backend/api/cskills/1
+
+method : DELETE - delete by id http://qcostaffing_backend/api/cskills/1
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+group_cskills 
+method : POST for create http://qcostaffing_backend/api/group_cskills
+{ "name": "name-group-2", "cskill_id": 3 }
+
+method : GET  - get all http://qcostaffing_backend/api/group_cskills
+
+method : GET  - get by id http://qcostaffing_backend/api/group_cskills/1
+
+method : PUT - update by id http://qcostaffing_backend/api/group_cskills/1
+
+method : DELETE - delete by id http://qcostaffing_backend/api/group_cskills/1
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+skill_quiz 
+method : POST for create http://qcostaffing_backend/api/skill_quiz
+{ "group_id": 4, "question": "test-question-3" }
+
+method : GET  - get all http://qcostaffing_backend/api/skill_quiz
+
+method : GET  - get by id http://qcostaffing_backend/api/skill_quiz/1
+
+method : PUT - update by id http://qcostaffing_backend/api/skill_quiz/1
+
+method : DELETE - delete by id http://qcostaffing_backend/api/skill_quiz/1
